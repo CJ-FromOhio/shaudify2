@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -12,11 +13,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "songs")
-public class Song extends BaseEntity {
+public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String title;
 
     private String description;
@@ -24,5 +25,8 @@ public class Song extends BaseEntity {
     @JoinColumn(name = "author_id")
     private User creator;
 
-
+    @Column(nullable = false)
+    private Instant createdAt;
+    @Column()
+    private String createdBy;
 }
