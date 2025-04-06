@@ -29,9 +29,9 @@ public class ReadUserDto {
 
     private Role role;
 
-    private List<Song> createdSong = new ArrayList<>();
+//    private List<Song> createdSong = new ArrayList<>();
 
-    private List<LikedSong> likedSong = new ArrayList<>();
+//    private List<LikedSong> likedSong = new ArrayList<>();
 
     private Instant createdAt;
 }

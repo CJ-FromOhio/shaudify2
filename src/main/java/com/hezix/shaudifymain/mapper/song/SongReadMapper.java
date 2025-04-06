@@ -3,7 +3,9 @@ package com.hezix.shaudifymain.mapper.song;
 import com.hezix.shaudifymain.entity.Song;
 import com.hezix.shaudifymain.entity.dto.song.ReadSongDto;
 import com.hezix.shaudifymain.mapper.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SongReadMapper implements Mapper<Song, ReadSongDto> {
     @Override
     public Song toEntity(ReadSongDto readSongDto) {

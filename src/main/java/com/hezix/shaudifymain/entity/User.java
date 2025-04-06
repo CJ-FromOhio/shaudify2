@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.entity;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -33,7 +34,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany()
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Song> createdSong = new ArrayList<>();
 
 
@@ -42,7 +43,6 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<LikedSong> likedSongs = new ArrayList<>();
 
-    @Column(nullable = false)
+    @Column()
     private Instant createdAt;
-
 }
