@@ -1,0 +1,42 @@
+package com.hezix.shaudifymain.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import lombok.*;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+@EqualsAndHashCode(callSuper = false)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "users")
+public class User extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+
+    private String password;
+    @Email
+    private String email;
+
+    private String firstName;
+
+    private String lastName;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany()
+    private List<Song> createdSong = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<LikedSong> likedSongs = new ArrayList<>();
+
+}
