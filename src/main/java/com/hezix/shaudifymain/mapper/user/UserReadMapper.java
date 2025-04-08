@@ -1,11 +1,10 @@
 package com.hezix.shaudifymain.mapper.user;
 
-import com.hezix.shaudifymain.entity.User;
-import com.hezix.shaudifymain.entity.dto.user.ReadUserDto;
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

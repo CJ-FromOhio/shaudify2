@@ -1,16 +1,12 @@
-package com.hezix.shaudifymain.entity.dto.user;
+package com.hezix.shaudifymain.entity.user.dto;
 
-import com.hezix.shaudifymain.entity.LikedSong;
-import com.hezix.shaudifymain.entity.Role;
-import com.hezix.shaudifymain.entity.Song;
+import com.hezix.shaudifymain.entity.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder

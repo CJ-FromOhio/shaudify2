@@ -1,7 +1,7 @@
 package com.hezix.shaudifymain.controller.rest;
 
-import com.hezix.shaudifymain.entity.dto.user.CreateUserDto;
-import com.hezix.shaudifymain.entity.dto.user.ReadUserDto;
+import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
+import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserRestController {
     private final UserService userService;
 
     @PostMapping("/")

@@ -1,11 +1,9 @@
 package com.hezix.shaudifymain.mapper.user;
 
-import com.hezix.shaudifymain.entity.User;
-import com.hezix.shaudifymain.entity.dto.user.CreateUserDto;
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.mapper.Mapper;
 import org.springframework.stereotype.Component;
-
-import java.time.Instant;
 
 @Component
 public class UserCreateMapper implements Mapper<User, CreateUserDto> {

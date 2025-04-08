@@ -1,6 +1,6 @@
-package com.hezix.shaudifymain.entity.dto.song;
+package com.hezix.shaudifymain.entity.song.dto;
 
-import com.hezix.shaudifymain.entity.User;
+import com.hezix.shaudifymain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,9 +1,11 @@
-package com.hezix.shaudifymain.entity;
+package com.hezix.shaudifymain.entity.song;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hezix.shaudifymain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = false)
@@ -21,7 +23,9 @@ public class Song {
     private String title;
 
     private String description;
+
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
     @JoinColumn(name = "author_id")
     private User creator;
 

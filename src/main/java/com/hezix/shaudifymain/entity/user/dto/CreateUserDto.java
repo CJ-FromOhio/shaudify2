@@ -1,6 +1,6 @@
-package com.hezix.shaudifymain.entity.dto.user;
+package com.hezix.shaudifymain.entity.user.dto;
 
-import com.hezix.shaudifymain.entity.Role;
+import com.hezix.shaudifymain.entity.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

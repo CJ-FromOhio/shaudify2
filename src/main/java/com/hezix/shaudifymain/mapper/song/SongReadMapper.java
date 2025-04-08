@@ -1,9 +1,11 @@
 package com.hezix.shaudifymain.mapper.song;
 
-import com.hezix.shaudifymain.entity.Song;
-import com.hezix.shaudifymain.entity.dto.song.ReadSongDto;
+import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.mapper.Mapper;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class SongReadMapper implements Mapper<Song, ReadSongDto> {
@@ -27,5 +29,16 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .createdBy(song.getCreatedBy())
                 .creator(song.getCreator())
                 .build();
+    }
+
+    public List<ReadSongDto> toDtoList(List<Song> songs) {
+        return songs.stream()
+                .map(song -> new SongReadMapper().toDto(song))
+                .toList();
+    }
+    public List<Song> toEntityList(List<ReadSongDto> dtoSongs) {
+        return dtoSongs.stream()
+                .map(song -> new SongReadMapper().toEntity(song))
+                .toList();
     }
 }

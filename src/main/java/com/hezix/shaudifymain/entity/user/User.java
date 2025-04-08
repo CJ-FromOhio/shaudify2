@@ -1,11 +1,12 @@
-package com.hezix.shaudifymain.entity;
+package com.hezix.shaudifymain.entity.user;
 
-import jakarta.annotation.PostConstruct;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hezix.shaudifymain.entity.likedSong.LikedSong;
+import com.hezix.shaudifymain.entity.song.Song;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +35,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY)
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
     private List<Song> createdSong = new ArrayList<>();
-
-
 
     @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

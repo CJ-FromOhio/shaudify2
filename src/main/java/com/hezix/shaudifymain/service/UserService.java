@@ -1,8 +1,8 @@
 package com.hezix.shaudifymain.service;
 
-import com.hezix.shaudifymain.entity.User;
-import com.hezix.shaudifymain.entity.dto.user.CreateUserDto;
-import com.hezix.shaudifymain.entity.dto.user.ReadUserDto;
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
+import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.mapper.user.UserCreateMapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
@@ -34,8 +34,13 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found")));
     }
     @Transactional(readOnly = true)
+    public User findUserEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User Entity with id " + id + " not found"));
+    }
+    @Transactional(readOnly = true)
     public List<ReadUserDto> findAllUsers() {
-        return userReadMapper.toDtoList(userRepository.findAll());
+        return mapListUserToListRead(userRepository.findAll());
     }
     @Transactional()
     public ReadUserDto deleteUserById(Long id) {
@@ -48,11 +53,20 @@ public class UserService {
     public ReadUserDto mapUserToRead(User user) {
         return userReadMapper.toDto(user);
     }
+    public CreateUserDto mapUserToCreate(User user) {
+        return userCreateMapper.toDto(user);
+    }
+    public List<ReadUserDto> mapListUserToListRead(List<User> userList) {
+        return userReadMapper.toDtoList(userList);
+    }
     public User mapReadToUser(ReadUserDto user) {
         return userReadMapper.toEntity(user);
     }
     public User mapCreateToEntity(CreateUserDto createUserDto) {
         return userCreateMapper.toEntity(createUserDto);
+    }
+    public List<User> mapListReadToListUser(List<ReadUserDto> userList) {
+        return userReadMapper.toEntityList(userList);
     }
 
 

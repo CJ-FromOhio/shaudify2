@@ -1,7 +1,7 @@
 package com.hezix.shaudifymain.mapper.song;
 
-import com.hezix.shaudifymain.entity.Song;
-import com.hezix.shaudifymain.entity.dto.song.CreateSongDto;
+import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.mapper.Mapper;
 import org.springframework.stereotype.Component;
 

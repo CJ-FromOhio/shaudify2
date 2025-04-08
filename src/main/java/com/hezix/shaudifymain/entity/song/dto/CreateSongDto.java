@@ -1,12 +1,11 @@
-package com.hezix.shaudifymain.entity.dto.song;
+package com.hezix.shaudifymain.entity.song.dto;
 
-import com.hezix.shaudifymain.entity.User;
+import com.hezix.shaudifymain.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
 @Data
 @Builder
 @AllArgsConstructor
@@ -18,6 +17,4 @@ public class CreateSongDto {
     private String description;
 
     private User creator;
-
-
 }
