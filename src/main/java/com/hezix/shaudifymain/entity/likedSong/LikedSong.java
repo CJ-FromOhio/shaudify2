@@ -1,5 +1,7 @@
 package com.hezix.shaudifymain.entity.likedSong;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.user.User;
 import jakarta.persistence.*;
@@ -19,6 +21,7 @@ public class LikedSong {
     private Long id;
 
     @JoinColumn(name = "user_id")
+    @JsonManagedReference
     @ManyToOne
     private User user;
 

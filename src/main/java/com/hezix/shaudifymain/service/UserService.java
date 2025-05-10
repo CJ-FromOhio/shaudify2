@@ -56,14 +56,14 @@ public class UserService {
     public CreateUserDto mapUserToCreate(User user) {
         return userCreateMapper.toDto(user);
     }
-    public List<ReadUserDto> mapListUserToListRead(List<User> userList) {
-        return userReadMapper.toDtoList(userList);
-    }
     public User mapReadToUser(ReadUserDto user) {
         return userReadMapper.toEntity(user);
     }
     public User mapCreateToEntity(CreateUserDto createUserDto) {
         return userCreateMapper.toEntity(createUserDto);
+    }
+    public List<ReadUserDto> mapListUserToListRead(List<User> userList) {
+        return userReadMapper.toDtoList(userList);
     }
     public List<User> mapListReadToListUser(List<ReadUserDto> userList) {
         return userReadMapper.toEntityList(userList);

@@ -28,7 +28,6 @@ public class SongService {
         song.setCreatedAt(Instant.now());
         var user = userService.findUserEntityById(userId);
         user.getCreatedSong().add(song);
-        song.setCreatedBy(user.getUsername());
         song.setCreator(user);
         songRepository.save(song);
         return mapSongToRead(song);
@@ -38,6 +37,13 @@ public class SongService {
         return mapSongToRead(songRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Song with id " + id + " not found")));
     }
+
+    @Transactional(readOnly = true)
+    public Song findSongEntityById(Long id) {
+        return songRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Song Entity with id " + id + " not found"));
+    }
+
     @Transactional(readOnly = true)
     public List<ReadSongDto> findAllSongs() {
         return mapListSongToListRead(songRepository.findAll());
@@ -56,14 +62,14 @@ public class SongService {
     public CreateSongDto mapSongToCreate(Song song) {
         return songCreateMapper.toDto(song);
     }
-    public List<ReadSongDto> mapListSongToListRead(List<Song> songList) {
-        return songReadMapper.toDtoList(songList);
-    }
     public Song mapReadToSong(ReadSongDto song) {
         return songReadMapper.toEntity(song);
     }
     public Song mapCreateToSong(CreateSongDto song) {
         return songCreateMapper.toEntity(song);
+    }
+    public List<ReadSongDto> mapListSongToListRead(List<Song> songList) {
+        return songReadMapper.toDtoList(songList);
     }
     public List<Song> mapListReadToListSong(List<ReadSongDto> songList) {
         return songReadMapper.toEntityList(songList);

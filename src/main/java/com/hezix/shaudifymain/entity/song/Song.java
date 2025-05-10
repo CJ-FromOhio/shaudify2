@@ -31,6 +31,4 @@ public class Song {
 
     @Column(nullable = false)
     private Instant createdAt;
-    @Column()
-    private String createdBy;
 }

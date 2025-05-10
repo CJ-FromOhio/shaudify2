@@ -42,6 +42,7 @@ public class User {
 
     @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<LikedSong> likedSongs = new ArrayList<>();
 
     @Column()
