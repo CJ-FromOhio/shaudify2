@@ -1,8 +1,10 @@
 package com.hezix.shaudifymain.service;
 
 import com.hezix.shaudifymain.entity.likedSong.LikedSong;
+import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.mapper.likedSong.LikedSongReadMapper;
 import com.hezix.shaudifymain.repository.LikedSongRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,14 +21,16 @@ public class LikedSongService {
     private final UserService userService;
     private final SongService songService;
     private final LikedSongRepository likedSongRepository;
+    private final LikedSongReadMapper likedSongReadMapper;
 
     @Transactional()
-    public LikedSong like(Long songId, Long userId) {
+    public ReadLikedSongDto like(Long songId, Long userId) {
         var likedSong = LikedSong.builder()
                 .song(songService.findSongEntityById(songId))
                 .user(userService.findUserEntityById(userId))
                 .build();
-        return likedSongRepository.save(likedSong);
+        likedSongRepository.save(likedSong);
+        return likedSongReadMapper.toDto(likedSong);
     }
 
     @Transactional(readOnly = true)
