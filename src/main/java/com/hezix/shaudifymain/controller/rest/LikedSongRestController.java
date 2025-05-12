@@ -1,6 +1,7 @@
 package com.hezix.shaudifymain.controller.rest;
 
 import com.hezix.shaudifymain.entity.likedSong.LikedSong;
+import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.service.LikedSongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,7 @@ public class LikedSongRestController {
             summary = "добавление (лайкаем)",
             description = "в параметры передаём идентификатор песни, идентификатор пользователя"
     )
-    public ResponseEntity<LikedSong> like(@PathVariable("songId") Long songId,
+    public ResponseEntity<ReadLikedSongDto> like(@PathVariable("songId") Long songId,
                                                  @PathVariable("userId") Long userId) {
         return ResponseEntity.ok(likedSongService.like(songId, userId));
     }
@@ -32,7 +33,7 @@ public class LikedSongRestController {
     @Operation(
             summary = "получение всех лайков всех пользователей"
     )
-    public ResponseEntity<List<LikedSong>> getAllLikedSong() {
+    public ResponseEntity<List<ReadLikedSongDto>> getAllLikedSong() {
         return ResponseEntity.ok(likedSongService.findAllLikedSongs());
     }
 
@@ -40,7 +41,7 @@ public class LikedSongRestController {
     @Operation(
             summary = "получение всех лайков определенного пользователя"
     )
-    public ResponseEntity<LikedSong> getById(@PathVariable("id") Long likedSongId) {
+    public ResponseEntity<ReadLikedSongDto> getById(@PathVariable("id") Long likedSongId) {
         return ResponseEntity.ok(likedSongService.findLikedSongById(likedSongId));
     }
 
@@ -48,7 +49,7 @@ public class LikedSongRestController {
     @Operation(
             summary = "удаляем (дизлайкаем)"
     )
-    public ResponseEntity<LikedSong> delete(@PathVariable("id") Long likedSongId) {
+    public ResponseEntity<ReadLikedSongDto> delete(@PathVariable("id") Long likedSongId) {
         return ResponseEntity.ok(likedSongService.deleteLikedSong(likedSongId));
     }
 }

@@ -3,6 +3,8 @@ package com.hezix.shaudifymain.service;
 import com.hezix.shaudifymain.entity.likedSong.LikedSong;
 import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.mapper.likedSong.LikedSongReadMapper;
 import com.hezix.shaudifymain.repository.LikedSongRepository;
@@ -30,22 +32,42 @@ public class LikedSongService {
                 .user(userService.findUserEntityById(userId))
                 .build();
         likedSongRepository.save(likedSong);
-        return likedSongReadMapper.toDto(likedSong);
+        return mapEntityToRead(likedSong);
     }
 
     @Transactional(readOnly = true)
-    public LikedSong findLikedSongByUserId(Long userId) {
-        return likedSongRepository.findLikedSongByUserId(userId).orElseThrow(() -> new EntityNotFoundException("Error finding liked song"));
+    public ReadLikedSongDto findLikedSongByUserId(Long userId) {
+        return mapEntityToRead(likedSongRepository
+                .findLikedSongByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Error finding liked song")));
     }
     @Transactional(readOnly = true)
-    public LikedSong findLikedSongById(Long id) {
-        return likedSongRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("LikedSong with id " + id + " not found"));
+    public ReadLikedSongDto findLikedSongById(Long id) {
+        return mapEntityToRead(likedSongRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("LikedSong with id " + id + " not found")));
     }
     @Transactional(readOnly = true)
-    public List<LikedSong> findAllLikedSongs() {
-        return likedSongRepository.findAll();
+    public List<ReadLikedSongDto> findAllLikedSongs() {
+        return mapListEntityToListRead(likedSongRepository.findAll());
     }
-    public LikedSong deleteLikedSong(Long id) {
-        return likedSongRepository.deleteLikedSongById(id);
+    @Transactional()
+    public ReadLikedSongDto deleteLikedSong(Long id) {
+        return mapEntityToRead(likedSongRepository.deleteLikedSongById(id));
+    }
+
+    //mappers
+    public LikedSong mapReadToEntity(ReadLikedSongDto likedSongDto) {
+        return likedSongReadMapper.toEntity(likedSongDto);
+    }
+
+    public ReadLikedSongDto mapEntityToRead (LikedSong likedSong) {
+        return likedSongReadMapper.toDto(likedSong);
+    }
+    public List<ReadLikedSongDto> mapListEntityToListRead(List<LikedSong> likedSongList) {
+        return likedSongReadMapper.toDtoList(likedSongList);
+    }
+    public List<LikedSong> mapListReadToListEntity(List<ReadLikedSongDto> likedSongListDto) {
+        return likedSongReadMapper.toEntityList(likedSongListDto);
     }
 }

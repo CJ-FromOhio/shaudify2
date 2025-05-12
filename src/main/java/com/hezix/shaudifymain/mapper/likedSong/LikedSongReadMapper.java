@@ -7,8 +7,11 @@ import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.mapper.Mapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
+import com.hezix.shaudifymain.service.LikedSongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -33,5 +36,17 @@ public class LikedSongReadMapper implements Mapper<LikedSong, ReadLikedSongDto> 
                 .song(songReadMapper.toDto(likedSong.getSong()))
                 .user(userReadMapper.toDto(likedSong.getUser()))
                 .build();
+    }
+
+    public List<ReadLikedSongDto> toDtoList(List<LikedSong> likedSongs) {
+        return likedSongs.stream()
+                .map(likedSong -> new LikedSongReadMapper(songReadMapper,userReadMapper).toDto(likedSong))
+                .toList();
+    }
+
+    public List<LikedSong> toEntityList(List<ReadLikedSongDto> likedSongDtos) {
+        return likedSongDtos.stream()
+                .map(likedSongDto -> new LikedSongReadMapper(songReadMapper,userReadMapper).toEntity(likedSongDto))
+                .toList();
     }
 }

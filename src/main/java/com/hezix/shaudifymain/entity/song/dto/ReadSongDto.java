@@ -15,6 +15,8 @@ import java.time.Instant;
 @AllArgsConstructor
 public class ReadSongDto {
 
+    private Long id;
+
     private String title;
 
     private String description;

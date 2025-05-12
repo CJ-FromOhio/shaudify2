@@ -18,6 +18,7 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
     @Override
     public Song toEntity(ReadSongDto readSongDto) {
         return Song.builder()
+                .id(readSongDto.getId())
                 .title(readSongDto.getTitle())
                 .description(readSongDto.getDescription())
                 .createdAt(readSongDto.getCreatedAt())
@@ -28,6 +29,7 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
     @Override
     public ReadSongDto toDto(Song song) {
         return ReadSongDto.builder()
+                .id(song.getId())
                 .title(song.getTitle())
                 .description(song.getDescription())
                 .createdAt(song.getCreatedAt())
