@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:each="user : ${users}">
+    <span th:text="${user.username}"></span>
+    <span th:text="${user.firstName}"></span>
+    <span th:text="${user.lastName}"></span>
+    <span th:text="${user.email}"></span>
+    <span th:text="${user.role}"></span>
+</div>
+</body>
+</html>

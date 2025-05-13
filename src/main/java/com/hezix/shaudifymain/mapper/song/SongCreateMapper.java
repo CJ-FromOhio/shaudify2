@@ -11,6 +11,7 @@ public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
     @Override
     public Song toEntity(CreateSongDto createSongDto) {
         return Song.builder()
+                .id(createSongDto.getId())
                 .title(createSongDto.getTitle())
                 .description(createSongDto.getDescription())
                 .creator(createSongDto.getCreator())
@@ -21,6 +22,7 @@ public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
     @Override
     public CreateSongDto toDto(Song song) {
         return CreateSongDto.builder()
+                .id(song.getId())
                 .title(song.getTitle())
                 .description(song.getDescription())
                 .creator(song.getCreator())
