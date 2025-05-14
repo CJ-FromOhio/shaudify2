@@ -9,6 +9,10 @@
     <span th:text="${song.id}"></span>
     <span th:text="${song.title}"></span>
     <span th:text="${song.description}"></span>
+    <a th:href="@{/songs/{id}(id=${song.id})}">open profile</a>
 </div>
+<a href="/songs/createSong">Create song</a>
+<br>
+<a href="/">menu</a>
 </body>
 </html>
