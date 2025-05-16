@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.entity.user.Role;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
+import com.hezix.shaudifymain.exception.PasswordAndPasswordConfirmationNotEquals;
 import com.hezix.shaudifymain.mapper.user.UserCreateMapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
@@ -24,6 +25,10 @@ public class UserService {
 
     @Transactional()
     public ReadUserDto save(CreateUserDto createUserDto) {
+        if(!createUserDto.getPassword().equals(createUserDto.getPasswordConfirm())){
+            throw new PasswordAndPasswordConfirmationNotEquals("Password and password confirmation not equals");
+        }
+
         User user = mapCreateToEntity(createUserDto);
         user.setCreatedAt(Instant.now());
         userRepository.save(user);
