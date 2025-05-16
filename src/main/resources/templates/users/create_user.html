@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/users/createUser}" th:object="${createUserDto}" method="post">
+    <p>username <input type="text" th:field="*{username}"></p>
+    <p>email <input type="text" th:field="*{email}"></p>
+    <p>firstname <input type="text" th:field="*{firstName}"></p>
+    <p>lastName <input type="text" th:field="*{lastName}"></p>
+    <p>password <input type="text" th:field="*{password}"></p>
+    <p>passwordConfirm <input type="text" th:field="*{passwordConfirm}"></p>
+    <input type="submit" name="Create">
+</form>
+<br>
+<a href="/">menu</a>
+</body>
+</html>

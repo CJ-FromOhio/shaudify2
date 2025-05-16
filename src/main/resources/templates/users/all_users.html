@@ -11,7 +11,9 @@
     <span th:text="${user.lastName}"></span>
     <span th:text="${user.email}"></span>
     <span th:text="${user.role}"></span>
+    <a th:href="@{/users/{id}(id=${user.id})}">open profile</a>
 </div>
+<a href="/users/createUser">Create user</a>
 <br>
 <a href="/">menu</a>
 </body>

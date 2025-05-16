@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.service;
 
+import com.hezix.shaudifymain.entity.user.Role;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
@@ -60,6 +61,7 @@ public class UserService {
         return userReadMapper.toEntity(user);
     }
     public User mapCreateToEntity(CreateUserDto createUserDto) {
+        createUserDto.setRole(Role.USER);
         return userCreateMapper.toEntity(createUserDto);
     }
     public List<ReadUserDto> mapListUserToListRead(List<User> userList) {
