@@ -27,8 +27,8 @@ public class SongController {
     @PostMapping("/createSong")
     public String createSong(@ModelAttribute CreateSongDto createSongDto,
                              Model model) {
-        songService.save(createSongDto, 1L);
-        return "songs/all_songs";
+        Long id = songService.save(createSongDto, 1L).getId();
+        return "redirect:/songs/" + id;
     }
     @GetMapping("/{id}")
     public String song(@PathVariable Long id, Model model) {

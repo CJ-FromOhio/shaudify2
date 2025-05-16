@@ -28,8 +28,8 @@ public class UserController {
     @PostMapping("/createUser")
     public String createUser(@ModelAttribute CreateUserDto createUserDto,
                              Model model) {
-        userService.save(createUserDto);
-        return "users/all_users";
+        Long id = userService.save(createUserDto).getId();
+        return "redirect:/users/" + id;
     }
     @GetMapping("/{id}")
     public String user(@PathVariable Long id, Model model) {
