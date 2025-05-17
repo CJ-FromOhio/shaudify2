@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 <body>
 <form th:action="@{/users/createUser}" th:object="${createUserDto}" method="post">
@@ -13,9 +14,8 @@
     <p>lastName <input type="text" th:field="*{lastName}"></p>
     <p>password <input type="text" th:field="*{password}"></p>
     <p>passwordConfirm <input type="text" th:field="*{passwordConfirm}"></p>
-    <input type="submit" name="Create">
+    <input type="submit" value="Create">
+    <a href="/">menu</a>
 </form>
-<br>
-<a href="/">menu</a>
 </body>
 </html>

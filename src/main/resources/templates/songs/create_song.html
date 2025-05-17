@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 <body>
 <h2>Create Song Page</h2>
 <form th:action="@{/songs/createSong}" th:object="${createSongDto}" method="post">
     <p>title <input type="text" th:field="*{title}"></p>
     <p>description <input type="text" th:field="*{description}"></p>
-    <input type="submit" name="Create">
+    <input type="submit" value="Create">
+    <a href="/">menu</a>
 </form>
-<br>
-<a href="/">menu</a>
 </body>
 </html>

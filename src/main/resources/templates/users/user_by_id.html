@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
 </head>
 <body>
-<h2>User Profile</h2>
+<div class="Head">
+    <h2>User Profile</h2>
+</div>
 <div>
     <span>ID:</span>
     <span th:text="${user.id}"></span>
@@ -28,5 +31,6 @@
     <span th:text="${user.lastName}"></span>
 </div>
 <a href="/">Menu</a>
+<a href="/users">Return to Users list</a>
 </body>
 </html>
