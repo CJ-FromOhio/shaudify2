@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div th:each="user : ${users}">
-    <span th:text="${user.username}"></span>
-    <span th:text="${user.firstName}"></span>
-    <span th:text="${user.lastName}"></span>
-    <span th:text="${user.email}"></span>
-    <span th:text="${user.role}"></span>
-    <a th:href="@{/users/{id}(id=${user.id})}">open profile</a>
+<div class="foreachList">
+    <div th:each="user : ${users}">
+        <span th:text="${user.username}"></span>
+        <span th:text="${user.firstName}"></span>
+        <span th:text="${user.lastName}"></span>
+        <span th:text="${user.email}"></span>
+        <span th:text="${user.role}"></span>
+        <a th:href="@{/users/{id}(id=${user.id})}">open profile</a>
+    </div>
 </div>
+
 <a href="/users/createUser">Create user</a>
 <br>
 <a href="/">menu</a>

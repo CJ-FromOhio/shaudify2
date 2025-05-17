@@ -2,15 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>User Profile</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<span th:text="${user.id}"></span>
-<span th:text="${user.username}"></span>
-<span th:text="${user.email}"></span>
-<span th:text="${user.firstName}"></span>
-<span th:text="${user.lastName}"></span>
-<br>
-<a href="/">menu</a>
+<h2>User Profile</h2>
+<div>
+    <span>ID:</span>
+    <span th:text="${user.id}"></span>
+</div>
+<div>
+    <span>Username:</span>
+    <span th:text="${user.username}"></span>
+</div>
+<div>
+    <span>Email:</span>
+    <span th:text="${user.email}"></span>
+</div>
+<div>
+    <span>First Name:</span>
+    <span th:text="${user.firstName}"></span>
+</div>
+<div>
+    <span>Last Name:</span>
+    <span th:text="${user.lastName}"></span>
+</div>
+<a href="/">Menu</a>
 </body>
 </html>

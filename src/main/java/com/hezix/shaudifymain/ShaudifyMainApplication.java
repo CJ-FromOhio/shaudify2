@@ -8,6 +8,6 @@ public class ShaudifyMainApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ShaudifyMainApplication.class, args);
-    }
 
+    }
 }

@@ -3,12 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <span th:text="${song.id}"></span>
-  <span th:text="${song.title}"></span>
-  <span th:text="${song.description}"></span>
-  <br>
-  <a href="/">menu</a>
+<h2>Song Profile</h2>
+<div>
+    <span>title:</span>
+    <span th:text="${song.title}"></span>
+</div>
+<div>
+    <span>description:</span>
+    <span th:text="${song.description}"></span>
+</div>
+<div>
+    <span>creator:</span>
+    <a th:href="@{/users/{id}(id=${song.creator.id})}">profile</a>
+</div>
+<a href="/">Menu</a>
 </body>
 </html>

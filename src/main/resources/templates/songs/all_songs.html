@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div th:each= "song : ${songs}">
-    <span th:text="${song.id}"></span>
-    <span th:text="${song.title}"></span>
-    <span th:text="${song.description}"></span>
-    <a th:href="@{/songs/{id}(id=${song.id})}">open profile</a>
+<div class="foreachList">
+    <div th:each= "song : ${songs}">
+        <span th:text="${song.id}"></span>
+        <span th:text="${song.title}"></span>
+        <span th:text="${song.description}"></span>
+        <a th:href="@{/songs/{id}(id=${song.id})}">open profile</a>
+    </div>
 </div>
 <a href="/songs/createSong">Create song</a>
 <br>
