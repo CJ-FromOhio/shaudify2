@@ -7,7 +7,9 @@
 
 </head>
 <body>
-<h2>Create Song Page</h2>
+<div class="Head">
+    <h1>Create Song</h1>
+</div>
 <form th:action="@{/songs/createSong}" th:object="${createSongDto}" method="post">
     <p>title <input type="text" th:field="*{title}"></p>
     <p>description <input type="text" th:field="*{description}"></p>

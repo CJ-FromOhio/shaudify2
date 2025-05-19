@@ -7,6 +7,9 @@
 
 </head>
 <body>
+<div class="Head">
+    <h1>Create User</h1>
+</div>
 <form th:action="@{/users/createUser}" th:object="${createUserDto}" method="post">
     <p>username <input type="text" th:field="*{username}"></p>
     <p>email <input type="text" th:field="*{email}"></p>

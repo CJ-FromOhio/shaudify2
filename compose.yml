@@ -1,0 +1,26 @@
+services:
+  database:
+    restart: always
+    container_name: postgres_17
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: shaudify
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pg_volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  app:
+    restart: always
+    build: .
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_URL: jdbc:postgresql://database:5432/shaudify
+volumes:
+  pg_volume:
