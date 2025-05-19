@@ -17,6 +17,11 @@
     <p>lastName <input type="text" th:field="*{lastName}"></p>
     <p>password <input type="text" th:field="*{password}"></p>
     <p>passwordConfirm <input type="text" th:field="*{passwordConfirm}"></p>
+    <div class="foreachList">
+        <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+            <span th:text="${error}"></span>
+        </div>
+    </div>
     <input type="submit" value="Create">
     <a href="/">menu</a>
 </form>

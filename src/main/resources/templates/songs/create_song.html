@@ -13,6 +13,11 @@
 <form th:action="@{/songs/createSong}" th:object="${createSongDto}" method="post">
     <p>title <input type="text" th:field="*{title}"></p>
     <p>description <input type="text" th:field="*{description}"></p>
+    <div class="foreachList">
+        <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+            <span th:text="${error}"></span>
+        </div>
+    </div>
     <input type="submit" value="Create">
     <a href="/">menu</a>
 </form>

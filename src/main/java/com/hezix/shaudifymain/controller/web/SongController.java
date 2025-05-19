@@ -3,9 +3,11 @@ package com.hezix.shaudifymain.controller.web;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.service.SongService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -25,8 +27,13 @@ public class SongController {
         return "songs/create_song";
     }
     @PostMapping("/createSong")
-    public String createSong(@ModelAttribute CreateSongDto createSongDto,
+    public String createSong(@Valid @ModelAttribute CreateSongDto createSongDto,
+                             BindingResult bindingResult,
                              Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResult.getAllErrors());
+            return "songs/create_song";
+        }
         Long id = songService.save(createSongDto, 1L).getId();
         return "redirect:/songs/" + id;
     }
