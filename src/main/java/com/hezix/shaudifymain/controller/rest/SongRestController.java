@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.controller.rest;
 
+import com.hezix.shaudifymain.annotations.CustomRestControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.service.SongService;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("api/v1/songs")
 @RequiredArgsConstructor
 @Tag(name = "Songs Rest Controller")
+@CustomRestControllerAdviceAnnotation
 public class SongRestController {
     private final SongService songService;
 

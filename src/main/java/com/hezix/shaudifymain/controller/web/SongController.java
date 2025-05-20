@@ -1,8 +1,10 @@
 package com.hezix.shaudifymain.controller.web;
 
+import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.service.SongService;
+import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/songs")
 @RequiredArgsConstructor
+@CustomControllerAdviceAnnotation
 public class SongController {
     private final SongService songService;
+    private final BindingResultParser bindingResultParser;
 
     @GetMapping()
     public String songs(Model model) {
@@ -31,7 +35,7 @@ public class SongController {
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "songs/create_song";
         }
         Long id = songService.save(createSongDto, 1L).getId();

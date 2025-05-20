@@ -10,20 +10,22 @@
 <div class="Head">
     <h1>Create User</h1>
 </div>
-<form th:action="@{/users/createUser}" th:object="${createUserDto}" method="post">
-    <p>username <input type="text" th:field="*{username}"></p>
-    <p>email <input type="text" th:field="*{email}"></p>
-    <p>firstname <input type="text" th:field="*{firstName}"></p>
-    <p>lastName <input type="text" th:field="*{lastName}"></p>
-    <p>password <input type="text" th:field="*{password}"></p>
-    <p>passwordConfirm <input type="text" th:field="*{passwordConfirm}"></p>
-    <div class="foreachList">
-        <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
-            <span th:text="${error}"></span>
-        </div>
-    </div>
-    <input type="submit" value="Create">
-    <a href="/">menu</a>
-</form>
+<div class="fields">
+    <form th:action="@{/users/createUser}" th:object="${createUserDto}" method="post">
+        <p>username <input type="text" th:field="*{username}"></p>
+        <p>email <input type="text" th:field="*{email}"></p>
+        <p>firstname <input type="text" th:field="*{firstName}"></p>
+        <p>lastName <input type="text" th:field="*{lastName}"></p>
+        <p>password <input type="text" th:field="*{password}"></p>
+        <p>passwordConfirm <input type="text" th:field="*{passwordConfirm}"></p>
+            <div class="foreachList">
+                <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+                    <span th:text="${error}"></span>
+                </div>
+            </div>
+        <input type="submit" value="Create">
+        <a href="/">menu</a>
+    </form>
+</div>
 </body>
 </html>

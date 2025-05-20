@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.controller.rest;
 
+import com.hezix.shaudifymain.annotations.CustomRestControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.service.UserService;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 @Tag(name = "Users Rest Controller")
+@CustomRestControllerAdviceAnnotation
 public class UserRestController {
     private final UserService userService;
 

@@ -1,7 +1,9 @@
 package com.hezix.shaudifymain.controller.web;
 
+import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.service.UserService;
+import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,10 @@ import javax.naming.Binding;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@CustomControllerAdviceAnnotation
 public class UserController {
     private final UserService userService;
+    private final BindingResultParser bindingResultParser;
 
     @GetMapping()
     public String get(Model model) {
@@ -32,7 +36,7 @@ public class UserController {
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "users/create_user";
         }
         Long id = userService.save(createUserDto).getId();

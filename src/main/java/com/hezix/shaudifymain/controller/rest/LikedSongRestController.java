@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.controller.rest;
 
+import com.hezix.shaudifymain.annotations.CustomRestControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.likedSong.LikedSong;
 import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.service.LikedSongService;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/likes")
 @Tag(name = "Liked song Rest Controller")
+@CustomRestControllerAdviceAnnotation
 public class LikedSongRestController {
     private final LikedSongService likedSongService;
 
