@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Profile</title>
+    <title th:text="'User: ' + ${user.username}">User Profile</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
 </head>

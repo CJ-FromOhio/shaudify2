@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CustomRestControllerAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<CustomResponse> EntityNotFoundExceptionHandler(EntityNotFoundException ex) {
-        HttpStatus notFound = HttpStatus.NOT_FOUND;
-        CustomResponse customResponse = new CustomResponse(ex.getMessage(), notFound.value());
-        return new ResponseEntity<>(customResponse, notFound);
+        HttpStatus noContent = HttpStatus.NO_CONTENT;
+        CustomResponse customResponse = new CustomResponse(ex.getMessage(), noContent.value());
+        return new ResponseEntity<>(customResponse, noContent);
     }
     @ExceptionHandler(PasswordAndPasswordConfirmationNotEquals.class)
     public ResponseEntity<CustomResponse> PasswordAndPasswordConfirmationExceptionHandler(EntityNotFoundException ex) {
