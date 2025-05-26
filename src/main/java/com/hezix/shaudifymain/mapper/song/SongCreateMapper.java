@@ -2,6 +2,7 @@ package com.hezix.shaudifymain.mapper.song;
 
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
+import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,9 @@ public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
                 .id(createSongDto.getId())
                 .title(createSongDto.getTitle())
                 .description(createSongDto.getDescription())
-                .creator(createSongDto.getCreator())
+                .creator(User.builder()
+                        .id(1L)
+                        .build())
                 .createdAt(Instant.now())
                 .build();
     }
@@ -25,7 +28,6 @@ public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
                 .id(song.getId())
                 .title(song.getTitle())
                 .description(song.getDescription())
-                .creator(song.getCreator())
                 .build();
     }
 }

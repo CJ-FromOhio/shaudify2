@@ -66,7 +66,6 @@ public class UserService {
         return userReadMapper.toEntity(user);
     }
     public User mapCreateToEntity(CreateUserDto createUserDto) {
-        createUserDto.setRole(Role.USER);
         return userCreateMapper.toEntity(createUserDto);
     }
     public List<ReadUserDto> mapListUserToListRead(List<User> userList) {

@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.mapper.user;
 
+import com.hezix.shaudifymain.entity.user.Role;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.mapper.Mapper;
@@ -15,7 +16,7 @@ public class UserCreateMapper implements Mapper<User, CreateUserDto> {
                 .email(createUserDto.getEmail())
                 .firstName(createUserDto.getFirstName())
                 .lastName(createUserDto.getLastName())
-                .role(createUserDto.getRole())
+                .role(Role.USER)
                 .build();
     }
 
@@ -27,7 +28,6 @@ public class UserCreateMapper implements Mapper<User, CreateUserDto> {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .role(user.getRole())
 
                 .build();
     }
