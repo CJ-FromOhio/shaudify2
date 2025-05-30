@@ -11,6 +11,8 @@ import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,13 +26,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserCreateMapper userCreateMapper;
     private final UserReadMapper userReadMapper;
+    private final BCryptPasswordEncoder bcryptPasswordEncoder;
 
     @Transactional()
     public ReadUserDto save(CreateUserDto createUserDto) {
         if(!createUserDto.getPassword().equals(createUserDto.getPasswordConfirm())){
             throw new PasswordAndPasswordConfirmationNotEquals("Password and password confirmation not equals");
         }
-
+        createUserDto.setPassword(bcryptPasswordEncoder.encode(createUserDto.getPassword()));
         User user = mapCreateToEntity(createUserDto);
         user.setCreatedAt(Instant.now());
         userRepository.save(user);
