@@ -8,8 +8,11 @@
 <body>
 <div class="Head">
     <h1>MAIN</h1>
-    <br>
-    <a href="/logout">logout</a>
+    <h2 th:text="'user: ' + ${user.username}"></h2>
+    <div class="button-group">
+        <a href="/logout">logout</a>
+        <a th:href="@{/users/{id}(id=${user.id})}">user profile</a>
+    </div>
 </div>
 <a href="/songs">List songs</a>
 <br>

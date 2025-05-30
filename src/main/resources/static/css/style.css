@@ -19,6 +19,7 @@ span {
     margin-bottom: 8px;
     width: 100%;
     padding: 3px 0;
+
 }
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -278,4 +279,8 @@ input[type="submit"]:active {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     min-width: 150px;
     text-align: center;
+}
+.button-group {
+    display: flex;
+    gap: 10px;
 }

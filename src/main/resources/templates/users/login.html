@@ -14,8 +14,8 @@
         <p>username <input type="text" name="username"></p>
         <p>password <input type="text" name="password"></p>
         <div class="foreachList">
-            <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
-                <span th:text="${error}"></span>
+            <div th:if="${param.error}">
+                <span>user not found</span>
             </div>
         </div>
         <input type="submit" value="login">
@@ -26,6 +26,5 @@
         <input type="submit" value="registration">
     </form>
 </div>
-<!--<a href="/users/createUser">Registration</a>-->
 </body>
 </html>
