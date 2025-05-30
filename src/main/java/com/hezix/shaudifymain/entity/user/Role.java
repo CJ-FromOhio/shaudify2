@@ -1,5 +1,12 @@
 package com.hezix.shaudifymain.entity.user;
 
-public enum Role {
-    USER, ADMIN, AUTHOR
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+    USER, ADMIN, AUTHOR;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

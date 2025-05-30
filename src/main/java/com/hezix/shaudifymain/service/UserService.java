@@ -10,10 +10,12 @@ import com.hezix.shaudifymain.mapper.user.UserCreateMapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -38,6 +40,21 @@ public class UserService {
     public ReadUserDto findUserById(Long id) {
         return mapUserToRead(userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found")));
+    }
+    @Transactional(readOnly = true)
+    public ReadUserDto findUserByUsername(String username) {
+        return mapUserToRead(userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found")));
+    }
+    @Transactional(readOnly = true)
+    public UserDetails findUserDetailsByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getUsername(),
+                        user.getPassword(),
+                        Collections.singletonList(user.getRole())
+                ))
+                .orElseThrow(() -> new EntityNotFoundException("UserDetails with username " + username + " not found"));
     }
     @Transactional(readOnly = true)
     public User findUserEntityById(Long id) {

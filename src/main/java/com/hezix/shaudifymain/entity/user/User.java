@@ -6,9 +6,12 @@ import com.hezix.shaudifymain.entity.likedSong.LikedSong;
 import com.hezix.shaudifymain.entity.song.Song;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = false)
@@ -18,7 +21,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
