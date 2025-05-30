@@ -12,7 +12,7 @@ public class UserCreateMapper implements Mapper<User, CreateUserDto> {
     public User toEntity(CreateUserDto createUserDto) {
         return User.builder()
                 .username(createUserDto.getUsername())
-                .password(createUserDto.getPassword())
+                .password("{noop}"+createUserDto.getPassword())
                 .email(createUserDto.getEmail())
                 .firstName(createUserDto.getFirstName())
                 .lastName(createUserDto.getLastName())

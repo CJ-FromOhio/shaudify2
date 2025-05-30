@@ -32,11 +32,12 @@ body {
     min-height: 100vh;
 }
 
-/* Заголовок */
 .Head {
     width: 100%;
-    text-align: center;
-    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
     margin-bottom: 30px;
     background: linear-gradient(135deg, #3d5a80, #5588c1);
     color: white;
@@ -44,11 +45,12 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-.Head h1 h2{
+.Head h1, .Head h2 {
     font-size: 2.5rem;
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: 600;
+    margin: 0;
 }
 
 /* Стилизация ссылок */
@@ -262,5 +264,18 @@ input[type="submit"]:active {
     text-align: center;
 }
 .fields p {
-    margin-left: 40%;
+    margin-left: 10%;
+}
+.Head a {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #5588c1;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    min-width: 150px;
+    text-align: center;
 }
