@@ -7,6 +7,8 @@ import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,12 +35,13 @@ public class SongController {
     @PostMapping("/createSong")
     public String createSong(@Valid @ModelAttribute CreateSongDto createSongDto,
                              BindingResult bindingResult,
-                             Model model) {
+                             Model model,
+                             @AuthenticationPrincipal UserDetails userDetails) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "songs/create_song";
         }
-        Long id = songService.save(createSongDto, 1L).getId();
+        Long id = songService.save(createSongDto, userDetails).getId();
         return "redirect:/songs/" + id;
     }
     @GetMapping("/{id}")

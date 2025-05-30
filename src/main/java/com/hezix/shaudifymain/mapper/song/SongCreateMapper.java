@@ -15,9 +15,6 @@ public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
                 .id(createSongDto.getId())
                 .title(createSongDto.getTitle())
                 .description(createSongDto.getDescription())
-                .creator(User.builder()
-                        .id(1L)
-                        .build())
                 .createdAt(Instant.now())
                 .build();
     }

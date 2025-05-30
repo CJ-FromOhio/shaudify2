@@ -50,6 +50,11 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found")));
     }
     @Transactional(readOnly = true)
+    public User findUserEntityByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User Entity with username " + username + " not found"));
+    }
+    @Transactional(readOnly = true)
     public UserDetails findUserDetailsByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(user -> new org.springframework.security.core.userdetails.User(

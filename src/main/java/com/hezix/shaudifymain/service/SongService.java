@@ -8,6 +8,7 @@ import com.hezix.shaudifymain.mapper.song.SongCreateMapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 import com.hezix.shaudifymain.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,10 +24,10 @@ public class SongService {
     private final SongReadMapper songReadMapper;
 
     @Transactional()
-    public ReadSongDto save(CreateSongDto createSongDto, Long userId) {
+    public ReadSongDto save(CreateSongDto createSongDto, UserDetails userDetails) {
         Song song = mapCreateToSong(createSongDto);
         song.setCreatedAt(Instant.now());
-        var user = userService.findUserEntityById(userId);
+        var user = userService.findUserEntityByUsername(userDetails.getUsername());
         user.getCreatedSong().add(song);
         song.setCreator(user);
         songRepository.save(song);

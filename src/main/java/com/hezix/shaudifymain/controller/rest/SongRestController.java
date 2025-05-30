@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,12 +29,14 @@ public class SongRestController {
             summary = "добавление песни",
             description = "в параметрах передаем идентификатор пользователя который создает песню, и саму песню"
     )
-    public ResponseEntity<ReadSongDto> createSong(@PathVariable("id") Long userId, @Valid @RequestBody CreateSongDto createSongDto, BindingResult bindingResult) {
+    public ResponseEntity<ReadSongDto> createSong(@PathVariable("id") Long userId,
+                                                  @Valid @RequestBody CreateSongDto createSongDto,
+                                                  BindingResult bindingResult,
+                                                  @AuthenticationPrincipal UserDetails userDetails) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(null);
-        }
-        else {
-            return ResponseEntity.ok().body(songService.save(createSongDto, userId));
+        } else {
+            return ResponseEntity.ok().body(songService.save(createSongDto, userDetails));
         }
     }
     @GetMapping("/")

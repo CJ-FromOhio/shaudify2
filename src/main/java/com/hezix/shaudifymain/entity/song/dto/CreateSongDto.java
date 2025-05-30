@@ -19,6 +19,6 @@ public class CreateSongDto {
     @NotBlank(message = "поле title не должно быть пустым")
     @Size(min = 2, max = 16, message = "поле title должно быть от 2 до 16 символов")
     private String title;
-    @Max(value = 64, message = "поле description должно быть до 64 символов")
+    @Size(max = 64, message = "поле description должно быть до 64 символов")
     private String description;
 }
