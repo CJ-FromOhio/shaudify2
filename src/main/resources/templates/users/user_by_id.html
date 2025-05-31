@@ -30,6 +30,32 @@
     <span>Last Name:</span>
     <span th:text="${user.lastName}"></span>
 </div>
+<div th:if="${!user.getCreatedSongs().isEmpty()}">
+    <h2>Created Songs:</h2>
+    <div class="foreachListSong">
+        <div th:each="song : ${user.getCreatedSongs()}">
+            <span th:text="${song.title}"></span>
+            <a th:href="@{/songs/{id}(id=${song.id})}">open song</a>
+        </div>
+    </div>
+</div>
+<div th:if="${user.getCreatedSongs().isEmpty()}">
+    <h2>didn't created any songs</h2>
+</div>
+
+<div th:if="${!user.getLikedSongs().isEmpty()}">
+    <h2>Liked Songs:</h2>
+    <div class="foreachListSong">
+        <div th:each="likedSong : ${user.getLikedSongs()}">
+            <span th:text="${likedSong.song.title}"></span>
+            <a th:href="@{/songs/{id}(id=${likedSong.song.id})}">open song</a>
+        </div>
+    </div>
+</div>
+<div th:if="${user.getLikedSongs().isEmpty()}">
+    <h2>didn't like any songs</h2>
+</div>
+
 <a href="/">Menu</a>
 <a href="/users">Return to Users list</a>
 </body>

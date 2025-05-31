@@ -18,8 +18,8 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .firstName(readUserDto.getFirstName())
                 .lastName(readUserDto.getLastName())
                 .role(readUserDto.getRole())
-//                .createdSong(readUserDto.getCreatedSong())
-//                .likedSongs(readUserDto.getLikedSong())
+                .createdSong(readUserDto.getCreatedSongs())
+                .likedSongs(readUserDto.getLikedSongs())
                 .createdAt(readUserDto.getCreatedAt())
                 .build();
     }
@@ -33,8 +33,8 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .role(user.getRole())
-//                .createdSong(user.getCreatedSong())
-//                .likedSong(user.getLikedSongs())
+                .createdSongs(user.getCreatedSong())
+                .likedSongs(user.getLikedSongs())
                 .createdAt(user.getCreatedAt())
                 .build();
     }
