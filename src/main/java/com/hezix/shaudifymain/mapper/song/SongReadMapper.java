@@ -2,6 +2,7 @@ package com.hezix.shaudifymain.mapper.song;
 
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
+import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.mapper.Mapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SongReadMapper implements Mapper<Song, ReadSongDto> {
 
-    private final UserReadMapper userReadMapper;
-
     @Override
     public Song toEntity(ReadSongDto readSongDto) {
         return Song.builder()
@@ -22,7 +21,9 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .title(readSongDto.getTitle())
                 .description(readSongDto.getDescription())
                 .createdAt(readSongDto.getCreatedAt())
-                .creator(userReadMapper.toEntity(readSongDto.getCreator()))
+                .creator(User.builder()
+                        .id(readSongDto.getCreatorId())
+                        .build())
                 .build();
     }
 
@@ -33,18 +34,18 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .title(song.getTitle())
                 .description(song.getDescription())
                 .createdAt(song.getCreatedAt())
-                .creator(userReadMapper.toDto(song.getCreator()))
+                .creatorId(song.getCreator().getId())
                 .build();
     }
 
     public List<ReadSongDto> toDtoList(List<Song> songs) {
         return songs.stream()
-                .map(song -> new SongReadMapper(userReadMapper).toDto(song))
+                .map(this::toDto)
                 .toList();
     }
     public List<Song> toEntityList(List<ReadSongDto> dtoSongs) {
         return dtoSongs.stream()
-                .map(song -> new SongReadMapper(userReadMapper).toEntity(song))
+                .map(this::toEntity)
                 .toList();
     }
 }

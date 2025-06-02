@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.entity.likedSong.LikedSong;
 import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
+import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.mapper.Mapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
@@ -17,15 +18,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LikedSongReadMapper implements Mapper<LikedSong, ReadLikedSongDto> {
 
-    private final SongReadMapper songReadMapper;
-    private final UserReadMapper userReadMapper;
-
     @Override
     public LikedSong toEntity(ReadLikedSongDto readLikedSongDto) {
         return LikedSong.builder()
                 .id(readLikedSongDto.getId())
-                .song(songReadMapper.toEntity(readLikedSongDto.getSong()))
-                .user(userReadMapper.toEntity(readLikedSongDto.getUser()))
+                .song(Song.builder()
+                        .id(readLikedSongDto.getSongId())
+                        .build())
+                .user(User.builder()
+                        .id(readLikedSongDto.getUserId())
+                        .build())
                 .build();
     }
 
@@ -33,20 +35,20 @@ public class LikedSongReadMapper implements Mapper<LikedSong, ReadLikedSongDto> 
     public ReadLikedSongDto toDto(LikedSong likedSong) {
         return ReadLikedSongDto.builder()
                 .id(likedSong.getId())
-                .song(songReadMapper.toDto(likedSong.getSong()))
-                .user(userReadMapper.toDto(likedSong.getUser()))
+                .songId(likedSong.getSong().getId())
+                .userId(likedSong.getUser().getId())
                 .build();
     }
 
     public List<ReadLikedSongDto> toDtoList(List<LikedSong> likedSongs) {
         return likedSongs.stream()
-                .map(likedSong -> new LikedSongReadMapper(songReadMapper,userReadMapper).toDto(likedSong))
+                .map(this::toDto)
                 .toList();
     }
 
     public List<LikedSong> toEntityList(List<ReadLikedSongDto> likedSongDtos) {
         return likedSongDtos.stream()
-                .map(likedSongDto -> new LikedSongReadMapper(songReadMapper,userReadMapper).toEntity(likedSongDto))
+                .map(this::toEntity)
                 .toList();
     }
 }

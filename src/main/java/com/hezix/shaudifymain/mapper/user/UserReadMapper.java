@@ -3,12 +3,19 @@ package com.hezix.shaudifymain.mapper.user;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.mapper.Mapper;
+import com.hezix.shaudifymain.mapper.likedSong.LikedSongReadMapper;
+import com.hezix.shaudifymain.mapper.song.SongReadMapper;
+import com.hezix.shaudifymain.service.SongService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class UserReadMapper implements Mapper<User, ReadUserDto> {
+    private final SongReadMapper songReadMapper;
+    private final LikedSongReadMapper likedSongReadMapper;
     @Override
     public User toEntity(ReadUserDto readUserDto) {
         return User.builder()
@@ -18,8 +25,8 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .firstName(readUserDto.getFirstName())
                 .lastName(readUserDto.getLastName())
                 .role(readUserDto.getRole())
-                .createdSong(readUserDto.getCreatedSongs())
-                .likedSongs(readUserDto.getLikedSongs())
+                .createdSong(songReadMapper.toEntityList(readUserDto.getCreatedSongs()))
+                .likedSongs(likedSongReadMapper.toEntityList(readUserDto.getLikedSongs()))
                 .createdAt(readUserDto.getCreatedAt())
                 .build();
     }
@@ -33,19 +40,19 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .role(user.getRole())
-                .createdSongs(user.getCreatedSong())
-                .likedSongs(user.getLikedSongs())
+                .createdSongs(songReadMapper.toDtoList(user.getCreatedSong()))
+                .likedSongs(likedSongReadMapper.toDtoList(user.getLikedSongs()))
                 .createdAt(user.getCreatedAt())
                 .build();
     }
     public List<ReadUserDto> toDtoList(List<User> users) {
         return users.stream()
-                .map(user -> new UserReadMapper().toDto(user))
+                .map(this::toDto)
                 .toList();
     }
     public List<User> toEntityList(List<ReadUserDto> dtoUsers) {
         return dtoUsers.stream()
-                .map(user -> new UserReadMapper().toEntity(user))
+                .map(this::toEntity)
                 .toList();
     }
 }

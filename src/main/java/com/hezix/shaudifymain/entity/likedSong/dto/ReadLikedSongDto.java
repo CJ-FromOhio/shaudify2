@@ -15,7 +15,7 @@ public class ReadLikedSongDto {
 
     private Long id;
 
-    private ReadUserDto user;
+    private Long userId;
 
-    private ReadSongDto song;
+    private Long songId;
 }

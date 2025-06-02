@@ -2,7 +2,9 @@ package com.hezix.shaudifymain.entity.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hezix.shaudifymain.entity.likedSong.LikedSong;
+import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +32,9 @@ public class ReadUserDto {
 
     private Role role;
     @JsonManagedReference
-    private List<Song> createdSongs = new ArrayList<>();
+    private List<ReadSongDto> createdSongs = new ArrayList<>();
     @JsonManagedReference
-    private List<LikedSong> likedSongs = new ArrayList<>();
+    private List<ReadLikedSongDto> likedSongs = new ArrayList<>();
 
     private Instant createdAt;
 }

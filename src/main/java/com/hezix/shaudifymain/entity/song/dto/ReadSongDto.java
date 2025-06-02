@@ -21,7 +21,7 @@ public class ReadSongDto {
 
     private String description;
 
-    private ReadUserDto creator;
+    private Long creatorId;
 
     private Instant createdAt;
 
