@@ -36,8 +36,8 @@ public class UserService {
         createUserDto.setPassword(bcryptPasswordEncoder.encode(createUserDto.getPassword()));
         User user = mapCreateToEntity(createUserDto);
         user.setCreatedAt(Instant.now());
-        userRepository.save(user);
-        return mapUserToRead(user);
+        User created_user = userRepository.save(user);
+        return mapUserToRead(created_user);
     }
     @Transactional(readOnly = true)
     public ReadUserDto findUserById(Long id) {

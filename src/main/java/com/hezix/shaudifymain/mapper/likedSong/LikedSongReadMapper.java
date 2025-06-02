@@ -12,7 +12,9 @@ import com.hezix.shaudifymain.service.LikedSongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -41,13 +43,17 @@ public class LikedSongReadMapper implements Mapper<LikedSong, ReadLikedSongDto> 
     }
 
     public List<ReadLikedSongDto> toDtoList(List<LikedSong> likedSongs) {
-        return likedSongs.stream()
+        return Optional.ofNullable(likedSongs)
+                .orElse(Collections.emptyList())
+                .stream()
                 .map(this::toDto)
                 .toList();
     }
 
     public List<LikedSong> toEntityList(List<ReadLikedSongDto> likedSongDtos) {
-        return likedSongDtos.stream()
+        return Optional.ofNullable(likedSongDtos)
+                .orElse(Collections.emptyList())
+                .stream()
                 .map(this::toEntity)
                 .toList();
     }

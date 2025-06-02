@@ -9,7 +9,9 @@ import com.hezix.shaudifymain.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -46,12 +48,16 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .build();
     }
     public List<ReadUserDto> toDtoList(List<User> users) {
-        return users.stream()
+        return Optional.ofNullable(users)
+                .orElse(Collections.emptyList())
+                .stream()
                 .map(this::toDto)
                 .toList();
     }
     public List<User> toEntityList(List<ReadUserDto> dtoUsers) {
-        return dtoUsers.stream()
+        return Optional.ofNullable(dtoUsers)
+                .orElse(Collections.emptyList())
+                .stream()
                 .map(this::toEntity)
                 .toList();
     }
