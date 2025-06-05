@@ -17,9 +17,14 @@
     <span>description:</span>
     <span th:text="${song.description}"></span>
 </div>
+<div>
+    <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
+        <input type="submit" value="Like">
+    </form>
+</div>
 <div class="songByIdCreatorHref">
     <span>creator:</span>
-    <a th:href="@{/users/{id}(id=${song.creator.id})}">profile</a>
+    <a th:href="@{/users/{id}(id=${song.creatorId})}">profile</a>
 </div>
 <a href="/">Menu</a>
 <a href="/songs">Return to Songs list</a>

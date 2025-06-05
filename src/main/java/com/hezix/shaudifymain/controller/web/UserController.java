@@ -1,7 +1,10 @@
 package com.hezix.shaudifymain.controller.web;
 
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
+import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
+import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.service.UserService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
@@ -12,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.Binding;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ import javax.naming.Binding;
 public class UserController {
     private final UserService userService;
     private final BindingResultParser bindingResultParser;
+    private final SongService songService;
 
     @GetMapping()
     public String get(Model model) {
@@ -44,7 +49,10 @@ public class UserController {
     }
     @GetMapping("/{id}")
     public String user(@PathVariable Long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
+        ReadUserDto userById = userService.findUserById(id);
+        List<ReadSongDto> likedSongList = songService.findSonsIdgByLikedSongList(userById.getLikedSongs());
+        model.addAttribute("user", userById);
+        model.addAttribute("songs", likedSongList);
         return "users/user_by_id";
     }
 }

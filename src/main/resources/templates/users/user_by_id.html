@@ -46,9 +46,9 @@
 <div th:if="${!user.getLikedSongs().isEmpty()}">
     <h2>Liked Songs:</h2>
     <div class="foreachListSong">
-        <div th:each="likedSong : ${user.getLikedSongs()}">
-            <span th:text="${likedSong.song.title}"></span>
-            <a th:href="@{/songs/{id}(id=${likedSong.song.id})}">open song</a>
+        <div th:each="song : ${songs}">
+            <span th:text="${song.title}"></span>
+            <a th:href="@{/songs/{id}(id=${song.id})}">open song</a>
         </div>
     </div>
 </div>

@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,8 +29,8 @@ public class LikedSongRestController {
             description = "в параметры передаём идентификатор песни, идентификатор пользователя"
     )
     public ResponseEntity<ReadLikedSongDto> like(@PathVariable("songId") Long songId,
-                                                 @PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(likedSongService.like(songId, userId));
+                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(likedSongService.like(songId, userDetails));
     }
 
     @GetMapping("/")

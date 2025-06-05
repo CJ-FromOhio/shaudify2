@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.service;
 
+import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
@@ -38,7 +39,13 @@ public class SongService {
         return mapSongToRead(songRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Song with id " + id + " not found")));
     }
-
+    @Transactional(readOnly = true)
+    public List<ReadSongDto> findSonsIdgByLikedSongList(List<ReadLikedSongDto> readLikedSongDtoList) {
+        return readLikedSongDtoList.stream()
+                .map(ReadLikedSongDto::getSongId)
+                .map(this::findSongById)
+                .toList();
+    }
     @Transactional(readOnly = true)
     public Song findSongEntityById(Long id) {
         return songRepository.findById(id)
