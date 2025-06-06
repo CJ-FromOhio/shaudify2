@@ -19,6 +19,11 @@
 <!--        <a th:href="@{/like/{id}/like(id=${song.id})}">like song</a>-->
         <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
             <input type="submit" value="Like">
+            <div class="foreachList">
+                <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+                    <span th:text="${error}"></span>
+                </div>
+            </div>
         </form>
     </div>
 </div>

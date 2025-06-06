@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface LikedSongRepository extends JpaRepository<LikedSong, Long> {
     LikedSong deleteLikedSongById(Long id);
     Optional<LikedSong> findLikedSongByUserId(Long userId);
+    Optional<LikedSong> findLikedSongByUserIdAndSongId(Long userId, Long songId);
 }

@@ -26,27 +26,36 @@ public class LikedSongService {
     private final SongService songService;
     private final LikedSongRepository likedSongRepository;
     private final LikedSongReadMapper likedSongReadMapper;
-    HashMap<Long,Long> likedSongMap = new HashMap<>();
 
     @Transactional()
     public ReadLikedSongDto like(Long songId, UserDetails userDetails) {
         User user = userService.findUserEntityByUsername(userDetails.getUsername());
+        if (findLikedSongBooleanByUserIdAndSongId(songId, userDetails)){
+            return null;
+        }
         var likedSong = LikedSong.builder()
                 .song(songService.findSongEntityById(songId))
-                .user(userService.findUserEntityById(user.getId()))
+                .user(user)
                 .build();
 
-
-        if (likedSongMap.containsKey(likedSong.getUser().getId())) {
-            if (likedSongMap.containsValue(likedSong.getSong().getId())) {
-                return mapEntityToRead(likedSong);
-            }
-        }
-
-        likedSongMap.put(likedSong.getUser().getId(), likedSong.getSong().getId());
         likedSongRepository.save(likedSong);
         return mapEntityToRead(likedSong);
 
+    }
+    @Transactional(readOnly = true)
+    public ReadLikedSongDto findLikedSongByUserIdAndSongId(Long songId, UserDetails userDetails) {
+        User userEntityByUsername = userService.findUserEntityByUsername(userDetails.getUsername());
+        LikedSong likedSong = likedSongRepository.findLikedSongByUserIdAndSongId(userEntityByUsername.getId(), songId)
+                .orElse(null);
+        return mapEntityToRead(likedSong);
+    }
+    @Transactional(readOnly = true)
+    public Boolean findLikedSongBooleanByUserIdAndSongId(Long songId, UserDetails userDetails) {
+        User user = userService.findUserEntityByUsername(userDetails.getUsername());
+        boolean liked = likedSongRepository
+                .findLikedSongByUserIdAndSongId(user.getId(), songId)
+                .isPresent();
+        return liked;
     }
 
     @Transactional(readOnly = true)
