@@ -2,6 +2,7 @@ package com.hezix.shaudifymain.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.likedSong.LikedSong;
 import com.hezix.shaudifymain.entity.song.Song;
 import jakarta.persistence.*;
@@ -49,7 +50,10 @@ public class User{
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<LikedSong> likedSongs = new ArrayList<>();
-
+    @Builder.Default
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<Album> albums = new ArrayList<>();
     @Column()
     private Instant createdAt;
 }

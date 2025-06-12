@@ -11,9 +11,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.yaml
-    enabled: true
-docker:
-  compose:
-    enabled: true
+#  liquibase:
+#    change-log: classpath:/db/changelog/db.changelog-master.yaml
+#    enabled: true

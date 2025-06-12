@@ -1,22 +1,26 @@
-package com.hezix.shaudifymain.entity.song;
+package com.hezix.shaudifymain.entity.album;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hezix.shaudifymain.entity.album.Album;
+import com.hezix.shaudifymain.entity.albumSong.AlbumSong;
+import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.user.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
-@Data
-@AllArgsConstructor
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-@Table(name = "songs")
-public class Song {
+@Table(name = "albums")
+public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,19 +28,16 @@ public class Song {
     private String title;
 
     private String description;
-    @Enumerated(EnumType.STRING)
-    private Genre genre;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
     @JoinColumn(name = "author_id")
-    private User creator;
+    private User author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "album_id")
-    private Album album;
+    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<AlbumSong> albumSong;
 
     @Column(nullable = false)
     private Instant createdAt;
-
 }
