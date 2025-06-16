@@ -7,7 +7,7 @@ import com.hezix.shaudifymain.mapper.Mapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserCreateMapper implements Mapper<User, CreateUserDto> {
+public abstract class UserCreateMapper implements Mapper<User, CreateUserDto> {
     @Override
     public User toEntity(CreateUserDto createUserDto) {
         return User.builder()

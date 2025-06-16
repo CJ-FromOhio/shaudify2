@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserReadMapper implements Mapper<User, ReadUserDto> {
+public abstract class UserReadMapper implements Mapper<User, ReadUserDto> {
     private final SongReadMapper songReadMapper;
     private final LikedSongReadMapper likedSongReadMapper;
     @Override

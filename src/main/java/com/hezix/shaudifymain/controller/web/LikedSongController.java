@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.controller.web;
 
+import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.service.LikedSongService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
+@CustomControllerAdviceAnnotation
 @RequestMapping("/songs")
 public class LikedSongController {
     private final LikedSongService likedSongService;

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class SongReadMapper implements Mapper<Song, ReadSongDto> {
+public abstract class SongReadMapper implements Mapper<Song, ReadSongDto> {
 
     @Override
     public Song toEntity(ReadSongDto readSongDto) {
