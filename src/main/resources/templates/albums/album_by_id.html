@@ -21,19 +21,22 @@
 <div class="foreachList">
   <div th:if="${!album.getSongs().isEmpty()}">
     <div th:each="song : ${album.getSongs()}">
-      <span th:text="${song.title}"></span>
-      <span th:text="${song.description}"></span>
-      <a th:href="@{/songs/{id}(id=${song.getId()})}">song</a>
+      <div class="song-item">
+        <span th:text="${song.title}">Song title</span>
+        <span th:text="${song.description}">Song description</span>
+        <a th:href="@{/songs/{id}(id=${song.getId()})}">Open Song</a>
+      </div>
     </div>
   </div>
   <div th:if="${album.getSongs().isEmpty()}">
-    <h2>no one song in album</h2>
+    <h2>No songs in this album</h2>
   </div>
 </div>
-<div class="songByIdCreatorHref">
-  <span>creator:</span>
-  <a th:href="@{/users/{id}(id=${album.getAuthor_id()})}">profile</a>
-</div>
+
+<!--<div class="songByIdCreatorHref">-->
+<!--  <span>creator:</span>-->
+<!--  <a th:href="@{/users/{id}(id=${album.getAuthor_id()})}">profile</a>-->
+<!--</div>-->
 <a href="/">Menu</a>
 <a href="/albums">Return to Albums list</a>
 </body>

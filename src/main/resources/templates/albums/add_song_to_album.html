@@ -14,7 +14,8 @@
     <div th:each="album : ${albums}">
         <span th:text="${album.title}"></span>
         <span th:text="${album.description}"></span>
-        <form th:action="@{/albums/{songId}/add(songId=${song.id})}" th:object="${album}" method="post">
+        <form th:action="@{/albums/add/{songId}(songId=${song.id})}" method="post">
+            <input type="hidden" name="albumId" th:value="${album.id}" />
             <input type="submit" value="add" />
         </form>
 

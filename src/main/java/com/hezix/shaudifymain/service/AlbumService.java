@@ -3,9 +3,11 @@ package com.hezix.shaudifymain.service;
 import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
+import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
+import com.hezix.shaudifymain.exception.OwnershipMismatchException;
 import com.hezix.shaudifymain.mapper.album.AlbumCreateMapper;
 import com.hezix.shaudifymain.mapper.album.AlbumReadMapper;
 import com.hezix.shaudifymain.repository.AlbumRepository;
@@ -34,6 +36,12 @@ public class AlbumService {
                 .orElseThrow(() -> new EntityNotFoundException("Album not found by id: " + id)));
     }
     @Transactional(readOnly = true)
+    public Album findAlbumEntityById(Long id) {
+        return albumRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Album Entity not found by id: " + id));
+    }
+    @Transactional(readOnly = true)
     public List<ReadAlbumDto> findAll() {
         return albumReadMapper.toDtoList(albumRepository.findAll());
     }
@@ -47,13 +55,19 @@ public class AlbumService {
         albumRepository.save(album);
         return albumReadMapper.toDto(album);
     }
-
+    @Transactional()
     public ReadAlbumDto addSongToAlbum(Long songId, Long albumId) {
-        ReadAlbumDto album = findAlbumById(albumId);
-        ReadSongDto song = songService.findSongById(songId);
+        Album album = findAlbumEntityById(albumId);
+        Song song = songService.findSongEntityById(songId);
+        if (album.getAuthor() != song.getCreator()){
+            throw new OwnershipMismatchException("Only the author of the album can add their own songs.");
+        }
         album.getSongs().add(song);
-        return album;
+        song.setAlbum(album);
+        albumRepository.save(album);
+        return albumReadMapper.toDto(album);
     }
+    @Transactional(readOnly = true)
     public List<ReadAlbumDto> findAlbumsByAuthorId(Long authorId) {
         return albumReadMapper.toDtoList(albumRepository.findAlbumsByAuthorId(authorId));
     }

@@ -58,7 +58,7 @@ public class AlbumController {
         model.addAttribute("album", albumService.findAlbumById(id));
         return "albums/album_by_id";
     }
-    @GetMapping("/{songId}/add")
+    @GetMapping("/add/{songId}")
     public String addSongToAlbum(@PathVariable Long songId,
                                  Model model,
                                  @AuthenticationPrincipal UserDetails userDetails) {
@@ -67,16 +67,11 @@ public class AlbumController {
         model.addAttribute("song", songService.findSongById(songId));
         return "albums/add_song_to_album";
     }
-    @PostMapping("/{songId}/add")
-    public String addSongToAlbum(@ModelAttribute ReadAlbumDto readAlbumDto,
-                                 BindingResult bindingResult,
+    @PostMapping("/add/{songId}")
+    public String addSongToAlbum(@RequestParam Long albumId,
                                  @PathVariable Long songId,
                                  Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
-            return "albums/add_song_to_album";
-        }
-        Long id = albumService.addSongToAlbum(songId, readAlbumDto.getId()).getId();
-        return "redirect:/albums/" + id;
+        albumService.addSongToAlbum(songId, albumId);
+        return "redirect:/albums/" + albumId;
     }
 }
