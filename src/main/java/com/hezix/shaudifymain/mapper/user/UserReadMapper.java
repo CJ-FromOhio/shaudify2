@@ -3,6 +3,7 @@ package com.hezix.shaudifymain.mapper.user;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.mapper.Mapper;
+import com.hezix.shaudifymain.mapper.album.AlbumReadMapper;
 import com.hezix.shaudifymain.mapper.likedSong.LikedSongReadMapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 import com.hezix.shaudifymain.service.SongService;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserReadMapper implements Mapper<User, ReadUserDto> {
     private final SongReadMapper songReadMapper;
     private final LikedSongReadMapper likedSongReadMapper;
+    private final AlbumReadMapper albumReadMapper;
     @Override
     public User toEntity(ReadUserDto readUserDto) {
         return User.builder()
@@ -29,6 +31,7 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .role(readUserDto.getRole())
                 .createdSong(songReadMapper.toEntityList(readUserDto.getCreatedSongs()))
                 .likedSongs(likedSongReadMapper.toEntityList(readUserDto.getLikedSongs()))
+                .albums(albumReadMapper.toEntityList(readUserDto.getAlbums()))
                 .createdAt(readUserDto.getCreatedAt())
                 .build();
     }
@@ -44,6 +47,7 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .role(user.getRole())
                 .createdSongs(songReadMapper.toDtoList(user.getCreatedSong()))
                 .likedSongs(likedSongReadMapper.toDtoList(user.getLikedSongs()))
+                .albums(albumReadMapper.toDtoList(user.getAlbums()))
                 .createdAt(user.getCreatedAt())
                 .build();
     }

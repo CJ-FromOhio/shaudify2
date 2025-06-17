@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.mapper.song;
 
+import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.User;
@@ -26,6 +27,9 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .creator(User.builder()
                         .id(readSongDto.getCreatorId())
                         .build())
+                .album(Album.builder()
+                        .id(readSongDto.getAlbumId())
+                        .build())
                 .build();
     }
 
@@ -37,6 +41,7 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .description(song.getDescription())
                 .createdAt(song.getCreatedAt())
                 .creatorId(song.getCreator().getId())
+                .albumId(song.getAlbum().getId())
                 .build();
     }
 

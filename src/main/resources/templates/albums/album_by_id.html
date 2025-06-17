@@ -17,16 +17,17 @@
   <span>description:</span>
   <span th:text="${album.description}"></span>
 </div>
+<br>
 <div class="foreachList">
-  <div th:each="song : ${album.getSongs()}">
-    <span th:text="${song.title}"></span>
-    <span th:text="${song.description}"></span>
-    <a th:href="@{/songs/{id}(id=${song.getId()})}">song</a>
+  <div th:if="${!album.getSongs().isEmpty()}">
+    <div th:each="song : ${album.getSongs()}">
+      <span th:text="${song.title}"></span>
+      <span th:text="${song.description}"></span>
+      <a th:href="@{/songs/{id}(id=${song.getId()})}">song</a>
+    </div>
   </div>
-</div>
-<div class="foreachList">
-  <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
-    <span th:text="${error}"></span>
+  <div th:if="${album.getSongs().isEmpty()}">
+    <h2>no one song in album</h2>
   </div>
 </div>
 <div class="songByIdCreatorHref">

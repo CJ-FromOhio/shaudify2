@@ -23,6 +23,8 @@ public class ReadSongDto {
 
     private Long creatorId;
 
+    private Long albumId;
+
     private Instant createdAt;
 
 }

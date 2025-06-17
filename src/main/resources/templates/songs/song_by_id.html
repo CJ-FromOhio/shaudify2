@@ -17,10 +17,8 @@
     <span>description:</span>
     <span th:text="${song.description}"></span>
 </div>
-<div class="foreachList">
-    <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
-        <span th:text="${error}"></span>
-    </div>
+<div>
+    <span th:text="${song.albumId}"></span>
 </div>
 <div>
     <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">

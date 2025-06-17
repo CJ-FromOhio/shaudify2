@@ -3,6 +3,8 @@ package com.hezix.shaudifymain.controller.web;
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
+import com.hezix.shaudifymain.service.AlbumService;
 import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @CustomControllerAdviceAnnotation
 public class SongController {
     private final SongService songService;
+    private final AlbumService albumService;
     private final BindingResultParser bindingResultParser;
 
     @GetMapping()
@@ -46,7 +49,9 @@ public class SongController {
     }
     @GetMapping("/{id}")
     public String song(@PathVariable Long id, Model model) {
-        model.addAttribute("song", songService.findSongById(id));
+        ReadSongDto song = songService.findSongById(id);
+        model.addAttribute("song", song);
+        model.addAttribute("song_album", albumService.findAlbumById(song.getAlbumId()));
         return "songs/song_by_id";
     }
 }

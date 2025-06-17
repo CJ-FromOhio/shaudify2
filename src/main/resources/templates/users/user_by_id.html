@@ -43,6 +43,20 @@
     <h2>didn't created any songs</h2>
 </div>
 
+<div th:if="${!user.getAlbums().isEmpty()}">
+    <h2>Created Albums:</h2>
+    <div class="foreachListSong">
+        <div th:each="album : ${user.getAlbums()}">
+            <span th:text="${album.title}"></span>
+            <a th:href="@{/albums/{id}(id=${album.id})}">open album</a>
+        </div>
+    </div>
+</div>
+<div th:if="${user.getAlbums().isEmpty()}">
+    <h2>didn't created any albums</h2>
+</div>
+
+
 <div th:if="${!user.getLikedSongs().isEmpty()}">
     <h2>Liked Songs:</h2>
     <div class="foreachListSong">
