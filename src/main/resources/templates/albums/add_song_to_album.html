@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>add song to album</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="Head">
+    <h1>Add Song To Album</h1>
+</div>
+
+<div class="foreachList">
+    <div th:each="album : ${albums}">
+        <span th:text="${album.title}"></span>
+        <span th:text="${album.description}"></span>
+        <form th:action="@{/albums/{songId}/add(songId=${song.id})}" th:object="${album}" method="post">
+            <input type="submit" value="add" />
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

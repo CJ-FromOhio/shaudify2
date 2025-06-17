@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.Binding;
 import java.util.List;
 
 @Controller
@@ -50,7 +49,7 @@ public class UserController {
     @GetMapping("/{id}")
     public String user(@PathVariable Long id, Model model) {
         ReadUserDto userById = userService.findUserById(id);
-        List<ReadSongDto> likedSongList = songService.findSonsIdgByLikedSongList(userById.getLikedSongs());
+        List<ReadSongDto> likedSongList = songService.findSonsIdsByLikedSongList(userById.getLikedSongs());
         model.addAttribute("user", userById);
         model.addAttribute("songs", likedSongList);
         return "users/user_by_id";

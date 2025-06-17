@@ -41,7 +41,7 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .description(song.getDescription())
                 .createdAt(song.getCreatedAt())
                 .creatorId(song.getCreator().getId())
-                .albumId(song.getAlbum().getId())
+                .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)
                 .build();
     }
 

@@ -15,6 +15,7 @@
         <span th:text="${song.title}"></span>
         <span th:text="${song.description}"></span>
         <a th:href="@{/songs/{id}(id=${song.id})}">open profile</a>
+        <a th:href="@{/albums/{id}/add(id=${song.id})}">add to album</a>
 <!--        <a th:href="@{/like/{id}/like(id=${song.id})}">like song</a>-->
         <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
             <input type="submit" value="Like">

@@ -3,7 +3,11 @@ package com.hezix.shaudifymain.controller.web;
 
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
+import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
+import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.service.AlbumService;
+import com.hezix.shaudifymain.service.SongService;
+import com.hezix.shaudifymain.service.UserService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AlbumController {
     private final AlbumService albumService;
+    private final SongService songService;
+    private final UserService userService;
     private final BindingResultParser bindingResultParser;
 
     @GetMapping()
@@ -51,5 +57,26 @@ public class AlbumController {
     public String findById(@PathVariable Long id, Model model) {
         model.addAttribute("album", albumService.findAlbumById(id));
         return "albums/album_by_id";
+    }
+    @GetMapping("/{songId}/add")
+    public String addSongToAlbum(@PathVariable Long songId,
+                                 Model model,
+                                 @AuthenticationPrincipal UserDetails userDetails) {
+        ReadUserDto user = userService.findUserByUsername(userDetails.getUsername());
+        model.addAttribute("albums", albumService.findAlbumsByAuthorId(user.getId()));
+        model.addAttribute("song", songService.findSongById(songId));
+        return "albums/add_song_to_album";
+    }
+    @PostMapping("/{songId}/add")
+    public String addSongToAlbum(@ModelAttribute ReadAlbumDto readAlbumDto,
+                                 BindingResult bindingResult,
+                                 @PathVariable Long songId,
+                                 Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
+            return "albums/add_song_to_album";
+        }
+        Long id = albumService.addSongToAlbum(songId, readAlbumDto.getId()).getId();
+        return "redirect:/albums/" + id;
     }
 }

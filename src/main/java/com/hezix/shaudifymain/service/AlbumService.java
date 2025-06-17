@@ -3,6 +3,7 @@ package com.hezix.shaudifymain.service;
 import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.mapper.album.AlbumCreateMapper;
@@ -23,6 +24,7 @@ public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumReadMapper albumReadMapper;
     private final UserService userService;
+    private final SongService songService;
     private final AlbumCreateMapper albumCreateMapper;
 
     @Transactional(readOnly = true)
@@ -44,5 +46,15 @@ public class AlbumService {
         user.getAlbums().add(album);
         albumRepository.save(album);
         return albumReadMapper.toDto(album);
+    }
+
+    public ReadAlbumDto addSongToAlbum(Long songId, Long albumId) {
+        ReadAlbumDto album = findAlbumById(albumId);
+        ReadSongDto song = songService.findSongById(songId);
+        album.getSongs().add(song);
+        return album;
+    }
+    public List<ReadAlbumDto> findAlbumsByAuthorId(Long authorId) {
+        return albumReadMapper.toDtoList(albumRepository.findAlbumsByAuthorId(authorId));
     }
 }

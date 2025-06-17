@@ -51,7 +51,11 @@ public class SongController {
     public String song(@PathVariable Long id, Model model) {
         ReadSongDto song = songService.findSongById(id);
         model.addAttribute("song", song);
-        model.addAttribute("song_album", albumService.findAlbumById(song.getAlbumId()));
+        if (song.getAlbumId() != null) {
+            model.addAttribute("song_album", albumService.findAlbumById(song.getAlbumId()));
+        } else {
+            model.addAttribute("song_album", null); // или можно показать "Без альбома"
+        }
         return "songs/song_by_id";
     }
 }

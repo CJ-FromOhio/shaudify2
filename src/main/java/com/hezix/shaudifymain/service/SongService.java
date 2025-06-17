@@ -34,13 +34,17 @@ public class SongService {
         songRepository.save(song);
         return mapSongToRead(song);
     }
+    public List<ReadSongDto> findSongsByCreatorId(Long creatorId) {
+        return songReadMapper.toDtoList(songRepository
+                .findSongsByCreatorId(creatorId));
+    }
     @Transactional(readOnly = true)
     public ReadSongDto findSongById(Long id) {
         return mapSongToRead(songRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Song with id " + id + " not found")));
     }
     @Transactional(readOnly = true)
-    public List<ReadSongDto> findSonsIdgByLikedSongList(List<ReadLikedSongDto> readLikedSongDtoList) {
+    public List<ReadSongDto> findSonsIdsByLikedSongList(List<ReadLikedSongDto> readLikedSongDtoList) {
         return readLikedSongDtoList.stream()
                 .map(ReadLikedSongDto::getSongId)
                 .map(this::findSongById)
