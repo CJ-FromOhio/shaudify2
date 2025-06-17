@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 @Component
-public abstract class SongCreateMapper implements Mapper<Song, CreateSongDto> {
+public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
     @Override
     public Song toEntity(CreateSongDto createSongDto) {
         return Song.builder()

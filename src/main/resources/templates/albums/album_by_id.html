@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>album</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="Head">
+  <h1>Album Profile</h1>
+</div>
+<div>
+  <span>title:</span>
+  <span th:text="${album.title}"></span>
+</div>
+<div>
+  <span>description:</span>
+  <span th:text="${album.description}"></span>
+</div>
+<div class="foreachList">
+  <div th:each="song : ${album.getSongs()}">
+    <span th:text="${song.title}"></span>
+    <span th:text="${song.description}"></span>
+    <a th:href="@{/songs/{id}(id=${song.getId()})}">song</a>
+  </div>
+</div>
+<div class="foreachList">
+  <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+    <span th:text="${error}"></span>
+  </div>
+</div>
+<div class="songByIdCreatorHref">
+  <span>creator:</span>
+  <a th:href="@{/users/{id}(id=${album.getAuthor_id()})}">profile</a>
+</div>
+<a href="/">Menu</a>
+<a href="/albums">Return to Albums list</a>
+</body>
+</html>

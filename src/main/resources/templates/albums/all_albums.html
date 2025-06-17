@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>albums</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="Head">
+    <h1>All Albums</h1>
+</div>
+<div class="foreachList">
+    <div th:each= "album : ${albums}">
+        <span th:text="${album.id}"></span>
+        <span th:text="${album.title}"></span>
+        <span th:text="${album.description}"></span>
+        <a th:href="@{/album/{id}(id=${album.id})}">open album Songs</a>
+    </div>
+</div>
+<a href="/albums/createAlbum">Create album</a>
+<br>
+<a href="/">menu</a>
+</body>
+</html>

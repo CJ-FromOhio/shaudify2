@@ -2,7 +2,6 @@ package com.hezix.shaudifymain.entity.album;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hezix.shaudifymain.entity.albumSong.AlbumSong;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.user.User;
 import jakarta.persistence.*;
@@ -36,7 +35,7 @@ public class Album {
 
     @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
     @JsonBackReference
-    private List<AlbumSong> albumSong;
+    private List<Song> songs;
 
     @Column(nullable = false)
     private Instant createdAt;

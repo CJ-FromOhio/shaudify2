@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.entity.album.dto;
 
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,5 +21,5 @@ public class ReadAlbumDto {
 
     private Long author_id;
 
-    private List<Long> albumSongIds;
+    private List<ReadSongDto> songs;
 }

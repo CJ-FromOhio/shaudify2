@@ -2,26 +2,24 @@ package com.hezix.shaudifymain.mapper.album;
 
 import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
-import com.hezix.shaudifymain.entity.albumSong.AlbumSong;
+import com.hezix.shaudifymain.entity.likedSong.LikedSong;
+import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.mapper.Mapper;
-import com.hezix.shaudifymain.service.AlbumSongService;
+import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public abstract class AlbumReadMapper implements Mapper<Album, ReadAlbumDto> {
-    private final AlbumSongService albumSongService;
+public class AlbumReadMapper implements Mapper<Album, ReadAlbumDto> {
+    private final SongReadMapper songReadMapper;
     @Override
     public Album toEntity(ReadAlbumDto readAlbumDto) {
-        List<AlbumSong> list = readAlbumDto.getAlbumSongIds()
-                .stream()
-                .map(albumSongService::findBySongId);
-
-
         return Album.builder()
                 .id(readAlbumDto.getId())
                 .title(readAlbumDto.getTitle())
@@ -30,12 +28,33 @@ public abstract class AlbumReadMapper implements Mapper<Album, ReadAlbumDto> {
                         .builder()
                         .id(readAlbumDto.getAuthor_id())
                         .build())
-                .albumSong(readAlbumDto.getAlbumSongIds())
+                .songs(songReadMapper.toEntityList(readAlbumDto.getSongs()))
                 .build();
     }
 
     @Override
     public ReadAlbumDto toDto(Album album) {
-        return null;
+        return ReadAlbumDto.builder()
+                .id(album.getId())
+                .title(album.getTitle())
+                .description(album.getDescription())
+                .author_id(album.getAuthor().getId())
+                .songs(songReadMapper.toDtoList(album.getSongs()))
+                .build();
+    }
+    public List<ReadAlbumDto> toDtoList(List<Album> albums) {
+        return Optional.ofNullable(albums)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public List<Album> toEntityList(List<ReadAlbumDto> readAlbumDtos) {
+        return Optional.ofNullable(readAlbumDtos)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(this::toEntity)
+                .toList();
     }
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="Head">
+    <h1>Create album</h1>
+</div>
+<form th:action="@{/albums/saveAlbum}" th:object="${createAlbumDto}" method="post">
+    <p>title <input type="text" th:field="*{title}"></p>
+    <p>description <input type="text" th:field="*{description}"></p>
+    <div class="foreachList">
+        <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+    <input type="submit" value="Create">
+    <a href="/">menu</a>
+</form>
+</body>
+</html>
