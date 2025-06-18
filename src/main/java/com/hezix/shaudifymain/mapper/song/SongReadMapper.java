@@ -4,8 +4,7 @@ import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.User;
-import com.hezix.shaudifymain.mapper.Mapper;
-import com.hezix.shaudifymain.mapper.user.UserReadMapper;
+import com.hezix.shaudifymain.mapper.Mappable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class SongReadMapper implements Mapper<Song, ReadSongDto> {
+public class SongReadMapper implements Mappable<Song, ReadSongDto> {
 
     @Override
     public Song toEntity(ReadSongDto readSongDto) {
@@ -30,6 +29,8 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .album(Album.builder()
                         .id(readSongDto.getAlbumId())
                         .build())
+                .images(readSongDto.getImages() != null ? readSongDto.getImages() : Collections.emptyList())
+
                 .build();
     }
 
@@ -42,6 +43,7 @@ public class SongReadMapper implements Mapper<Song, ReadSongDto> {
                 .createdAt(song.getCreatedAt())
                 .creatorId(song.getCreator().getId())
                 .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)
+                .images(song.getImages() != null ? song.getImages() : Collections.emptyList())
                 .build();
     }
 

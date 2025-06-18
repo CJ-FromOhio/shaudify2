@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -35,6 +36,11 @@ public class Song {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "album_id")
     private Album album;
+
+    @Column(name="image")
+    @CollectionTable(name ="songs_images")
+    @ElementCollection
+    private List<String> images;
 
     @Column(nullable = false)
     private Instant createdAt;

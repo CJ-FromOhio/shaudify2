@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
   datasource:
     driver-class-name: org.postgresql.Driver
     password: ${DB_PASSWORD}
@@ -11,6 +13,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+minio:
+  bucket: ${MINIO_BUCKET}
+  url: ${MINIO_URL}
+  accessKey: ${MINIO_ACCESSKEY}
+  secretKey: ${MINIO_SECRETKEY}
+
 #  liquibase:
 #    change-log: classpath:/db/changelog/db.changelog-master.yaml
 #    enabled: true

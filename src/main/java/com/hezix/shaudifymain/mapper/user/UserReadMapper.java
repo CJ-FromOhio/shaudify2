@@ -2,11 +2,10 @@ package com.hezix.shaudifymain.mapper.user;
 
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
-import com.hezix.shaudifymain.mapper.Mapper;
+import com.hezix.shaudifymain.mapper.Mappable;
 import com.hezix.shaudifymain.mapper.album.AlbumReadMapper;
 import com.hezix.shaudifymain.mapper.likedSong.LikedSongReadMapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
-import com.hezix.shaudifymain.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class UserReadMapper implements Mapper<User, ReadUserDto> {
+public class UserReadMapper implements Mappable<User, ReadUserDto> {
     private final SongReadMapper songReadMapper;
     private final LikedSongReadMapper likedSongReadMapper;
     private final AlbumReadMapper albumReadMapper;
@@ -51,6 +50,7 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .createdAt(user.getCreatedAt())
                 .build();
     }
+    @Override
     public List<ReadUserDto> toDtoList(List<User> users) {
         return Optional.ofNullable(users)
                 .orElse(Collections.emptyList())
@@ -58,6 +58,7 @@ public class UserReadMapper implements Mapper<User, ReadUserDto> {
                 .map(this::toDto)
                 .toList();
     }
+    @Override
     public List<User> toEntityList(List<ReadUserDto> dtoUsers) {
         return Optional.ofNullable(dtoUsers)
                 .orElse(Collections.emptyList())

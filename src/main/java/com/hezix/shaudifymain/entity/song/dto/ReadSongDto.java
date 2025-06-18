@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 
 import java.time.Instant;
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,6 +26,8 @@ public class ReadSongDto {
     private Long creatorId;
 
     private Long albumId;
+
+    private List<String> images;
 
     private Instant createdAt;
 

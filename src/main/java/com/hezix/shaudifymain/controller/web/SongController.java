@@ -2,8 +2,13 @@ package com.hezix.shaudifymain.controller.web;
 
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.song.SongImage;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
+import com.hezix.shaudifymain.entity.song.dto.CreateSongImageDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongImageDto;
+import com.hezix.shaudifymain.mapper.songImage.SongImageCreateMapper;
+import com.hezix.shaudifymain.mapper.songImage.SongImageReadMapper;
 import com.hezix.shaudifymain.service.AlbumService;
 import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.util.BindingResultParser;
@@ -14,7 +19,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/songs")
@@ -23,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class SongController {
     private final SongService songService;
     private final AlbumService albumService;
+    private final SongImageCreateMapper songImageCreateMapper;
     private final BindingResultParser bindingResultParser;
 
     @GetMapping()
@@ -57,5 +65,11 @@ public class SongController {
             model.addAttribute("song_album", null); // или можно показать "Без альбома"
         }
         return "songs/song_by_id";
+    }
+    @PostMapping("/{id}/image")
+    private void uploadSongImage(@PathVariable Long id,
+                                 @Validated @ModelAttribute CreateSongImageDto dto) {
+        SongImage image = songImageCreateMapper.toEntity(dto);
+        songService.uploadImage(id, image);
     }
 }

@@ -3,11 +3,13 @@ package com.hezix.shaudifymain.mapper.user;
 import com.hezix.shaudifymain.entity.user.Role;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
-import com.hezix.shaudifymain.mapper.Mapper;
+import com.hezix.shaudifymain.mapper.Mappable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class UserCreateMapper implements Mapper<User, CreateUserDto> {
+public class UserCreateMapper implements Mappable<User, CreateUserDto> {
     @Override
     public User toEntity(CreateUserDto createUserDto) {
         return User.builder()
@@ -30,5 +32,15 @@ public class UserCreateMapper implements Mapper<User, CreateUserDto> {
                 .lastName(user.getLastName())
 
                 .build();
+    }
+
+    @Override
+    public List<CreateUserDto> toDtoList(List<User> t) {
+        return List.of();
+    }
+
+    @Override
+    public List<User> toEntityList(List<CreateUserDto> f) {
+        return List.of();
     }
 }

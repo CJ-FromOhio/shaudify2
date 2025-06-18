@@ -3,6 +3,7 @@ package com.hezix.shaudifymain.advice;
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.web.CustomResponse;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
+import com.hezix.shaudifymain.exception.FileUploadException;
 import com.hezix.shaudifymain.exception.OwnershipMismatchException;
 import com.hezix.shaudifymain.exception.PasswordAndPasswordConfirmationNotEquals;
 import org.springframework.http.HttpStatus;
@@ -22,5 +23,9 @@ public class CustomControllerAdvice {
     @ExceptionHandler(OwnershipMismatchException.class)
     public String OwnershipMismatchExceptionExceptionHandler(OwnershipMismatchException ex) {
         return "error/403";
+    }
+    @ExceptionHandler(FileUploadException.class)
+    public String FileUploadExceptionExceptionHandler(FileUploadException ex) {
+        return "error/400";
     }
 }

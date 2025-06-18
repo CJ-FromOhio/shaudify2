@@ -33,7 +33,7 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation 'org.liquibase:liquibase-core'
     testImplementation 'org.springframework.security:spring-security-test'
-
+    implementation 'io.minio:minio:8.5.17'
     compileOnly 'org.projectlombok:lombok'
 
     runtimeOnly 'org.postgresql:postgresql'

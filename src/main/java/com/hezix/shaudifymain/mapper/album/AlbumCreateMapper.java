@@ -2,12 +2,13 @@ package com.hezix.shaudifymain.mapper.album;
 
 import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
-import com.hezix.shaudifymain.mapper.Mapper;
-import lombok.RequiredArgsConstructor;
+import com.hezix.shaudifymain.mapper.Mappable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class AlbumCreateMapper implements Mapper<Album, CreateAlbumDto> {
+public class AlbumCreateMapper implements Mappable<Album, CreateAlbumDto> {
     @Override
     public Album toEntity(CreateAlbumDto createAlbumDto) {
         return Album.builder()
@@ -24,5 +25,15 @@ public class AlbumCreateMapper implements Mapper<Album, CreateAlbumDto> {
                 .title(album.getTitle())
                 .description(album.getDescription())
                 .build();
+    }
+
+    @Override
+    public List<CreateAlbumDto> toDtoList(List<Album> t) {
+        return List.of();
+    }
+
+    @Override
+    public List<Album> toEntityList(List<CreateAlbumDto> f) {
+        return List.of();
     }
 }

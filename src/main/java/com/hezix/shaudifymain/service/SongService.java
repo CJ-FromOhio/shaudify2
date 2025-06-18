@@ -23,6 +23,7 @@ public class SongService {
     private final UserService userService;
     private final SongCreateMapper songCreateMapper;
     private final SongReadMapper songReadMapper;
+    private final ImageService imageService;
 
     @Transactional()
     public ReadSongDto save(CreateSongDto createSongDto, UserDetails userDetails) {

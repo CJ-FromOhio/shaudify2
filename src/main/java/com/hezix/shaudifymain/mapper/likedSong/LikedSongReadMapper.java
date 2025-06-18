@@ -3,12 +3,8 @@ package com.hezix.shaudifymain.mapper.likedSong;
 import com.hezix.shaudifymain.entity.likedSong.LikedSong;
 import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
-import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.User;
-import com.hezix.shaudifymain.mapper.Mapper;
-import com.hezix.shaudifymain.mapper.song.SongReadMapper;
-import com.hezix.shaudifymain.mapper.user.UserReadMapper;
-import com.hezix.shaudifymain.service.LikedSongService;
+import com.hezix.shaudifymain.mapper.Mappable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +14,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class LikedSongReadMapper implements Mapper<LikedSong, ReadLikedSongDto> {
+public class LikedSongReadMapper implements Mappable<LikedSong, ReadLikedSongDto> {
 
     @Override
     public LikedSong toEntity(ReadLikedSongDto readLikedSongDto) {

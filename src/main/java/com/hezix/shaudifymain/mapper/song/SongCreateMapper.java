@@ -2,13 +2,14 @@ package com.hezix.shaudifymain.mapper.song;
 
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
-import com.hezix.shaudifymain.entity.user.User;
-import com.hezix.shaudifymain.mapper.Mapper;
+import com.hezix.shaudifymain.mapper.Mappable;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.List;
+
 @Component
-public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
+public class SongCreateMapper implements Mappable<Song, CreateSongDto> {
     @Override
     public Song toEntity(CreateSongDto createSongDto) {
         return Song.builder()
@@ -26,5 +27,15 @@ public class SongCreateMapper implements Mapper<Song, CreateSongDto> {
                 .title(song.getTitle())
                 .description(song.getDescription())
                 .build();
+    }
+
+    @Override
+    public List<CreateSongDto> toDtoList(List<Song> t) {
+        return List.of();
+    }
+
+    @Override
+    public List<Song> toEntityList(List<CreateSongDto> f) {
+        return List.of();
     }
 }
