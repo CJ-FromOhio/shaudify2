@@ -8,6 +8,7 @@
 <body>
 <div class="Head">
   <h1>Album Profile</h1>
+  <a href="/">Back to menu</a>
 </div>
 <div>
   <span>title:</span>
@@ -16,6 +17,10 @@
 <div>
   <span>description:</span>
   <span th:text="${album.description}"></span>
+</div>
+<div>
+  <span>author:</span>
+  <a th:href="@{/users/{id}(id=${album.author_id})}">to author</a>
 </div>
 <br>
 <div class="foreachList">
@@ -37,7 +42,6 @@
 <!--  <span>creator:</span>-->
 <!--  <a th:href="@{/users/{id}(id=${album.getAuthor_id()})}">profile</a>-->
 <!--</div>-->
-<a href="/">Menu</a>
 <a href="/albums">Return to Albums list</a>
 </body>
 </html>

@@ -20,6 +20,7 @@ create table if not exists songs
     created_by  varchar(32),
     description varchar(64),
     title       varchar(32),
+    genre       varchar(16),
     author_id   bigint
         constraint fk_songs_author_id
             references users,

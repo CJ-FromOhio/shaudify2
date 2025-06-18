@@ -8,6 +8,7 @@
 <body>
 <div class="Head">
     <h1>All Songs</h1>
+    <a href="/">Back to menu</a>
 </div>
 <div class="foreachList">
     <div th:each= "song : ${songs}">
@@ -28,7 +29,5 @@
     </div>
 </div>
 <a href="/songs/createSong">Create song</a>
-<br>
-<a href="/">menu</a>
 </body>
 </html>

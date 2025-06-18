@@ -8,17 +8,19 @@
 <body>
 <div class="Head">
     <h1>All Albums</h1>
+    <a href="/">Back to menu</a>
 </div>
 <div class="foreachList">
     <div th:each= "album : ${albums}">
         <span th:text="${album.id}"></span>
         <span th:text="${album.title}"></span>
         <span th:text="${album.description}"></span>
-        <a th:href="@{/albums/{id}(id=${album.id})}">open album Songs</a>
+        <span th:text="'author: ' + ${#authentication.name}"></span>
+        <a th:href="@{/albums/{id}(id=${album.id})}">open album</a>
     </div>
 </div>
 <a href="/albums/createAlbum">Create album</a>
 <br>
-<a href="/">menu</a>
+
 </body>
 </html>

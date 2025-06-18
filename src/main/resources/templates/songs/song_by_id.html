@@ -8,6 +8,7 @@
 <body>
 <div class="Head">
     <h1>Song Profile</h1>
+    <a href="/">Back to menu</a>
 </div>
 <div>
     <span>title:</span>
@@ -18,18 +19,18 @@
     <span th:text="${song.description}"></span>
 </div>
 <div>
-    <span th:text="${song.albumId}"></span>
+    <span>album:</span>
+    <a th:href="@{/albums/{id}(id=${song.albumId})}">open Album</a>
+</div>
+<div class="songByIdCreatorHref">
+    <span>creator:</span>
+    <a th:href="@{/users/{id}(id=${song.creatorId})}">profile</a>
 </div>
 <div>
     <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
         <input type="submit" value="Like">
     </form>
 </div>
-<div class="songByIdCreatorHref">
-    <span>creator:</span>
-    <a th:href="@{/users/{id}(id=${song.creatorId})}">profile</a>
-</div>
-<a href="/">Menu</a>
 <a href="/songs">Return to Songs list</a>
 </body>
 </html>
