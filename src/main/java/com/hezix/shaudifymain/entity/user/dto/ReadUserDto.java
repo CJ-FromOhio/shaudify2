@@ -35,10 +35,13 @@ public class ReadUserDto {
 
     private Role role;
     @JsonManagedReference
+    @Builder.Default
     private List<ReadSongDto> createdSongs = new ArrayList<>();
     @JsonManagedReference
+    @Builder.Default
     private List<ReadLikedSongDto> likedSongs = new ArrayList<>();
     @JsonManagedReference
+    @Builder.Default
     private List<ReadAlbumDto> albums = new ArrayList<>();
 
     private Instant createdAt;

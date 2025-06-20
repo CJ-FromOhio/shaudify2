@@ -7,9 +7,11 @@ import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongImageDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongImageDto;
+import com.hezix.shaudifymain.entity.song.form.CreateSongFormDto;
 import com.hezix.shaudifymain.mapper.songImage.SongImageCreateMapper;
 import com.hezix.shaudifymain.mapper.songImage.SongImageReadMapper;
 import com.hezix.shaudifymain.service.AlbumService;
+import com.hezix.shaudifymain.service.ImageService;
 import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
@@ -29,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 @CustomControllerAdviceAnnotation
 public class SongController {
     private final SongService songService;
+    private final ImageService imageService;
     private final AlbumService albumService;
     private final SongImageCreateMapper songImageCreateMapper;
     private final BindingResultParser bindingResultParser;
@@ -40,11 +43,11 @@ public class SongController {
     }
     @GetMapping("/createSong")
     public String createSong(Model model) {
-        model.addAttribute("createSongDto", new CreateSongDto());
+        model.addAttribute("createSongFormDto", new CreateSongFormDto());
         return "songs/create_song";
     }
     @PostMapping("/createSong")
-    public String createSong(@Valid @ModelAttribute CreateSongDto createSongDto,
+    public String createSong(@Valid @ModelAttribute CreateSongFormDto createSongFormDto,
                              BindingResult bindingResult,
                              Model model,
                              @AuthenticationPrincipal UserDetails userDetails) {
@@ -52,7 +55,10 @@ public class SongController {
             model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "songs/create_song";
         }
+        var createSongDto = createSongFormDto.getCreateSongDto();
+        var createSongImageDto = createSongFormDto.getCreateSongImageDto();
         Long id = songService.save(createSongDto, userDetails).getId();
+        songService.uploadImage(id, createSongImageDto);
         return "redirect:/songs/" + id;
     }
     @GetMapping("/{id}")
@@ -69,7 +75,6 @@ public class SongController {
     @PostMapping("/{id}/image")
     private void uploadSongImage(@PathVariable Long id,
                                  @Validated @ModelAttribute CreateSongImageDto dto) {
-        SongImage image = songImageCreateMapper.toEntity(dto);
-        songService.uploadImage(id, image);
+        songService.uploadImage(id, dto);
     }
 }

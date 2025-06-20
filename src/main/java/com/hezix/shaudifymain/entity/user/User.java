@@ -44,6 +44,7 @@ public class User{
 
     @JsonBackReference
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Song> createdSong = new ArrayList<>();
 
     @Builder.Default

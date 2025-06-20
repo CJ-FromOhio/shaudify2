@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = false)
@@ -40,7 +41,7 @@ public class Song {
     @Column(name="image")
     @CollectionTable(name ="songs_images")
     @ElementCollection
-    private List<String> images;
+    private List<String> images = new ArrayList<>();
 
     @Column(nullable = false)
     private Instant createdAt;

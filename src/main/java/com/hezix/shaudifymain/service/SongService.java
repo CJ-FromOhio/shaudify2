@@ -2,11 +2,14 @@ package com.hezix.shaudifymain.service;
 
 import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.song.SongImage;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
+import com.hezix.shaudifymain.entity.song.dto.CreateSongImageDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.mapper.song.SongCreateMapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
+import com.hezix.shaudifymain.mapper.songImage.SongImageCreateMapper;
 import com.hezix.shaudifymain.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,6 +28,7 @@ public class SongService {
     private final SongCreateMapper songCreateMapper;
     private final SongReadMapper songReadMapper;
     private final ImageService imageService;
+    private final SongImageCreateMapper songImageCreateMapper;
 
     @Transactional()
     public ReadSongDto save(CreateSongDto createSongDto, UserDetails userDetails) {
@@ -67,6 +72,17 @@ public class SongService {
         songRepository.delete(mapReadToSong(song));
         return song;
     }
+    @Transactional
+    public void uploadImage(Long id, CreateSongImageDto dto) {
+        Song song = findSongEntityById(id);
+        SongImage image = songImageCreateMapper.toEntity(dto);
+        String fileName = imageService.upload(image);
+        if(song.getImages() == null || song.getImages().isEmpty()) {
+            song.setImages(new ArrayList<>());
+        }
+        song.getImages().add(fileName);
+        songRepository.save(song);
+    }
 
     //mappers
     public ReadSongDto mapSongToRead(Song song) {
@@ -87,4 +103,6 @@ public class SongService {
     public List<Song> mapListReadToListSong(List<ReadSongDto> songList) {
         return songReadMapper.toEntityList(songList);
     }
+
+
 }
