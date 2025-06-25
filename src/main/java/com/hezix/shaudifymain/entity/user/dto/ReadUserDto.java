@@ -42,5 +42,7 @@ public class ReadUserDto {
     @Builder.Default
     private List<ReadAlbumDto> albums = new ArrayList<>();
 
+    private String image;
+
     private Instant createdAt;
 }

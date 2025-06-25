@@ -1,6 +1,6 @@
 package com.hezix.shaudifymain.service;
 
-import com.hezix.shaudifymain.entity.song.SongFiles;
+import com.hezix.shaudifymain.entity.files.ImageFile;
 import com.hezix.shaudifymain.exception.FileUploadException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,25 +14,24 @@ public class MinioImageService {
 
     private final MinioService minioService;
 
-    public String upload (SongFiles image){
+    public String upload (MultipartFile image){
         try {
             minioService.createImageBucket();
         }catch(Exception e){
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
-        MultipartFile file = image.getImageFile();
-        if(file.isEmpty() || file.getOriginalFilename() == null){
+        if(image.isEmpty() || image.getOriginalFilename() == null){
             throw new FileUploadException("image upload failed. image must have name");
         }
-        String fileName = minioService.generateFileName(file);
+        String fileName = minioService.generateFileName(image);
         InputStream inputStream;
 
         try{
-            inputStream = file.getInputStream();
+            inputStream = image.getInputStream();
         } catch (Exception e) {
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
-        minioService.saveImage(inputStream, fileName, file.getSize());
+        minioService.saveImage(inputStream, fileName, image.getSize());
         return fileName;
     }
 

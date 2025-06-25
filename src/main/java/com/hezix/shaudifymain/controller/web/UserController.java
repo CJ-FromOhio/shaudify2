@@ -2,12 +2,11 @@ package com.hezix.shaudifymain.controller.web;
 
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
-import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
+import com.hezix.shaudifymain.entity.user.form.CreateUserFormDto;
 import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.service.UserService;
 import com.hezix.shaudifymain.util.BindingResultParser;
-import jakarta.persistence.SecondaryTable;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -34,18 +32,21 @@ public class UserController {
     }
     @GetMapping("/createUser")
     public String createUser(Model model) {
-        model.addAttribute("createUserDto", new CreateUserDto());
+        model.addAttribute("createUserFormDto", new CreateUserFormDto());
         return "users/create_user";
     }
     @PostMapping("/createUser")
-    public String createUser(@Valid @ModelAttribute CreateUserDto createUserDto,
+    public String createUser(@Valid @ModelAttribute CreateUserFormDto createUserFormDto,
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "users/create_user";
         }
+        var createUserDto = createUserFormDto.getCreateUserDto();
+        var imageFile = createUserFormDto.getImageFile();
         Long id = userService.save(createUserDto).getId();
+        userService.uploadImage(id, imageFile);
         return "redirect:/users/" + id;
     }
     @GetMapping("/{id}")

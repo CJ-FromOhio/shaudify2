@@ -11,13 +11,14 @@
     <h1>Create User</h1>
 </div>
 <div class="fields">
-    <form th:action="@{/users/createUser}" th:object="${createUserDto}" method="post">
-        <p>username <input type="text" th:field="*{username}"></p>
-        <p>email <input type="text" th:field="*{email}"></p>
-        <p>firstname <input type="text" th:field="*{firstName}"></p>
-        <p>lastName <input type="text" th:field="*{lastName}"></p>
-        <p>password <input type="password" th:field="*{password}"></p>
-        <p>passwordConfirm <input type="password" th:field="*{passwordConfirm}"></p>
+    <form th:action="@{/users/createUser}" th:object="${createUserFormDto}" method="post" enctype="multipart/form-data">
+        <p>username <input type="text" th:field="*{createUserDto.username}"></p>
+        <p>email <input type="text" th:field="*{createUserDto.email}"></p>
+        <p>firstname <input type="text" th:field="*{createUserDto.firstName}"></p>
+        <p>lastName <input type="text" th:field="*{createUserDto.lastName}"></p>
+        <p>password <input type="password" th:field="*{createUserDto.password}"></p>
+        <p>passwordConfirm <input type="password" th:field="*{createUserDto.passwordConfirm}"></p>
+        <p>avatar <input type="file" th:field="*{imageFile}"></p>
             <div class="foreachList">
                 <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
                     <span th:text="${error}"></span>

@@ -1,10 +1,10 @@
 package com.hezix.shaudifymain.controller.web;
 
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
-import com.hezix.shaudifymain.entity.song.dto.CreateSongFilesDto;
+import com.hezix.shaudifymain.entity.files.ImageFile;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.song.form.CreateSongFormDto;
-import com.hezix.shaudifymain.mapper.songImage.SongImageCreateMapper;
+
 import com.hezix.shaudifymain.service.AlbumService;
 import com.hezix.shaudifymain.service.MinioImageService;
 import com.hezix.shaudifymain.service.SongService;
@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/songs")
@@ -27,7 +28,6 @@ public class SongController {
     private final SongService songService;
     private final MinioImageService minioImageService;
     private final AlbumService albumService;
-    private final SongImageCreateMapper songImageCreateMapper;
     private final BindingResultParser bindingResultParser;
 
     @GetMapping()
@@ -50,10 +50,11 @@ public class SongController {
             return "songs/create_song";
         }
         var createSongDto = createSongFormDto.getCreateSongDto();
-        var createSongFilesDto = createSongFormDto.getCreateSongFilesDto();
+        var songFile = createSongFormDto.getSongFile();
+        var imageFile = createSongFormDto.getImageFile();
         Long id = songService.save(createSongDto, userDetails).getId();
-        songService.uploadImage(id, createSongFilesDto);
-        songService.uploadSong(id, createSongFilesDto);
+        songService.uploadImage(id, imageFile);
+        songService.uploadSong(id, songFile);
         return "redirect:/songs/" + id;
     }
     @GetMapping("/{id}")
@@ -69,7 +70,7 @@ public class SongController {
     }
     @PostMapping("/{id}/image")
     private void uploadSongImage(@PathVariable Long id,
-                                 @Validated @ModelAttribute CreateSongFilesDto dto) {
-        songService.uploadImage(id, dto);
+                                 @Validated @ModelAttribute MultipartFile file) {
+        songService.uploadImage(id, file);
     }
 }

@@ -38,6 +38,8 @@ public class Album {
     cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JsonBackReference
     private List<Song> songs;
+    @Column()
+    private String image;
 
     @Column(nullable = false)
     private Instant createdAt;

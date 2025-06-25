@@ -55,6 +55,8 @@ public class User{
             fetch = FetchType.LAZY,
             cascade = {CascadeType.MERGE})
     private List<Album> albums = new ArrayList<>();
+    @Column()
+    private String image;
 
     @Column()
     private Instant createdAt;

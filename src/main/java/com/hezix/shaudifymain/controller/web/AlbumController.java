@@ -4,6 +4,8 @@ package com.hezix.shaudifymain.controller.web;
 import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
+import com.hezix.shaudifymain.entity.album.form.CreateAlbumFormDto;
+import com.hezix.shaudifymain.entity.files.ImageFile;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.service.AlbumService;
 import com.hezix.shaudifymain.service.SongService;
@@ -39,11 +41,11 @@ public class AlbumController {
 
     @GetMapping("/createAlbum")
     public String createAlbum(Model model) {
-        model.addAttribute("createAlbumDto", new CreateAlbumDto());
+        model.addAttribute("createAlbumFormDto", new CreateAlbumFormDto());
         return "albums/create_album";
     }
     @PostMapping("/saveAlbum")
-    public String saveAlbum(@Valid @ModelAttribute CreateAlbumDto createAlbumDto,
+    public String saveAlbum(@Valid @ModelAttribute CreateAlbumFormDto createAlbumFormDto,
                              BindingResult bindingResult,
                              Model model,
                              @AuthenticationPrincipal UserDetails userDetails) {
@@ -51,7 +53,10 @@ public class AlbumController {
             model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "albums/create_album";
         }
+        var createAlbumDto = createAlbumFormDto.getCreateAlbumDto();
+        var imageFile = createAlbumFormDto.getImageFile();
         Long id = albumService.save(createAlbumDto, userDetails).getId();
+        albumService.uploadImage(id, imageFile);
         return "redirect:/albums/" + id;
     }
 

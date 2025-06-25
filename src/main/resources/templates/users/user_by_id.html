@@ -11,6 +11,7 @@
     <h1>User Profile</h1>
     <a href="/">Back to menu</a>
 </div>
+<img th:src="@{/api/v1/minio/images/{fileName}(fileName=${user.getImage()})}" alt="userImage" >
 <div>
     <span>ID:</span>
     <span th:text="${user.id}"></span>

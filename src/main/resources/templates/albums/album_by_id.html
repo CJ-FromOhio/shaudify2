@@ -10,6 +10,7 @@
   <h1>Album Profile</h1>
   <a href="/">Back to menu</a>
 </div>
+<img th:src="@{/api/v1/minio/images/{fileName}(fileName=${album.getImage()})}" alt="albumImage" >
 <div>
   <span>title:</span>
   <span th:text="${album.title}"></span>

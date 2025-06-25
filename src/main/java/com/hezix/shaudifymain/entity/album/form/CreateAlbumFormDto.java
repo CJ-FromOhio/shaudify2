@@ -1,8 +1,7 @@
-package com.hezix.shaudifymain.entity.song.form;
+package com.hezix.shaudifymain.entity.album.form;
 
+import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
 import com.hezix.shaudifymain.entity.files.ImageFile;
-import com.hezix.shaudifymain.entity.files.SongFile;
-import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSongFormDto {
-    private CreateSongDto createSongDto;
+public class CreateAlbumFormDto {
+    private CreateAlbumDto createAlbumDto;
     private MultipartFile imageFile;
-    private MultipartFile songFile;
 }

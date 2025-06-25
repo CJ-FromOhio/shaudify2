@@ -21,5 +21,7 @@ public class ReadAlbumDto {
 
     private Long author_id;
 
+    private String image;
+
     private List<ReadSongDto> songs;
 }

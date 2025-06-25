@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.service;
 
+import com.hezix.shaudifymain.entity.files.ImageFile;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.Collections;
@@ -25,6 +27,7 @@ public class UserService {
     private final UserCreateMapper userCreateMapper;
     private final UserReadMapper userReadMapper;
     private final BCryptPasswordEncoder bcryptPasswordEncoder;
+    private final MinioImageService minioImageService;
 
     @Transactional()
     public ReadUserDto save(CreateUserDto createUserDto) {
@@ -80,6 +83,19 @@ public class UserService {
         var user = findUserById(id);
         userRepository.delete(mapReadToUser(user));
         return user;
+    }
+    @Transactional()
+    public ReadUserDto uploadImage(Long id, MultipartFile files) {
+        User user = findUserEntityById(id);
+        if(files == null || files.isEmpty()) {
+            user.setImage("default_user_image.jpg");
+            userRepository.save(user);
+            return userReadMapper.toDto(user);
+        }
+        String fileName = minioImageService.upload(files);
+        user.setImage(fileName);
+        userRepository.save(user);
+        return userReadMapper.toDto(user);
     }
 
     //mappers

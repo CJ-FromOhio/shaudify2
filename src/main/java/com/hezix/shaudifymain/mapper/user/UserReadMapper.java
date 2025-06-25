@@ -31,6 +31,7 @@ public class UserReadMapper implements Mappable<User, ReadUserDto> {
                 .likedSongs(songReadMapper.toEntitySet(readUserDto.getLikedSongs()))
                 .albums(albumReadMapper.toEntityList(readUserDto.getAlbums()))
                 .createdAt(readUserDto.getCreatedAt())
+                .image(readUserDto.getImage())
                 .build();
     }
 
@@ -47,6 +48,7 @@ public class UserReadMapper implements Mappable<User, ReadUserDto> {
                 .likedSongs(songReadMapper.toDtoSet(user.getLikedSongs()))
                 .albums(albumReadMapper.toDtoList(user.getAlbums()))
                 .createdAt(user.getCreatedAt())
+                .image(user.getImage())
                 .build();
     }
     public List<ReadUserDto> toDtoList(List<User> users) {

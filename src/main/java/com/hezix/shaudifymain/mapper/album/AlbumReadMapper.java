@@ -27,6 +27,7 @@ public class AlbumReadMapper implements Mappable<Album, ReadAlbumDto> {
                         .id(readAlbumDto.getAuthor_id())
                         .build())
                 .songs(songReadMapper.toEntityList(readAlbumDto.getSongs()))
+                .image(readAlbumDto.getImage())
                 .build();
     }
 
@@ -38,6 +39,7 @@ public class AlbumReadMapper implements Mappable<Album, ReadAlbumDto> {
                 .description(album.getDescription())
                 .author_id(album.getAuthor().getId())
                 .songs(songReadMapper.toDtoList(album.getSongs()))
+                .image(album.getImage())
                 .build();
     }
     public List<ReadAlbumDto> toDtoList(List<Album> albums) {
