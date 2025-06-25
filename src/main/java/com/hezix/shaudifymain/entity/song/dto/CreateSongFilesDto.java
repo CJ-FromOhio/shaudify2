@@ -11,7 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSongImageDto {
+public class CreateSongFilesDto {
     @NotNull(message = "image must be not null")
-    private MultipartFile file;
+    private MultipartFile imageFile;
+    @NotNull(message = "song must be not null")
+    private MultipartFile songFile;
 }

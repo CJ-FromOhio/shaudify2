@@ -1,36 +1,26 @@
 package com.hezix.shaudifymain.service;
 
-import com.hezix.shaudifymain.entity.song.SongImage;
+import com.hezix.shaudifymain.entity.song.SongFiles;
 import com.hezix.shaudifymain.exception.FileUploadException;
-import com.hezix.shaudifymain.props.MinioProperties;
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ImageService {
+public class MinioImageService {
 
-    private final MinioClient minioClient;
-    private final MinioProperties minioProperties;
     private final MinioService minioService;
 
-    public String upload (SongImage image){
+    public String upload (SongFiles image){
         try {
-            minioService.createBucket();
+            minioService.createImageBucket();
         }catch(Exception e){
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
-        MultipartFile file = image.getFile();
+        MultipartFile file = image.getImageFile();
         if(file.isEmpty() || file.getOriginalFilename() == null){
             throw new FileUploadException("image upload failed. image must have name");
         }
@@ -42,7 +32,7 @@ public class ImageService {
         } catch (Exception e) {
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
-        minioService.saveImage(inputStream, fileName);
+        minioService.saveObject(inputStream, fileName);
         return fileName;
     }
 

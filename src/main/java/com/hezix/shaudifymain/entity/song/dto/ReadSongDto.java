@@ -28,6 +28,7 @@ public class ReadSongDto {
     private Long albumId;
 
     private String image;
+    private String song;
 
     private Instant createdAt;
 

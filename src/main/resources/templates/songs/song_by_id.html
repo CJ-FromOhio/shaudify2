@@ -10,7 +10,7 @@
     <h1>Song Profile</h1>
     <a href="/">Back to menu</a>
 </div>
-<img th:src="@{/api/v1/images/{fileName}(fileName=${song.getImage()})}" alt="songImage" >
+<img th:src="@{/api/v1/minio/images/{fileName}(fileName=${song.getImage()})}" alt="songImage" >
 <div>
     <span>title:</span>
     <span th:text="${song.title}"></span>
@@ -18,6 +18,12 @@
 <div>
     <span>description:</span>
     <span th:text="${song.description}"></span>
+</div>
+<div>
+<audio controls>
+    <source th:src="@{/api/v1/minio/songs/{fileName}(fileName=${song.getSong()})}" type="audio/mpeg">
+
+</audio>
 </div>
 <div>
     <span>album:</span>

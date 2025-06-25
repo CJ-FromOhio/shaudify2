@@ -19,24 +19,39 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.InputStream;
 
 @RestController
-@RequestMapping("/api/v1/images")
+@RequestMapping("/api/v1/minio")
 @RequiredArgsConstructor
 public class MinioRestController {
     private final MinioClient minioClient;
     private final MinioProperties minioProperties;
 
     @SneakyThrows
-    @GetMapping("/{fileName}")
-    public ResponseEntity<byte[]> get(@PathVariable String fileName) {
+    @GetMapping("/images/{fileName}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String fileName) {
         try(InputStream is = minioClient.getObject(
                 GetObjectArgs.builder()
-                        .bucket(minioProperties.getBucket())
+                        .bucket(minioProperties.getImageBucket())
                         .object(fileName)
                         .build()
         )){
             byte[] bytes = is.readAllBytes();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_PNG);
+            return ResponseEntity.ok(bytes);
+        }
+    }
+    @SneakyThrows
+    @GetMapping("/songs/{fileName}")
+    public ResponseEntity<byte[]> getSong(@PathVariable String fileName) {
+        try(InputStream is = minioClient.getObject(
+                GetObjectArgs.builder()
+                        .bucket(minioProperties.getSongBucket())
+                        .object(fileName)
+                        .build()
+        )){
+            byte[] bytes = is.readAllBytes();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.valueOf("audio/mpeg"));
             return ResponseEntity.ok(bytes);
         }
     }

@@ -1,7 +1,7 @@
 package com.hezix.shaudifymain.entity.song.form;
 
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
-import com.hezix.shaudifymain.entity.song.dto.CreateSongImageDto;
+import com.hezix.shaudifymain.entity.song.dto.CreateSongFilesDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateSongFormDto {
     private CreateSongDto createSongDto;
-    private CreateSongImageDto createSongImageDto;
+    private CreateSongFilesDto createSongImageDto;
 }

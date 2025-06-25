@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.service;
 
+import com.hezix.shaudifymain.props.FileType;
 import com.hezix.shaudifymain.props.MinioProperties;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
@@ -20,9 +21,9 @@ public class MinioService {
     private final MinioClient minioClient;
 
     @SneakyThrows
-    public void saveImage(InputStream inputStream, String fileName) {
+    public void saveObject(InputStream inputStream, String fileName) {
         minioClient.putObject(PutObjectArgs.builder()
-                .bucket(minioProperties.getBucket())
+                .bucket(minioProperties.getImageBucket())
                 .object(fileName)
                 .stream(inputStream, inputStream.available(), -1)
                 .build());
@@ -37,14 +38,30 @@ public class MinioService {
 
     }
     @SneakyThrows
-    public void createBucket() {
-        boolean foundedBucket = minioClient.bucketExists(BucketExistsArgs.builder()
-                .bucket(minioProperties.getBucket())
-                .build());
-        if (!foundedBucket) {
+    public void createImageBucket() {
+        if (!isBucketExists(FileType.IMAGE)) {
             minioClient.makeBucket(MakeBucketArgs.builder()
-                    .bucket(minioProperties.getBucket())
+                    .bucket(minioProperties.getImageBucket())
                     .build());
         }
+    }
+    @SneakyThrows
+    public void createSongBucket() {
+        if (!isBucketExists(FileType.SONG)) {
+            minioClient.makeBucket(MakeBucketArgs.builder()
+                    .bucket(minioProperties.getImageBucket())
+                    .build());
+        }
+    }
+    @SneakyThrows
+    private boolean isBucketExists(FileType fileType) {
+        if(fileType == FileType.IMAGE) {
+            return minioClient.bucketExists(BucketExistsArgs.builder()
+                    .bucket(minioProperties.getImageBucket())
+                    .build());
+        }
+        return minioClient.bucketExists(BucketExistsArgs.builder()
+                .bucket(minioProperties.getSongBucket())
+                .build());
     }
 }

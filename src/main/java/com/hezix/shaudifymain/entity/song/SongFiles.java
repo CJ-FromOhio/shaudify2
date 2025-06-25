@@ -6,7 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
-public class SongImage {
+public class SongFiles {
 
-    private MultipartFile file;
+    private MultipartFile imageFile;
+    private MultipartFile songFile;
 }

@@ -1,34 +1,36 @@
 package com.hezix.shaudifymain.mapper.songImage;
 
-import com.hezix.shaudifymain.entity.song.SongImage;
-import com.hezix.shaudifymain.entity.song.dto.ReadSongImageDto;
+import com.hezix.shaudifymain.entity.song.SongFiles;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongFilesDto;
 import com.hezix.shaudifymain.mapper.Mappable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class SongImageReadMapper implements Mappable<SongImage, ReadSongImageDto> {
+public class SongImageReadMapper implements Mappable<SongFiles, ReadSongFilesDto> {
 
     @Override
-    public SongImage toEntity(ReadSongImageDto readSongImageDto) {
-        return SongImage.builder()
-                .file(readSongImageDto.getFile())
+    public SongFiles toEntity(ReadSongFilesDto readSongImageDto) {
+        return SongFiles.builder()
+                .imageFile(readSongImageDto.getImageFile())
+                .songFile(readSongImageDto.getSongFile())
                 .build();
     }
 
     @Override
-    public ReadSongImageDto toDto(SongImage songImage) {
-        return ReadSongImageDto.builder()
-                .file(songImage.getFile())
+    public ReadSongFilesDto toDto(SongFiles songImage) {
+        return ReadSongFilesDto.builder()
+                .imageFile(songImage.getImageFile())
+                .songFile(songImage.getSongFile())
                 .build();
     }
 
-    public List<ReadSongImageDto> toDtoList(List<SongImage> t) {
+    public List<ReadSongFilesDto> toDtoList(List<SongFiles> t) {
         return List.of();
     }
 
-    public List<SongImage> toEntityList(List<ReadSongImageDto> f) {
+    public List<SongFiles> toEntityList(List<ReadSongFilesDto> f) {
         return List.of();
     }
 }
