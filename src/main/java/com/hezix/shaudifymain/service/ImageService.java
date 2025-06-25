@@ -22,10 +22,11 @@ public class ImageService {
 
     private final MinioClient minioClient;
     private final MinioProperties minioProperties;
+    private final MinioService minioService;
 
     public String upload (SongImage image){
         try {
-            createBucket();
+            minioService.createBucket();
         }catch(Exception e){
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
@@ -33,7 +34,7 @@ public class ImageService {
         if(file.isEmpty() || file.getOriginalFilename() == null){
             throw new FileUploadException("image upload failed. image must have name");
         }
-        String fileName = generateFileName(file);
+        String fileName = minioService.generateFileName(file);
         InputStream inputStream;
 
         try{
@@ -41,35 +42,8 @@ public class ImageService {
         } catch (Exception e) {
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
-        saveImage(inputStream, fileName);
+        minioService.saveImage(inputStream, fileName);
         return fileName;
     }
-    @SneakyThrows
-    private void saveImage(InputStream inputStream, String fileName) {
-     minioClient.putObject(PutObjectArgs.builder()
-             .bucket(minioProperties.getBucket())
-             .object(fileName)
-             .stream(inputStream, inputStream.available(), -1)
-             .build());
-    }
 
-    private String generateFileName(MultipartFile file) {
-        String extension = getExtension(file);
-        return UUID.randomUUID() + "." + extension;
-    }
-    private String getExtension(MultipartFile file) {
-        return file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
-
-    }
-    @SneakyThrows
-    private void createBucket() {
-        boolean foundedBucket = minioClient.bucketExists(BucketExistsArgs.builder()
-                .bucket(minioProperties.getBucket())
-                .build());
-        if (!foundedBucket) {
-            minioClient.makeBucket(MakeBucketArgs.builder()
-                    .bucket(minioProperties.getBucket())
-                    .build());
-        }
-    }
 }
