@@ -4,7 +4,6 @@ import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.mapper.Mappable;
 import com.hezix.shaudifymain.mapper.album.AlbumReadMapper;
-import com.hezix.shaudifymain.mapper.likedSong.LikedSongReadMapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserReadMapper implements Mappable<User, ReadUserDto> {
     private final SongReadMapper songReadMapper;
-    private final LikedSongReadMapper likedSongReadMapper;
+
     private final AlbumReadMapper albumReadMapper;
     @Override
     public User toEntity(ReadUserDto readUserDto) {
@@ -29,7 +28,7 @@ public class UserReadMapper implements Mappable<User, ReadUserDto> {
                 .lastName(readUserDto.getLastName())
                 .role(readUserDto.getRole())
                 .createdSong(songReadMapper.toEntityList(readUserDto.getCreatedSongs()))
-                .likedSongs(likedSongReadMapper.toEntityList(readUserDto.getLikedSongs()))
+                .likedSongs(songReadMapper.toEntitySet(readUserDto.getLikedSongs()))
                 .albums(albumReadMapper.toEntityList(readUserDto.getAlbums()))
                 .createdAt(readUserDto.getCreatedAt())
                 .build();
@@ -45,12 +44,11 @@ public class UserReadMapper implements Mappable<User, ReadUserDto> {
                 .lastName(user.getLastName())
                 .role(user.getRole())
                 .createdSongs(songReadMapper.toDtoList(user.getCreatedSong()))
-                .likedSongs(likedSongReadMapper.toDtoList(user.getLikedSongs()))
+                .likedSongs(songReadMapper.toDtoSet(user.getLikedSongs()))
                 .albums(albumReadMapper.toDtoList(user.getAlbums()))
                 .createdAt(user.getCreatedAt())
                 .build();
     }
-    @Override
     public List<ReadUserDto> toDtoList(List<User> users) {
         return Optional.ofNullable(users)
                 .orElse(Collections.emptyList())
@@ -58,7 +56,6 @@ public class UserReadMapper implements Mappable<User, ReadUserDto> {
                 .map(this::toDto)
                 .toList();
     }
-    @Override
     public List<User> toEntityList(List<ReadUserDto> dtoUsers) {
         return Optional.ofNullable(dtoUsers)
                 .orElse(Collections.emptyList())

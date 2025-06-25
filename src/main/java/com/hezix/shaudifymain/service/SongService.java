@@ -1,6 +1,5 @@
 package com.hezix.shaudifymain.service;
 
-import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.SongImage;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
@@ -19,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -50,9 +50,9 @@ public class SongService {
                 .orElseThrow(() -> new EntityNotFoundException("Song with id " + id + " not found")));
     }
     @Transactional(readOnly = true)
-    public List<ReadSongDto> findSonsIdsByLikedSongList(List<ReadLikedSongDto> readLikedSongDtoList) {
+    public List<ReadSongDto> findSonsIdsByLikedSongList(Set<ReadSongDto> readLikedSongDtoList) {
         return readLikedSongDtoList.stream()
-                .map(ReadLikedSongDto::getSongId)
+                .map(ReadSongDto::getId)
                 .map(this::findSongById)
                 .toList();
     }
@@ -73,15 +73,18 @@ public class SongService {
         return song;
     }
     @Transactional
-    public void uploadImage(Long id, CreateSongImageDto dto) {
+    public ReadSongDto uploadImage(Long id, CreateSongImageDto dto) {
         Song song = findSongEntityById(id);
+        if(dto.getFile() == null || dto.getFile().isEmpty()) {
+            song.setImage("default_song_image.jpg");
+            songRepository.save(song);
+            return songReadMapper.toDto(song);
+        }
         SongImage image = songImageCreateMapper.toEntity(dto);
         String fileName = imageService.upload(image);
-        if(song.getImages() == null || song.getImages().isEmpty()) {
-            song.setImages(new ArrayList<>());
-        }
-        song.getImages().add(fileName);
+        song.setImage(fileName);
         songRepository.save(song);
+        return songReadMapper.toDto(song);
     }
 
     //mappers

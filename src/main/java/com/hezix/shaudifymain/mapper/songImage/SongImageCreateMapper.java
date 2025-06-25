@@ -22,12 +22,12 @@ public class SongImageCreateMapper implements Mappable<SongImage, CreateSongImag
                 .build();
     }
 
-    @Override
+
     public List<CreateSongImageDto> toDtoList(List<SongImage> t) {
         return List.of();
     }
 
-    @Override
+
     public List<SongImage> toEntityList(List<CreateSongImageDto> f) {
         return List.of();
     }

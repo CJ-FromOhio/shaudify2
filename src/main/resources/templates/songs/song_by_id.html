@@ -10,6 +10,7 @@
     <h1>Song Profile</h1>
     <a href="/">Back to menu</a>
 </div>
+<img th:src="@{/api/v1/images/{fileName}(fileName=${song.getImage()})}" alt="songImage" >
 <div>
     <span>title:</span>
     <span th:text="${song.title}"></span>

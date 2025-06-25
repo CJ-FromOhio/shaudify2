@@ -24,12 +24,10 @@ public class SongImageReadMapper implements Mappable<SongImage, ReadSongImageDto
                 .build();
     }
 
-    @Override
     public List<ReadSongImageDto> toDtoList(List<SongImage> t) {
         return List.of();
     }
 
-    @Override
     public List<SongImage> toEntityList(List<ReadSongImageDto> f) {
         return List.of();
     }

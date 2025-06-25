@@ -47,6 +47,10 @@ public class UserService {
         return mapUserToRead(userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found")));
     }
+    @Transactional
+    public User update(User user) {
+        return userRepository.save(user);
+    }
     @Transactional(readOnly = true)
     public User findUserEntityByUsername(String username) {
         return userRepository.findByUsername(username)

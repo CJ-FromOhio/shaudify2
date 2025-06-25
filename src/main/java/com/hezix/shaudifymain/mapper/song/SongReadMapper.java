@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .album(Album.builder()
                         .id(readSongDto.getAlbumId())
                         .build())
-                .images(readSongDto.getImages() != null ? readSongDto.getImages() : Collections.emptyList())
+                .image(readSongDto.getImage())
 
                 .build();
     }
@@ -43,7 +45,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .createdAt(song.getCreatedAt())
                 .creatorId(song.getCreator().getId())
                 .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)
-                .images(song.getImages() != null ? song.getImages() : Collections.emptyList())
+                .image(song.getImage())
                 .build();
     }
 
@@ -54,11 +56,25 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .map(this::toDto)
                 .toList();
     }
+    public Set<ReadSongDto> toDtoSet(Set<Song> songs) {
+        return Optional.ofNullable(songs)
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toSet());
+    }
     public List<Song> toEntityList(List<ReadSongDto> dtoSongs) {
         return Optional.ofNullable(dtoSongs)
                 .orElse(Collections.emptyList())
                 .stream()
                 .map(this::toEntity)
                 .toList();
+    }
+    public Set<Song> toEntitySet(Set<ReadSongDto> dtoSongs) {
+        return Optional.ofNullable(dtoSongs)
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(this::toEntity)
+                .collect(Collectors.toSet());
     }
 }

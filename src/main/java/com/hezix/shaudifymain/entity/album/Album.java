@@ -33,7 +33,9 @@ public class Album {
     @JoinColumn(name = "author_id")
     private User author;
 
-    @OneToMany(mappedBy = "album", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "album",
+            fetch = FetchType.LAZY,
+    cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JsonBackReference
     private List<Song> songs;
 

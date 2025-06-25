@@ -1,12 +1,11 @@
 package com.hezix.shaudifymain.controller.rest;
 
 import com.hezix.shaudifymain.annotations.CustomRestControllerAdviceAnnotation;
-import com.hezix.shaudifymain.entity.likedSong.LikedSong;
-import com.hezix.shaudifymain.entity.likedSong.dto.ReadLikedSongDto;
+import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.service.LikedSongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,8 +27,9 @@ public class LikedSongRestController {
             summary = "добавление (лайкаем)",
             description = "в параметры передаём идентификатор песни, идентификатор пользователя"
     )
-    public ResponseEntity<ReadLikedSongDto> like(@PathVariable("songId") Long songId,
-                                                 @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<ReadSongDto> like(@PathVariable("songId") Long songId,
+                                            @AuthenticationPrincipal UserDetails userDetails) {
+
         return ResponseEntity.ok(likedSongService.like(songId, userDetails));
     }
 
@@ -37,7 +37,7 @@ public class LikedSongRestController {
     @Operation(
             summary = "получение всех лайков всех пользователей"
     )
-    public ResponseEntity<List<ReadLikedSongDto>> getAllLikedSong() {
+    public ResponseEntity<List<ReadSongDto>> getAllLikedSong() {
         return ResponseEntity.ok(likedSongService.findAllLikedSongs());
     }
 
@@ -45,7 +45,7 @@ public class LikedSongRestController {
     @Operation(
             summary = "получение всех лайков определенного пользователя"
     )
-    public ResponseEntity<ReadLikedSongDto> getById(@PathVariable("id") Long likedSongId) {
+    public ResponseEntity<Song> getById(@PathVariable("id") Long likedSongId) {
         return ResponseEntity.ok(likedSongService.findLikedSongById(likedSongId));
     }
 
@@ -53,7 +53,7 @@ public class LikedSongRestController {
     @Operation(
             summary = "удаляем (дизлайкаем)"
     )
-    public ResponseEntity<ReadLikedSongDto> delete(@PathVariable("id") Long likedSongId) {
+    public ResponseEntity<ReadSongDto> delete(@PathVariable("id") Long likedSongId) {
         return ResponseEntity.ok(likedSongService.deleteLikedSong(likedSongId));
     }
 }

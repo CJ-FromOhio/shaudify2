@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode()
 @Data
 @AllArgsConstructor
 @Builder
@@ -39,11 +39,8 @@ public class Song {
     private Album album;
 
     @Column(name="image")
-    @CollectionTable(name ="songs_images")
-    @ElementCollection
-    private List<String> images = new ArrayList<>();
+    private String image;
 
     @Column(nullable = false)
     private Instant createdAt;
-
 }
