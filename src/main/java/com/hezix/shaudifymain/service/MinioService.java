@@ -21,11 +21,19 @@ public class MinioService {
     private final MinioClient minioClient;
 
     @SneakyThrows
-    public void saveObject(InputStream inputStream, String fileName) {
+    public void saveImage(InputStream inputStream, String fileName, long fileSize) {
         minioClient.putObject(PutObjectArgs.builder()
                 .bucket(minioProperties.getImageBucket())
                 .object(fileName)
-                .stream(inputStream, inputStream.available(), -1)
+                .stream(inputStream, fileSize, -1)
+                .build());
+    }
+    @SneakyThrows
+    public void saveSong(MultipartFile file, String fileName) {
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(minioProperties.getSongBucket())
+                .object(fileName)
+                .stream(file.getInputStream(), file.getSize(), -1)
                 .build());
     }
 
@@ -49,7 +57,7 @@ public class MinioService {
     public void createSongBucket() {
         if (!isBucketExists(FileType.SONG)) {
             minioClient.makeBucket(MakeBucketArgs.builder()
-                    .bucket(minioProperties.getImageBucket())
+                    .bucket(minioProperties.getSongBucket())
                     .build());
         }
     }

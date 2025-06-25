@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateSongFormDto {
     private CreateSongDto createSongDto;
-    private CreateSongFilesDto createSongImageDto;
+    private CreateSongFilesDto createSongFilesDto;
 }

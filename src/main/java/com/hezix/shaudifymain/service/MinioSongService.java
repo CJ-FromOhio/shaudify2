@@ -18,7 +18,7 @@ public class MinioSongService {
     @Transactional
     public String upload (SongFiles song){
         try {
-            minioService.createImageBucket();
+            minioService.createSongBucket();
         }catch(Exception e){
             throw new FileUploadException("Song upload failed" + e.getMessage());
         }
@@ -27,14 +27,8 @@ public class MinioSongService {
             throw new FileUploadException("song upload failed. image must have name");
         }
         String fileName = minioService.generateFileName(file);
-        InputStream inputStream;
 
-        try{
-            inputStream = file.getInputStream();
-        } catch (Exception e) {
-            throw new FileUploadException("song upload failed" + e.getMessage());
-        }
-        minioService.saveObject(inputStream, fileName);
+        minioService.saveSong(file, fileName);
         return fileName;
     }
 }

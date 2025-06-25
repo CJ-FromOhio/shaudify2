@@ -32,7 +32,7 @@ public class MinioImageService {
         } catch (Exception e) {
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
-        minioService.saveObject(inputStream, fileName);
+        minioService.saveImage(inputStream, fileName, file.getSize());
         return fileName;
     }
 

@@ -13,8 +13,9 @@
 <form th:action="@{/songs/createSong}" th:object="${createSongFormDto}" method="post" enctype="multipart/form-data">
     <p>title <input type="text" th:field="*{createSongDto.title}"></p>
     <p>description <input type="text" th:field="*{createSongDto.description}"></p>
-    <p>image  <input type="file" th:field="*{createSongImageDto.imageFile}"></p>
-    <p>song  <input type="file" th:field="*{createSongImageDto.songFile}"></p>
+
+    <p>image  <input type="file" th:field="*{createSongFilesDto.imageFile}"></p>
+    <p>song  <input type="file" th:field="*{createSongFilesDto.songFile}"></p>
     <div class="foreachList">
         <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
             <span th:text="${error}"></span>

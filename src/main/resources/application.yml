@@ -13,6 +13,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 3MB
+      max-request-size: 3MB
 minio:
   songBucket: ${MINIO_SONG_BUCKET}
   imageBucket: ${MINIO_IMAGE_BUCKET}

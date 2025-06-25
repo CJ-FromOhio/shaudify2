@@ -50,10 +50,10 @@ public class SongController {
             return "songs/create_song";
         }
         var createSongDto = createSongFormDto.getCreateSongDto();
-        var createSongImageDto = createSongFormDto.getCreateSongImageDto();
+        var createSongFilesDto = createSongFormDto.getCreateSongFilesDto();
         Long id = songService.save(createSongDto, userDetails).getId();
-        songService.uploadImage(id, createSongImageDto);
-        songService.uploadSong(id, createSongImageDto);
+        songService.uploadImage(id, createSongFilesDto);
+        songService.uploadSong(id, createSongFilesDto);
         return "redirect:/songs/" + id;
     }
     @GetMapping("/{id}")

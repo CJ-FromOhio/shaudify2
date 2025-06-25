@@ -23,18 +23,13 @@ public class LikedSongService {
     public ReadSongDto like(Long songId, UserDetails userDetails) {
         User user = userService.findUserEntityByUsername(userDetails.getUsername());
         Song song = songService.findSongEntityById(songId);
-//        if (findLikedSongBooleanByUserIdAndSongId(songId, userDetails)){
-//
-//        }
         user.getLikedSongs().add(song);
         userService.update(user);
         return songReadMapper.toDto(song);
     }
     @Transactional(readOnly = true)
     public Song findLikedSongById(Long id) {
-//        return likedSongReadMapper.toDto(likedSongRepository
-//                .findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("LikedSong with id " + id + " not found")));
+
         return null;
     }
     @Transactional(readOnly = true)

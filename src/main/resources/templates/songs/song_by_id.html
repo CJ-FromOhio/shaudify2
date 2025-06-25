@@ -12,6 +12,11 @@
 </div>
 <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${song.getImage()})}" alt="songImage" >
 <div>
+    <audio controls>
+        <source th:src="@{/api/v1/minio/songs/{fileName}(fileName=${song.getSong()})}" type="audio/mpeg">
+    </audio>
+</div>
+<div>
     <span>title:</span>
     <span th:text="${song.title}"></span>
 </div>
@@ -19,19 +24,15 @@
     <span>description:</span>
     <span th:text="${song.description}"></span>
 </div>
-<div>
-<audio controls>
-    <source th:src="@{/api/v1/minio/songs/{fileName}(fileName=${song.getSong()})}" type="audio/mpeg">
 
-</audio>
-</div>
-<div>
+<div th:if="${song.albumId != null}">
     <span>album:</span>
     <a th:href="@{/albums/{id}(id=${song.albumId})}">open Album</a>
 </div>
 <div class="songByIdCreatorHref">
     <span>creator:</span>
-    <a th:href="@{/users/{id}(id=${song.creatorId})}">profile</a>
+    <a th:href="@{/users/{id}(id=${song.creatorId})}">creator
+    </a>
 </div>
 <div>
     <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
