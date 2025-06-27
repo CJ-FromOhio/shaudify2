@@ -1,7 +1,6 @@
 package com.hezix.shaudifymain.entity.album.form;
 
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
-import com.hezix.shaudifymain.entity.files.ImageFile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

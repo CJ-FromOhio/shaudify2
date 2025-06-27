@@ -1,6 +1,6 @@
 package com.hezix.shaudifymain.entity.user.form;
 
-import com.hezix.shaudifymain.entity.files.ImageFile;
+
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

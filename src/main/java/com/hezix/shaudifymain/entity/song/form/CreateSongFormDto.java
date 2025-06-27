@@ -1,7 +1,5 @@
 package com.hezix.shaudifymain.entity.song.form;
 
-import com.hezix.shaudifymain.entity.files.ImageFile;
-import com.hezix.shaudifymain.entity.files.SongFile;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
