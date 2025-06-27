@@ -27,20 +27,5 @@ public class LikedSongService {
         userService.update(user);
         return songReadMapper.toDto(song);
     }
-    @Transactional(readOnly = true)
-    public Song findLikedSongById(Long id) {
-
-        return null;
-    }
-    @Transactional(readOnly = true)
-    public List<ReadSongDto> findAllLikedSongs() {
-//        return likedSongReadMapper.toDtoList(likedSongRepository.findAll());
-        return null;
-    }
-    @Transactional()
-    public ReadSongDto deleteLikedSong(Long id) {
-//        return likedSongReadMapper.toDto(likedSongRepository.deleteLikedSongById(id));
-        return null;
-    }
 
 }

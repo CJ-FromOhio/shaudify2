@@ -3,7 +3,6 @@ package com.hezix.shaudifymain.service;
 import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
-import com.hezix.shaudifymain.entity.files.ImageFile;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;

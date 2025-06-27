@@ -1,7 +1,6 @@
 package com.hezix.shaudifymain.service;
 
-import com.hezix.shaudifymain.entity.files.ImageFile;
-import com.hezix.shaudifymain.entity.files.SongFile;
+
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;

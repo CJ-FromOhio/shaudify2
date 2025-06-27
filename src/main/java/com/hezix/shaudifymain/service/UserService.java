@@ -1,6 +1,5 @@
 package com.hezix.shaudifymain.service;
 
-import com.hezix.shaudifymain.entity.files.ImageFile;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;

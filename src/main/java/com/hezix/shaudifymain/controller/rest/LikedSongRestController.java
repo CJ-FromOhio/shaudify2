@@ -32,28 +32,4 @@ public class LikedSongRestController {
 
         return ResponseEntity.ok(likedSongService.like(songId, userDetails));
     }
-
-    @GetMapping("/")
-    @Operation(
-            summary = "получение всех лайков всех пользователей"
-    )
-    public ResponseEntity<List<ReadSongDto>> getAllLikedSong() {
-        return ResponseEntity.ok(likedSongService.findAllLikedSongs());
-    }
-
-    @GetMapping("{id}")
-    @Operation(
-            summary = "получение всех лайков определенного пользователя"
-    )
-    public ResponseEntity<Song> getById(@PathVariable("id") Long likedSongId) {
-        return ResponseEntity.ok(likedSongService.findLikedSongById(likedSongId));
-    }
-
-    @DeleteMapping("{id}")
-    @Operation(
-            summary = "удаляем (дизлайкаем)"
-    )
-    public ResponseEntity<ReadSongDto> delete(@PathVariable("id") Long likedSongId) {
-        return ResponseEntity.ok(likedSongService.deleteLikedSong(likedSongId));
-    }
 }

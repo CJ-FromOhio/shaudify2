@@ -1,6 +1,6 @@
 package com.hezix.shaudifymain.service;
 
-import com.hezix.shaudifymain.entity.files.ImageFile;
+
 import com.hezix.shaudifymain.exception.FileUploadException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
