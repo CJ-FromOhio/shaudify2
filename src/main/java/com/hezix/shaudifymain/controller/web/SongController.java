@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.song.form.CreateSongFormDto;
 
+import com.hezix.shaudifymain.entity.web.PageResponse;
 import com.hezix.shaudifymain.filter.SongFilter;
 import com.hezix.shaudifymain.service.AlbumService;
 import com.hezix.shaudifymain.service.MinioImageService;
@@ -11,6 +12,8 @@ import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -30,8 +33,11 @@ public class SongController {
     private final BindingResultParser bindingResultParser;
 
     @GetMapping()
-    public String songs(Model model, SongFilter songFilter) {
-        model.addAttribute("songs", songService.findAllSongsByFilter(songFilter));
+    public String songs(Model model, SongFilter songFilter, Pageable pageable) {
+        Page<ReadSongDto> page = songService.findAllSongsByFilter(songFilter, pageable);
+
+        model.addAttribute("songs", PageResponse.of(page));
+        model.addAttribute("filter", songFilter);
         return "songs/all_songs";
     }
     @GetMapping("/createSong")

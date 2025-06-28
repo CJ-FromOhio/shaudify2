@@ -8,11 +8,14 @@ import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.exception.OwnershipMismatchException;
 import com.hezix.shaudifymain.filter.AlbumFilter;
+import com.hezix.shaudifymain.filter.QPredicates;
 import com.hezix.shaudifymain.mapper.album.AlbumCreateMapper;
 import com.hezix.shaudifymain.mapper.album.AlbumReadMapper;
 import com.hezix.shaudifymain.repository.AlbumRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
+
+import static com.hezix.shaudifymain.entity.album.QAlbum.album;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -47,9 +53,14 @@ public class AlbumService {
     public List<ReadAlbumDto> findAll() {
         return albumReadMapper.toDtoList(albumRepository.findAll());
     }
+
     @Transactional(readOnly = true)
-    public List<ReadAlbumDto> findAllByFilter(AlbumFilter albumFilter) {
-        return albumReadMapper.toDtoList(albumRepository.findAllByFilter(albumFilter));
+    public Page<ReadAlbumDto> findAllByFilter(AlbumFilter albumFilter, Pageable pageable) {
+        var predicate = QPredicates.builder()
+                    .add(albumFilter.title(), album.title::containsIgnoreCase)
+                    .build();
+        return albumRepository.findAll(predicate, pageable)
+                .map(albumReadMapper::toDto);
     }
     @Transactional()
     public ReadAlbumDto save(CreateAlbumDto createAlbumDto, UserDetails userDetails) {

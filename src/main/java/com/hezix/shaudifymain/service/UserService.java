@@ -87,6 +87,7 @@ public class UserService {
                 .add(userFilter.firstName(), user.firstName::containsIgnoreCase)
                 .add(userFilter.lastName(), user.lastName::containsIgnoreCase)
                 .build();
+
         return userRepository.findAll(predicate, pageable)
                 .map(userReadMapper::toDto);
     }

@@ -5,12 +5,15 @@ import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
+import com.hezix.shaudifymain.filter.QPredicates;
 import com.hezix.shaudifymain.filter.SongFilter;
 import com.hezix.shaudifymain.mapper.song.SongCreateMapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 
 import com.hezix.shaudifymain.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
+
+import static com.hezix.shaudifymain.entity.song.QSong.song;
 
 @Service
 @RequiredArgsConstructor
@@ -63,8 +68,13 @@ public class SongService {
                 .orElseThrow(() -> new EntityNotFoundException("Song Entity with id " + id + " not found"));
     }
     @Transactional(readOnly = true)
-    public List<ReadSongDto> findAllSongsByFilter(SongFilter songFilter) {
-        return mapListSongToListRead(songRepository.findAllByFilter(songFilter));
+    public Page<ReadSongDto> findAllSongsByFilter(SongFilter songFilter, Pageable pageable) {
+        var predicate = QPredicates.builder()
+                .add(songFilter.title(), song.title::containsIgnoreCase)
+                .build();
+
+        return songRepository.findAll(predicate, pageable)
+                .map(songReadMapper::toDto);
     }
     @Transactional(readOnly = true)
     public List<ReadSongDto> findAllSongs() {

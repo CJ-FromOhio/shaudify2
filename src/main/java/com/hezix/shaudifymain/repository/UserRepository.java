@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>,
-        FilterUserRepository, QuerydslPredicateExecutor<User> {
+         QuerydslPredicateExecutor<User> {
     Optional<User> findByUsername(String username);
 }

@@ -12,12 +12,20 @@
 </div>
 <form action="/albums">
     <label for="title">title:
-        <input type="text" id="title" name="title">
+        <input type="text" id="title" name="title" th:value="${filter.title}">
     </label>
+    <div>
+        <label for="page">Page:
+            <input type="number" id="page" name="page" th:value="${albums.metadata.page}">
+        </label>
+        <label for="size">Size:
+            <input type="number" id="size" name="size" th:value="${albums.metadata.size}">
+        </label>
+    </div>
     <input type="submit" value="Search">
 </form>
 <div class="foreachList">
-    <div th:each= "album : ${albums}">
+    <div th:each= "album : ${albums.content}">
         <span th:text="${album.id}"></span>
         <span th:text="${album.title}"></span>
         <span th:text="${album.description}"></span>
