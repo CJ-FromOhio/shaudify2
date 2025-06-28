@@ -7,6 +7,7 @@ import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.exception.OwnershipMismatchException;
+import com.hezix.shaudifymain.filter.AlbumFilter;
 import com.hezix.shaudifymain.mapper.album.AlbumCreateMapper;
 import com.hezix.shaudifymain.mapper.album.AlbumReadMapper;
 import com.hezix.shaudifymain.repository.AlbumRepository;
@@ -45,6 +46,10 @@ public class AlbumService {
     @Transactional(readOnly = true)
     public List<ReadAlbumDto> findAll() {
         return albumReadMapper.toDtoList(albumRepository.findAll());
+    }
+    @Transactional(readOnly = true)
+    public List<ReadAlbumDto> findAllByFilter(AlbumFilter albumFilter) {
+        return albumReadMapper.toDtoList(albumRepository.findAllByFilter(albumFilter));
     }
     @Transactional()
     public ReadAlbumDto save(CreateAlbumDto createAlbumDto, UserDetails userDetails) {

@@ -1,19 +1,14 @@
-package com.hezix.shaudifymain.repository;
+package com.hezix.shaudifymain.repository.impl;
 
-import com.hezix.shaudifymain.entity.user.QUser;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.filter.QPredicates;
 import com.hezix.shaudifymain.filter.UserFilter;
+import com.hezix.shaudifymain.repository.FilterUserRepository;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.hezix.shaudifymain.entity.user.QUser.user;

@@ -32,7 +32,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                         .id(readSongDto.getAlbumId())
                         .build())
                 .image(readSongDto.getImage())
-                .song(readSongDto.getSong())
+                .songFile(readSongDto.getSong())
                 .build();
     }
 
@@ -46,7 +46,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .creatorId(song.getCreator().getId())
                 .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)
                 .image(song.getImage())
-                .song(song.getSong())
+                .song(song.getSongFile())
                 .build();
     }
 

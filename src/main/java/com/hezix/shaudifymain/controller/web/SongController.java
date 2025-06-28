@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.song.form.CreateSongFormDto;
 
+import com.hezix.shaudifymain.filter.SongFilter;
 import com.hezix.shaudifymain.service.AlbumService;
 import com.hezix.shaudifymain.service.MinioImageService;
 import com.hezix.shaudifymain.service.SongService;
@@ -25,13 +26,12 @@ import org.springframework.web.multipart.MultipartFile;
 @CustomControllerAdviceAnnotation
 public class SongController {
     private final SongService songService;
-    private final MinioImageService minioImageService;
     private final AlbumService albumService;
     private final BindingResultParser bindingResultParser;
 
     @GetMapping()
-    public String songs(Model model) {
-        model.addAttribute("songs", songService.findAllSongs());
+    public String songs(Model model, SongFilter songFilter) {
+        model.addAttribute("songs", songService.findAllSongsByFilter(songFilter));
         return "songs/all_songs";
     }
     @GetMapping("/createSong")

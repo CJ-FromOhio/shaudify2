@@ -5,6 +5,7 @@ import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
+import com.hezix.shaudifymain.filter.SongFilter;
 import com.hezix.shaudifymain.mapper.song.SongCreateMapper;
 import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 
@@ -61,7 +62,10 @@ public class SongService {
         return songRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Song Entity with id " + id + " not found"));
     }
-
+    @Transactional(readOnly = true)
+    public List<ReadSongDto> findAllSongsByFilter(SongFilter songFilter) {
+        return mapListSongToListRead(songRepository.findAllByFilter(songFilter));
+    }
     @Transactional(readOnly = true)
     public List<ReadSongDto> findAllSongs() {
         return mapListSongToListRead(songRepository.findAll());
@@ -92,7 +96,7 @@ public class SongService {
             return songReadMapper.toDto(song);
         }
         String fileName = minioSongService.upload(files);
-        song.setSong(fileName);
+        song.setSongFile(fileName);
         songRepository.save(song);
         return songReadMapper.toDto(song);
     }

@@ -41,8 +41,8 @@ public class Song {
     @Column(name="image")
     private String image;
 
-    @Column(name="song")
-    private String song;
+    @Column(name="songFile")
+    private String songFile;
 
     @Column(nullable = false)
     private Instant createdAt;

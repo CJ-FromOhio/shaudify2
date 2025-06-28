@@ -6,6 +6,7 @@ import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
 import com.hezix.shaudifymain.entity.album.form.CreateAlbumFormDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
+import com.hezix.shaudifymain.filter.AlbumFilter;
 import com.hezix.shaudifymain.service.AlbumService;
 import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.service.UserService;
@@ -33,8 +34,8 @@ public class AlbumController {
     private final BindingResultParser bindingResultParser;
 
     @GetMapping()
-    public String findAllAlbums(Model model){
-        model.addAttribute("albums", albumService.findAll());
+    public String findAllAlbums(Model model, AlbumFilter albumFilter) {
+        model.addAttribute("albums", albumService.findAllByFilter(albumFilter));
         return "albums/all_albums";
     }
 
