@@ -4,12 +4,15 @@ import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.entity.user.form.CreateUserFormDto;
+import com.hezix.shaudifymain.entity.web.PageResponse;
 import com.hezix.shaudifymain.filter.UserFilter;
 import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.service.UserService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,8 +30,11 @@ public class UserController {
     private final SongService songService;
 
     @GetMapping()
-    public String get(Model model, UserFilter filter) {
-        model.addAttribute("users", userService.findAllUsersByFilter(filter));
+    public String get(Model model, UserFilter filter, Pageable pageable) {
+        Page<ReadUserDto> page = userService.findAllUsersByFilter(filter, pageable);
+
+        model.addAttribute("users", PageResponse.of(page));
+        model.addAttribute("filter", filter);
         return "users/all_users";
     }
     @GetMapping("/createUser")

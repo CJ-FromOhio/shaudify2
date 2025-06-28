@@ -5,11 +5,15 @@ import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.exception.PasswordAndPasswordConfirmationNotEquals;
+import com.hezix.shaudifymain.filter.QPredicates;
 import com.hezix.shaudifymain.filter.UserFilter;
 import com.hezix.shaudifymain.mapper.user.UserCreateMapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
+import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+
+import static com.hezix.shaudifymain.entity.user.QUser.user;
 
 @Service
 @RequiredArgsConstructor
@@ -74,10 +80,17 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User Entity with id " + id + " not found"));
     }
+
     @Transactional(readOnly = true)
-    public List<ReadUserDto> findAllUsersByFilter(UserFilter userFilter) {
-        return mapListUserToListRead(userRepository.findAllByFilter(userFilter));
+    public Page<ReadUserDto> findAllUsersByFilter(UserFilter userFilter, Pageable pageable) {
+        Predicate predicate = QPredicates.builder()
+                .add(userFilter.firstName(), user.firstName::containsIgnoreCase)
+                .add(userFilter.lastName(), user.lastName::containsIgnoreCase)
+                .build();
+        return userRepository.findAll(predicate, pageable)
+                .map(userReadMapper::toDto);
     }
+
     @Transactional(readOnly = true)
     public List<ReadUserDto> findAllUsers() {
         return mapListUserToListRead(userRepository.findAll());

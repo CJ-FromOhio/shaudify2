@@ -13,15 +13,23 @@
 </div>
 <form action="/users">
     <label for="firstName">Firstname:
-        <input type="text" id="firstName" name="firstName">
+        <input type="text" id="firstName" name="firstName" th:value="${filter.firstName}">
     </label>
     <label for="lastName">Lastname:
-        <input type="text" id="lastName" name="lastName">
+        <input type="text" id="lastName" name="lastName" th:value="${filter.lastName}">
     </label>
+    <div>
+        <label for="page">Page:
+            <input type="number" id="page" name="page" th:value="${users.metadata.page}">
+        </label>
+        <label for="size">Size:
+            <input type="number" id="size" name="size" th:value="${users.metadata.size}">
+        </label>
+    </div>
     <input type="submit" value="Search">
 </form>
 <div class="foreachList">
-    <div th:each="user : ${users}">
+    <div th:each="user : ${users.content}">
         <span th:text="${user.username}"></span>
         <span th:text="${user.firstName}"></span>
         <span th:text="${user.lastName}"></span>
