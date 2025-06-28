@@ -5,6 +5,7 @@ import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.exception.PasswordAndPasswordConfirmationNotEquals;
+import com.hezix.shaudifymain.filter.UserFilter;
 import com.hezix.shaudifymain.mapper.user.UserCreateMapper;
 import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
@@ -72,6 +73,10 @@ public class UserService {
     public User findUserEntityById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User Entity with id " + id + " not found"));
+    }
+    @Transactional(readOnly = true)
+    public List<ReadUserDto> findAllUsersByFilter(UserFilter userFilter) {
+        return mapListUserToListRead(userRepository.findAllByFilter(userFilter));
     }
     @Transactional(readOnly = true)
     public List<ReadUserDto> findAllUsers() {

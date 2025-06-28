@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.entity.user.form.CreateUserFormDto;
+import com.hezix.shaudifymain.filter.UserFilter;
 import com.hezix.shaudifymain.service.SongService;
 import com.hezix.shaudifymain.service.UserService;
 import com.hezix.shaudifymain.util.BindingResultParser;
@@ -26,8 +27,8 @@ public class UserController {
     private final SongService songService;
 
     @GetMapping()
-    public String get(Model model) {
-        model.addAttribute("users", userService.findAllUsers());
+    public String get(Model model, UserFilter filter) {
+        model.addAttribute("users", userService.findAllUsersByFilter(filter));
         return "users/all_users";
     }
     @GetMapping("/createUser")

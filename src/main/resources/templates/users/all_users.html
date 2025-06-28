@@ -11,6 +11,15 @@
     <h1>All users</h1>
     <a href="/">Back to menu</a>
 </div>
+<form action="/users">
+    <label for="firstName">Firstname:
+        <input type="text" id="firstName" name="firstName">
+    </label>
+    <label for="lastName">Lastname:
+        <input type="text" id="lastName" name="lastName">
+    </label>
+    <input type="submit" value="Search">
+</form>
 <div class="foreachList">
     <div th:each="user : ${users}">
         <span th:text="${user.username}"></span>
