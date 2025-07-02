@@ -1,4 +1,6 @@
 package com.hezix.shaudifymain.filter;
 
-public record AlbumFilter(String title) {
+import java.io.Serializable;
+
+public record AlbumFilter(String title) implements Serializable {
 }

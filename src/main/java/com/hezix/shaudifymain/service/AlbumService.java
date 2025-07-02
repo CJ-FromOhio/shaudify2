@@ -14,6 +14,7 @@ import com.hezix.shaudifymain.mapper.album.AlbumReadMapper;
 import com.hezix.shaudifymain.repository.AlbumRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,7 +37,10 @@ public class AlbumService {
     private final SongService songService;
     private final AlbumCreateMapper albumCreateMapper;
     private final MinioImageService minioImageService;
-
+    @Cacheable(
+            value = "album",
+            key = "#id"
+    )
     @Transactional(readOnly = true)
     public ReadAlbumDto findAlbumById(Long id) {
         return albumReadMapper.toDto(albumRepository
@@ -53,7 +57,10 @@ public class AlbumService {
     public List<ReadAlbumDto> findAll() {
         return albumReadMapper.toDtoList(albumRepository.findAll());
     }
-
+    @Cacheable(
+            value = "albumFilterPageCache",
+            key = "T(java.util.Objects).hash(#albumFilter.title()) + ':' + #pageable.pageNumber + ':' + #pageable.pageSize"
+    )
     @Transactional(readOnly = true)
     public Page<ReadAlbumDto> findAllByFilter(AlbumFilter albumFilter, Pageable pageable) {
         var predicate = QPredicates.builder()
@@ -84,6 +91,10 @@ public class AlbumService {
         albumRepository.save(album);
         return albumReadMapper.toDto(album);
     }
+    @Cacheable(
+            value = "UserAlbums",
+            key = "#authorId"
+    )
     @Transactional(readOnly = true)
     public List<ReadAlbumDto> findAlbumsByAuthorId(Long authorId) {
         return albumReadMapper.toDtoList(albumRepository.findAlbumsByAuthorId(authorId));

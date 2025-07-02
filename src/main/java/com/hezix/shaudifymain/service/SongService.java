@@ -12,6 +12,7 @@ import com.hezix.shaudifymain.mapper.song.SongReadMapper;
 
 import com.hezix.shaudifymain.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,11 +51,16 @@ public class SongService {
         return songReadMapper.toDtoList(songRepository
                 .findSongsByCreatorId(creatorId));
     }
+    @Cacheable(
+            value = "song",
+            key = "#id"
+            )
     @Transactional(readOnly = true)
     public ReadSongDto findSongById(Long id) {
         return mapSongToRead(songRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Song with id " + id + " not found")));
     }
+
     @Transactional(readOnly = true)
     public List<ReadSongDto> findSonsIdsByLikedSongList(Set<ReadSongDto> readLikedSongDtoList) {
         return readLikedSongDtoList.stream()
@@ -67,6 +73,10 @@ public class SongService {
         return songRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Song Entity with id " + id + " not found"));
     }
+    @Cacheable(
+            value = "albumFilterPageCache",
+            key = "T(java.util.Objects).hash(#songFilter.title()) + ':' + #pageable.pageNumber + ':' + #pageable.pageSize"
+    )
     @Transactional(readOnly = true)
     public Page<ReadSongDto> findAllSongsByFilter(SongFilter songFilter, Pageable pageable) {
         var predicate = QPredicates.builder()

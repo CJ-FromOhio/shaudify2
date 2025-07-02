@@ -12,6 +12,7 @@ import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,11 +47,19 @@ public class UserService {
         User created_user = userRepository.save(user);
         return mapUserToRead(created_user);
     }
+    @Cacheable(
+            value = "user.ic",
+            key = "#id"
+    )
     @Transactional(readOnly = true)
     public ReadUserDto findUserById(Long id) {
         return mapUserToRead(userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found")));
     }
+    @Cacheable(
+            value = "user.username",
+            key = "#username"
+    )
     @Transactional(readOnly = true)
     public ReadUserDto findUserByUsername(String username) {
         return mapUserToRead(userRepository.findByUsername(username)
@@ -80,7 +89,10 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User Entity with id " + id + " not found"));
     }
-
+    @Cacheable(
+            value = "albumFilterPageCache",
+            key = "T(java.util.Objects).hash(#userFilter.firstName()) + ':' + #pageable.pageNumber + ':' + #pageable.pageSize"
+    )
     @Transactional(readOnly = true)
     public Page<ReadUserDto> findAllUsersByFilter(UserFilter userFilter, Pageable pageable) {
         Predicate predicate = QPredicates.builder()

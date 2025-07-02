@@ -1,4 +1,6 @@
 spring:
+  cache:
+    type: redis
   config:
     import: optional:file:.env[.properties]
   datasource:
@@ -13,6 +15,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
   servlet:
     multipart:
       max-file-size: 3MB

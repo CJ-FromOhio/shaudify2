@@ -1,4 +1,11 @@
 services:
+  redis:
+    image: redis:8.0-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_volume:/redis
   minio:
     image: minio/minio:latest
     container_name: minio
@@ -41,5 +48,7 @@ volumes:
   pg_volume:
     driver: local
   minio_volume:
+    driver: local
+  redis_volume:
     driver: local
 
