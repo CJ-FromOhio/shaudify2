@@ -41,19 +41,19 @@ public class UserService {
             throw new PasswordAndPasswordConfirmationNotEquals("Password and password confirmation not equals");
         }
         createUserDto.setPassword(bcryptPasswordEncoder.encode(createUserDto.getPassword()));
-        User user = mapCreateToEntity(createUserDto);
+        User user = userCreateMapper.toEntity(createUserDto);
         user.setCreatedAt(Instant.now());
         User created_user = userRepository.save(user);
-        return mapUserToRead(created_user);
+        return userReadMapper.toDto(created_user);
     }
     @Transactional(readOnly = true)
     public ReadUserDto findUserById(Long id) {
-        return mapUserToRead(userRepository.findById(id)
+        return userReadMapper.toDto(userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id " + id + " not found")));
     }
     @Transactional(readOnly = true)
     public ReadUserDto findUserByUsername(String username) {
-        return mapUserToRead(userRepository.findByUsername(username)
+        return userReadMapper.toDto(userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found")));
     }
     @Transactional
@@ -94,12 +94,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<ReadUserDto> findAllUsers() {
-        return mapListUserToListRead(userRepository.findAll());
+        return userReadMapper.toDtoList(userRepository.findAll());
     }
     @Transactional()
     public ReadUserDto deleteUserById(Long id) {
         var user = findUserById(id);
-        userRepository.delete(mapReadToUser(user));
+        userRepository.delete(userReadMapper.toEntity(user));
         return user;
     }
     @Transactional()
@@ -116,25 +116,7 @@ public class UserService {
         return userReadMapper.toDto(user);
     }
 
-    //mappers
-    public ReadUserDto mapUserToRead(User user) {
-        return userReadMapper.toDto(user);
-    }
-    public CreateUserDto mapUserToCreate(User user) {
-        return userCreateMapper.toDto(user);
-    }
-    public User mapReadToUser(ReadUserDto user) {
-        return userReadMapper.toEntity(user);
-    }
-    public User mapCreateToEntity(CreateUserDto createUserDto) {
-        return userCreateMapper.toEntity(createUserDto);
-    }
-    public List<ReadUserDto> mapListUserToListRead(List<User> userList) {
-        return userReadMapper.toDtoList(userList);
-    }
-    public List<User> mapListReadToListUser(List<ReadUserDto> userList) {
-        return userReadMapper.toEntityList(userList);
-    }
+
 
 
 }

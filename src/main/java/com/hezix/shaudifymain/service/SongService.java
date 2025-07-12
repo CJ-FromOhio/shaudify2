@@ -38,13 +38,13 @@ public class SongService {
 
     @Transactional()
     public ReadSongDto save(CreateSongDto createSongDto, UserDetails userDetails) {
-        Song song = mapCreateToSong(createSongDto);
+        Song song = songCreateMapper.toEntity(createSongDto);
         song.setCreatedAt(Instant.now());
         var user = userService.findUserEntityByUsername(userDetails.getUsername());
         user.getCreatedSong().add(song);
         song.setCreator(user);
         songRepository.save(song);
-        return mapSongToRead(song);
+        return songReadMapper.toDto(song);
     }
     public List<ReadSongDto> findSongsByCreatorId(Long creatorId) {
         return songReadMapper.toDtoList(songRepository
@@ -52,7 +52,7 @@ public class SongService {
     }
     @Transactional(readOnly = true)
     public ReadSongDto findSongById(Long id) {
-        return mapSongToRead(songRepository.findById(id)
+        return songReadMapper.toDto(songRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Song with id " + id + " not found")));
     }
     @Transactional(readOnly = true)
@@ -78,12 +78,12 @@ public class SongService {
     }
     @Transactional(readOnly = true)
     public List<ReadSongDto> findAllSongs() {
-        return mapListSongToListRead(songRepository.findAll());
+        return songReadMapper.toDtoList(songRepository.findAll());
     }
     @Transactional()
     public ReadSongDto deleteSongById(Long id) {
         var song = findSongById(id);
-        songRepository.delete(mapReadToSong(song));
+        songRepository.delete(songReadMapper.toEntity(song));
         return song;
     }
     @Transactional
@@ -109,26 +109,6 @@ public class SongService {
         song.setSongFile(fileName);
         songRepository.save(song);
         return songReadMapper.toDto(song);
-    }
-
-    //mappers
-    public ReadSongDto mapSongToRead(Song song) {
-        return songReadMapper.toDto(song);
-    }
-    public CreateSongDto mapSongToCreate(Song song) {
-        return songCreateMapper.toDto(song);
-    }
-    public Song mapReadToSong(ReadSongDto song) {
-        return songReadMapper.toEntity(song);
-    }
-    public Song mapCreateToSong(CreateSongDto song) {
-        return songCreateMapper.toEntity(song);
-    }
-    public List<ReadSongDto> mapListSongToListRead(List<Song> songList) {
-        return songReadMapper.toDtoList(songList);
-    }
-    public List<Song> mapListReadToListSong(List<ReadSongDto> songList) {
-        return songReadMapper.toEntityList(songList);
     }
 
 
