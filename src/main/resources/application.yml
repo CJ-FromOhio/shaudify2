@@ -1,4 +1,10 @@
 spring:
+  data:
+    redis:
+      port: 6379
+      host: localhost
+  cache:
+    type: redis
   config:
     import: optional:file:.env[.properties]
   datasource:

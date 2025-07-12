@@ -12,6 +12,7 @@ import com.hezix.shaudifymain.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -80,12 +81,15 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User Entity with id " + id + " not found"));
     }
-
+    @Cacheable(
+            value = "users",
+            key = "#userFilter.hashCode() + '_' + #pageable.pageNumber + '_' + #pageable.pageSize"
+    )
     @Transactional(readOnly = true)
     public Page<ReadUserDto> findAllUsersByFilter(UserFilter userFilter, Pageable pageable) {
         Predicate predicate = QPredicates.builder()
-                .add(userFilter.firstName(), user.firstName::containsIgnoreCase)
-                .add(userFilter.lastName(), user.lastName::containsIgnoreCase)
+                .add(userFilter.getFirstName(), user.firstName::containsIgnoreCase)
+                .add(userFilter.getLastName(), user.lastName::containsIgnoreCase)
                 .build();
 
         return userRepository.findAll(predicate, pageable)
@@ -115,8 +119,4 @@ public class UserService {
         userRepository.save(user);
         return userReadMapper.toDto(user);
     }
-
-
-
-
 }

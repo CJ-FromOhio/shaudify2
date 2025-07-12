@@ -1,5 +1,15 @@
 package com.hezix.shaudifymain.filter;
 
-public record UserFilter(String firstName,
-                         String lastName) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+public class UserFilter {
+    private String firstName;
+    private String lastName;
 }
