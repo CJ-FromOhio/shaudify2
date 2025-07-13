@@ -1,0 +1,21 @@
+/* src/main/resources/static/css/_base.css */
+
+/* Общие сбросы и базовые стили */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Темный фон, как у Spotify */
+    color: #b3b3b3; /* Светлый текст по умолчанию */
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Общие стили для кнопок и ссылок (если не переопределены специфичными классами) */
+button, input[type="submit"] {
+    cursor: pointer;
+}

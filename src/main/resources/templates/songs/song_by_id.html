@@ -1,44 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${song.title}">Title</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title th:text="${song.title} + ' - Shaudify'">Песня - Shaudify</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="Head">
-    <h1>Song Profile</h1>
-    <a href="/">Back to menu</a>
-</div>
-<img th:src="@{/api/v1/minio/images/{fileName}(fileName=${song.getImage()})}" alt="songImage" >
-<div>
-    <audio controls>
-        <source th:src="@{/api/v1/minio/songs/{fileName}(fileName=${song.getSong()})}" type="audio/mpeg">
-    </audio>
-</div>
-<div>
-    <span>title:</span>
-    <span th:text="${song.title}"></span>
-</div>
-<div>
-    <span>description:</span>
-    <span th:text="${song.description}"></span>
+<div class="container">
+    <div class="sidebar">
+        <div class="logo">
+            <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="logo-img">
+            <span class="logo-text">Shaudify</span>
+        </div>
+        <ul class="navigation">
+            <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+            <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
+            <li><a href="/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a href="/albums"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+            <li><a href="/songs" class="active"><i class="fas fa-music"></i> Песни</a></li>
+            <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-top">
+            <h1 th:text="${song.title}">Название Песни</h1>
+            <div class="button-group">
+                <a th:href="@{/users/{id}(id=${currentUser.id})}" class="profile-button" th:if="${currentUser != null}">Мой Профиль</a>
+                <a href="/logout" class="logout-button">Выйти</a>
+            </div>
+        </div>
+
+        <div class="entity-profile-header">
+            <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${song.getImage()})}" alt="Обложка песни" class="entity-cover-image">
+            <div class="entity-details">
+                <span class="entity-type">Песня</span>
+                <h2 class="entity-title" th:text="${song.title}"></h2>
+                <p class="entity-description" th:text="${song.description}"></p>
+
+                <div class="entity-meta">
+                        <span th:if="${song.albumId != null}">
+                            Альбом: <a th:href="@{/albums/{id}(id=${song.albumId})}" class="meta-link">Открыть альбом</a>
+                        </span>
+                    <span th:if="${song.creatorId != null}">
+                            Создатель: <a th:href="@{/users/{id}(id=${song.creatorId})}" class="meta-link">Профиль создателя</a>
+                        </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="entity-content-section">
+            <h3>Воспроизведение</h3>
+            <audio controls class="audio-player">
+                <source th:src="@{/api/v1/minio/songs/{fileName}(fileName=${song.getSong()})}" type="audio/mpeg">
+                Ваш браузер не поддерживает элемент audio.
+            </audio>
+
+            <div class="song-actions">
+                <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post" class="like-form">
+                    <button type="submit" class="like-button">
+                        <i class="fas fa-heart"></i> Нравится
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="profile-actions">
+            <a th:href="@{/songs}" class="button-secondary"><i class="fas fa-arrow-left"></i> Вернуться к списку песен</a>
+        </div>
+
+    </div>
 </div>
 
-<div th:if="${song.albumId != null}">
-    <span>album:</span>
-    <a th:href="@{/albums/{id}(id=${song.albumId})}">open Album</a>
+<div class="player-bar">
+    <p>Здесь будет панель управления воспроизведением</p>
 </div>
-<div class="songByIdCreatorHref">
-    <span>creator:</span>
-    <a th:href="@{/users/{id}(id=${song.creatorId})}">creator
-    </a>
-</div>
-<div>
-    <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
-        <input type="submit" value="Like">
-    </form>
-</div>
-<a href="/songs">Return to Songs list</a>
 </body>
 </html>

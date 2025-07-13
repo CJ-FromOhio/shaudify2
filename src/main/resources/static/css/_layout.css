@@ -1,0 +1,136 @@
+/* src/main/resources/static/css/_layout.css */
+
+/* Контейнер для боковой панели и основного контента */
+.container {
+    display: flex;
+    flex-grow: 1; /* Позволяет контейнеру занимать все доступное пространство */
+}
+
+/* Боковая панель */
+.sidebar {
+    background-color: #000; /* Черный фон для боковой панели */
+    width: 250px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: calc(100vh - 90px); /* Учитываем высоту плеера */
+    position: sticky; /* Делает sidebar липким при прокрутке */
+    top: 0;
+    overflow-y: auto; /* Для прокрутки, если много пунктов меню */
+    flex-shrink: 0; /* Не сжимается */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo-text {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.navigation {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation li {
+    margin-bottom: 10px;
+}
+
+.navigation a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #b3b3b3;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navigation a i {
+    margin-right: 15px;
+    font-size: 1.2em;
+}
+
+.navigation a:hover,
+.navigation a.active {
+    color: #fff;
+    background-color: #282828;
+}
+
+/* Основной контент */
+.main-content {
+    flex-grow: 1;
+    padding: 20px 30px;
+    overflow-y: auto;
+    background: linear-gradient(to bottom, rgba(29, 185, 84, 0.1) 0%, #121212 20%, #121212 100%); /* Градиент как на главной Spotify */
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color: #0d0d0d;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-top h1 {
+    color: #fff;
+    font-size: 2em;
+    margin: 0;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+}
+
+.profile-button,
+.logout-button {
+    background-color: #282828;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.profile-button:hover,
+.logout-button:hover {
+    background-color: #424242;
+}
+
+/* Панель управления плеером */
+.player-bar {
+    background-color: #282828;
+    color: #fff;
+    padding: 15px 20px;
+    text-align: center;
+    width: 100%;
+    position: sticky;
+    bottom: 0;
+    box-sizing: border-box;
+    z-index: 100;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #000;
+}

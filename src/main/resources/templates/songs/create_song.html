@@ -1,28 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Создать песню</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
-<div class="Head">
-    <h1>Create Song</h1>
-</div>
-<form th:action="@{/songs/createSong}" th:object="${createSongFormDto}" method="post" enctype="multipart/form-data">
-    <p>title <input type="text" th:field="*{createSongDto.title}"></p>
-    <p>description <input type="text" th:field="*{createSongDto.description}"></p>
-
-    <p>image  <input type="file" th:field="*{imageFile}"></p>
-    <p>song  <input type="file" th:field="*{songFile}"></p>
-    <div class="foreachList">
-        <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
-            <span th:text="${error}"></span>
-        </div>
+<body class="login-body"> <div class="login-page-container">
+    <div class="login-brand">
+        <img th:src="@{/images/logo.png}" alt="Shaudify Logo" class="login-logo-img">
+        <h1 class="login-brand-name">Spotify Clone</h1>
     </div>
-    <input type="submit" value="Create">
-    <a href="/">menu</a>
-</form>
+
+    <div class="login-form-box">
+        <h2 class="login-box-title">Создать новую песню</h2>
+
+        <form th:action="@{/songs/createSong}" th:object="${createSongFormDto}" method="post" enctype="multipart/form-data" class="login-main-form">
+            <div class="form-group">
+                <label for="title">Название песни</label>
+                <input type="text" id="title" th:field="*{createSongDto.title}" placeholder="Введите название песни">
+            </div>
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <input type="text" id="description" th:field="*{createSongDto.description}" placeholder="Краткое описание песни">
+            </div>
+
+            <div class="form-group">
+                <label for="imageFile">Обложка песни</label>
+                <input type="file" id="imageFile" th:field="*{imageFile}">
+            </div>
+            <div class="form-group">
+                <label for="songFile">Аудиофайл песни</label>
+                <input type="file" id="songFile" th:field="*{songFile}">
+            </div>
+
+            <div class="login-messages">
+                <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}" class="error-message">
+                    <span th:text="${error}"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="login-submit-button">
+                <i class="fas fa-plus"></i> Создать
+            </button>
+
+            <div class="login-divider"></div>
+
+            <a href="/" class="login-register-button">
+                <i class="fas fa-arrow-left"></i> На главную
+            </a>
+        </form>
+    </div>
+</div>
 </body>
 </html>

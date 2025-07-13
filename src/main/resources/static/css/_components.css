@@ -1,0 +1,293 @@
+/* src/main/resources/static/css/_components.css */
+
+/* Стили для форм поиска и кнопки создания (общие компоненты) */
+.search-and-create {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #181818;
+    padding: 15px 20px;
+    border-radius: 8px;
+    flex-grow: 1;
+    min-width: 300px;
+}
+
+.search-form label {
+    color: #fff;
+    font-weight: bold;
+}
+
+.search-form input[type="text"],
+.search-form input[type="number"] {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: 150px;
+}
+
+.search-button {
+    background-color: #1db954;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-button:hover {
+    background-color: #1ed760;
+}
+
+.create-button {
+    background-color: #535353;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.create-button:hover {
+    background-color: #727272;
+}
+
+/* Стили для списков (пользователи, песни) */
+.list-section {
+    margin-bottom: 40px;
+}
+
+.user-list,
+.song-list {
+    background-color: #181818;
+    border-radius: 8px;
+    overflow: hidden;
+    padding: 10px 0;
+}
+
+.user-item-header,
+.song-item-header {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) 150px;
+    gap: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #333;
+    font-weight: bold;
+    color: #fff;
+    background-color: #0d0d0d;
+}
+
+.song-item-header {
+    grid-template-columns: 50px 2fr 3fr 200px;
+}
+
+.user-item,
+.song-item {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) 150px;
+    gap: 15px;
+    padding: 12px 20px;
+    border-bottom: 1px solid #282828;
+    align-items: center;
+}
+
+.song-item {
+    grid-template-columns: 50px 2fr 3fr 200px;
+}
+
+.user-item:last-child,
+.song-item:last-child {
+    border-bottom: none;
+}
+
+.user-item:hover,
+.song-item:hover {
+    background-color: #282828;
+}
+
+.action-link {
+    background-color: #424242;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.action-link:hover {
+    background-color: #555;
+}
+
+.error-messages {
+    color: #ff4d4d;
+    font-size: 0.85em;
+    margin-top: 5px;
+    grid-column: span 4;
+    padding-left: 5px;
+}
+
+/* Стили для карточек (используются для альбомов и списков на профиле пользователя) */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    background-color: #282828;
+}
+
+.card img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.card h4 {
+    color: #fff;
+    font-size: 1.1em;
+    margin: 0 0 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.card p {
+    color: #b3b3b3;
+    font-size: 0.9em;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* Стили для альбомов (если album-card отличается от card) */
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+}
+
+.album-card {
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.album-card:hover {
+    background-color: #282828;
+}
+
+.album-card img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.album-card h4 {
+    color: #fff;
+    font-size: 1.1em;
+    margin: 0 0 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+.album-card p {
+    color: #b3b3b3;
+    font-size: 0.9em;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Стили для пагинации */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #181818;
+    border-radius: 8px;
+}
+
+.pagination-link {
+    background-color: #282828;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+}
+
+.pagination-link:hover:not(.disabled) {
+    background-color: #424242;
+}
+
+.pagination-link.disabled {
+    background-color: #1f1f1f;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.current-page {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1em;
+    white-space: nowrap;
+}

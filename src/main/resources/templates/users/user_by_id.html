@@ -1,77 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'User: ' + ${user.username}">User Profile</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    <title th:text="${user.username} + ' - Профиль Shaudify'">Профиль пользователя Shaudify</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="Head">
-    <h1>User Profile</h1>
-    <a href="/">Back to menu</a>
-</div>
-<img th:src="@{/api/v1/minio/images/{fileName}(fileName=${user.getImage()})}" alt="userImage" >
-<div>
-    <span>ID:</span>
-    <span th:text="${user.id}"></span>
-</div>
-<div>
-    <span>Username:</span>
-    <span th:text="${user.username}"></span>
-</div>
-<div>
-    <span>Email:</span>
-    <span th:text="${user.email}"></span>
-</div>
-<div>
-    <span>First Name:</span>
-    <span th:text="${user.firstName}"></span>
-</div>
-<div>
-    <span>Last Name:</span>
-    <span th:text="${user.lastName}"></span>
-</div>
-<div th:if="${!user.getCreatedSongs().isEmpty()}">
-    <h2>Created Songs:</h2>
-    <div class="foreachListSong">
-        <div th:each="song : ${user.getCreatedSongs()}">
-            <span th:text="${song.title}"></span>
-            <a th:href="@{/songs/{id}(id=${song.id})}">open song</a>
+<div class="container">
+    <div class="sidebar">
+        <div class="logo">
+            <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="logo-img">
+            <span class="logo-text">Shaudify</span>
+        </div>
+        <ul class="navigation">
+            <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+            <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
+            <li><a href="/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a href="/albums"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+            <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
+            <li><a href="/users" class="active"><i class="fas fa-users"></i> Пользователи</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-top">
+            <h1 th:text="${user.username} + ' - Профиль'">Профиль пользователя</h1>
+            <div class="button-group">
+                <a th:href="@{/users/{id}(id=${currentUser.id})}" class="profile-button" th:if="${currentUser != null}">Мой Профиль</a>
+                <a href="/logout" class="logout-button">Выйти</a>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="user-info-header">
+                <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${user.getImage()})}" alt="Аватар пользователя" class="user-avatar">
+                <div class="user-details-overview">
+                    <span class="user-role">Пользователь</span>
+                    <h2 class="user-profile-name" th:text="${user.username}"></h2>
+                    <p class="user-profile-email" th:text="${user.email}"></p>
+                </div>
+            </div>
+
+            <div class="user-info-details">
+                <h3>Общая информация</h3>
+                <p><strong>ID:</strong> <span th:text="${user.id}"></span></p>
+                <p><strong>Имя:</strong> <span th:text="${user.firstName}"></span></p>
+                <p><strong>Фамилия:</strong> <span th:text="${user.lastName}"></span></p>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div th:if="${!user.getCreatedSongs().isEmpty()}" class="profile-songs-section">
+                <h3>Созданные песни</h3>
+                <div class="cards-grid">
+                    <div th:each="song : ${user.getCreatedSongs()}" class="card">
+                        <img th:src="@{/images/song_placeholder.png}" alt="Song Cover">
+                        <h4 th:text="${song.title}"></h4>
+                        <a th:href="@{/songs/{id}(id=${song.id})}" class="action-link">Открыть песню</a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${user.getCreatedSongs().isEmpty()}" class="no-results-message">
+                <p>Пользователь не создал ни одной песни.</p>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div th:if="${!user.getAlbums().isEmpty()}" class="profile-albums-section">
+                <h3>Созданные альбомы</h3>
+                <div class="cards-grid">
+                    <div th:each="album : ${user.getAlbums()}" class="card">
+                        <img th:src="@{/images/album_placeholder.png}" alt="Album Cover">
+                        <h4 th:text="${album.title}"></h4>
+                        <a th:href="@{/albums/{id}(id=${album.id})}" class="action-link">Открыть альбом</a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${user.getAlbums().isEmpty()}" class="no-results-message">
+                <p>Пользователь не создал ни одного альбома.</p>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div th:if="${!user.getLikedSongs().isEmpty()}" class="profile-liked-songs-section">
+                <h3>Понравившиеся песни</h3>
+                <div class="cards-grid">
+                    <div th:each="likedSong : ${songs}" class="card">
+                        <img th:src="@{/images/song_placeholder.png}" alt="Song Cover">
+                        <h4 th:text="${likedSong.title}"></h4>
+                        <a th:href="@{/songs/{id}(id=${likedSong.id})}" class="action-link">Открыть песню</a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${user.getLikedSongs().isEmpty()}" class="no-results-message">
+                <p>Пользователю не понравилась ни одна песня.</p>
+            </div>
+
+            <div class="profile-actions">
+                <a th:href="@{/users}" class="button-secondary"><i class="fas fa-arrow-left"></i> Вернуться к списку пользователей</a>
+            </div>
+
         </div>
     </div>
 </div>
-<div th:if="${user.getCreatedSongs().isEmpty()}">
-    <h2>didn't created any songs</h2>
-</div>
 
-<div th:if="${!user.getAlbums().isEmpty()}">
-    <h2>Created Albums:</h2>
-    <div class="foreachListSong">
-        <div th:each="album : ${user.getAlbums()}">
-            <span th:text="${album.title}"></span>
-            <a th:href="@{/albums/{id}(id=${album.id})}">open album</a>
-        </div>
-    </div>
+<div class="player-bar">
+    <p>Здесь будет панель управления воспроизведением</p>
 </div>
-<div th:if="${user.getAlbums().isEmpty()}">
-    <h2>didn't created any albums</h2>
-</div>
-
-
-<div th:if="${!user.getLikedSongs().isEmpty()}">
-    <h2>Liked Songs:</h2>
-    <div class="foreachListSong">
-        <div th:each="song : ${songs}">
-            <span th:text="${song.title}"></span>
-            <a th:href="@{/songs/{id}(id=${song.id})}">open song</a>
-        </div>
-    </div>
-</div>
-<div th:if="${user.getLikedSongs().isEmpty()}">
-    <h2>didn't like any songs</h2>
-</div>
-
-<a href="/users">Return to Users list</a>
 </body>
 </html>

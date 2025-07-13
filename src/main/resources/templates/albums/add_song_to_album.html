@@ -1,26 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>add song to album</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Добавить песню в альбом</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="Head">
-    <h1>Add Song To Album</h1>
-    <a href="/">Back to menu</a>
-</div>
-
-<div class="foreachList">
-    <div th:each="album : ${albums}">
-        <span th:text="${album.title}"></span>
-        <span th:text="${album.description}"></span>
-        <form th:action="@{/albums/add/{songId}(songId=${song.id})}" method="post">
-            <input type="hidden" name="albumId" th:value="${album.id}" />
-            <input type="submit" value="add" />
-        </form>
-
+<div class="container">
+    <div class="sidebar">
+        <div class="logo">
+            <img th:src="@{/images/logo.png}" alt="Shaudify Logo" class="logo-img">
+            <span class="logo-text">Spotify Clone</span>
+        </div>
+        <ul class="navigation">
+            <li><a href="/" class="active"><i class="fas fa-home"></i> <span>Главная</span></a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> <span>Поиск</span></a></li>
+            <li><a href="/playlists"><i class="fas fa-grip-lines-vertical"></i> <span>Плейлисты</span></a></li>
+            <li><a href="/songs/createSong"><i class="fa-solid fa-plus"></i> <span>Создать песню</span></a></li>
+            <li><a href="/albums/createAlbum"><i class="fa-solid fa-plus"></i> <span>Создать альбом</span></a></li>
+            <li><a href="/users/create"><i class="fa-solid fa-user-plus"></i> <span>Создать юзера</span></a></li>
+        </ul>
     </div>
+
+    <div class="main-content">
+        <div class="header-top">
+            <h1>Добавить песню в альбом</h1>
+            <div class="button-group">
+                <a th:href="@{/users/{id}(id=${#authentication.principal.id})}" class="profile-button">
+                    <i class="fas fa-user-circle"></i> Профиль
+                </a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-button">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="list-section">
+            <h3>Выберите альбом для песни "<span th:text="${song.title}"></span>"</h3>
+            <div th:if="${!albums.isEmpty()}" class="album-grid"> <div th:each="album : ${albums}" class="album-card"> <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${album.image})}" alt="Обложка альбома" class="card-image">
+                <h4 th:text="${album.title}"></h4>
+                <p th:text="${album.description}"></p>
+                <form th:action="@{/albums/add/{songId}(songId=${song.id})}" method="post">
+                    <input type="hidden" name="albumId" th:value="${album.id}" />
+                    <button type="submit" class="add-to-album-button">
+                        <i class="fas fa-plus"></i> Добавить
+                    </button>
+                </form>
+            </div>
+            </div>
+            <div th:if="${albums.isEmpty()}" class="no-items-message">
+                <p>Нет доступных альбомов для добавления этой песни.</p>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a th:href="@{/songs/{id}(id=${song.id})}" class="button-secondary">
+                <i class="fas fa-arrow-left"></i> Вернуться к песне
+            </a>
+            <a href="/" class="button-secondary">
+                <i class="fas fa-home"></i> На главную
+            </a>
+        </div>
+    </div>
+</div>
+<div class="player-bar">
+    <p>Панель управления плеером (скоро здесь появится настоящий плеер!)</p>
 </div>
 </body>
 </html>

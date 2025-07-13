@@ -1,89 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>albums</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Shaudify - Альбомы</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="Head">
-    <h1>All Albums</h1>
-    <a href="/">Back to menu</a>
-</div>
-<form action="/albums">
-    <label for="title">title:
-        <input type="text" id="title" name="title" th:value="${filter.getTitle()}">
-    </label>
-    <div>
-        <label for="page">Page:
-            <input type="number" id="page" name="page" th:value="${albums.metadata.page}">
-        </label>
-        <label for="size">Size:
-            <input type="number" id="size" name="size" th:value="${albums.metadata.size}">
-        </label>
+<div class="container">
+    <div class="sidebar">
+        <div class="logo">
+            <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="logo-img">
+            <span class="logo-text">Shaudify</span>
+        </div>
+        <ul class="navigation">
+            <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+            <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
+            <li><a href="/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a href="/albums" class="active"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+            <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
+            <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
+        </ul>
     </div>
-    <input type="submit" value="Search">
-</form>
-<div class="pagination">
 
-    <th:block th:if="${albums.metadata.page+1 > 1}">
-        <a th:href="@{/albums(title=${filter.getTitle()}, page=0)}">
-            Первая
-        </a>
-    </th:block>
-    <th:block th:unless="${albums.metadata.page+1 > 1}">
-        <a>
-            Первая
-        </a>
-    </th:block>
+    <div class="main-content">
+        <div class="header-top">
+            <h1>Все альбомы</h1>
+            <div class="button-group">
+                <a th:href="@{/users/{id}(id=${user.id})}" class="profile-button" th:if="${user != null}">Профиль</a>
+                <a href="/logout" class="logout-button">Выйти</a>
+            </div>
+        </div>
 
+        <div class="search-and-create">
+            <form th:action="@{/albums}" method="get" class="search-form">
+                <label for="title">Название:</label>
+                <input type="text" id="title" name="title" th:value="${filter.title}" placeholder="Поиск по названию">
+                <button type="submit" class="search-button"><i class="fas fa-search"></i> Поиск</button>
+            </form>
+            <a th:href="@{/albums/createAlbum}" class="create-button"><i class="fas fa-plus-circle"></i> Создать альбом</a>
+        </div>
 
-    <th:block th:if="${albums.metadata.page+1 >= 1}">
-        <a th:href="@{/albums(title=${filter.getTitle()}, page=${albums.metadata.page - 1})}">
-            ←
-        </a>
-    </th:block>
-    <th:block th:unless="${albums.metadata.page+1 >= 1}">
-        <a>
-            ←
-        </a>
-    </th:block>
+        <div class="list-section">
+            <div class="album-grid">
+                <div th:each="albumItem : ${albums.content}" class="album-card">
+                    <img th:src="@{/images/album_placeholder.png}" alt="Album Cover">
+                    <h4 th:text="${albumItem.title}"></h4>
+                    <p th:text="${albumItem.description}"></p>
+                    <p th:text="'Автор: ' + ${albumItem.getAuthor_id()}"></p>
+                    <a th:href="@{/albums/{id}(id=${albumItem.id})}" class="action-link"><i class="fas fa-external-link-alt"></i> Открыть альбом</a>
+                </div>
+                <div th:if="${albums.content.isEmpty()}" class="no-results">
+                    <span>Альбомы не найдены.</span>
+                </div>
+            </div>
+        </div>
 
-    <span class="current-page" th:text="'Страница ' + ${albums.metadata.page+1} + ' из ' + ${albums.metadata.totalSize}"></span>
+        <div class="pagination">
+            <a th:if="${albums.metadata.page > 0}" th:href="@{/albums(title=${filter.title}, page=0)}" class="pagination-link">Первая</a>
+            <a th:unless="${albums.metadata.page > 0}" class="pagination-link disabled">Первая</a>
 
-    <th:block th:if="${albums.metadata.page+1 < albums.metadata.totalSize}">
-        <a th:href="@{/albums(title=${filter.getTitle()}, page=${albums.metadata.page + 1})}">
-            →
-        </a>
-    </th:block>
-    <th:block th:unless="${albums.metadata.page+1 < albums.metadata.totalSize}">
-        <a>
-            →
-        </a>
-    </th:block>
+            <a th:if="${albums.metadata.page > 0}" th:href="@{/albums(title=${filter.title}, page=${albums.metadata.page - 1})}" class="pagination-link">←</a>
+            <a th:unless="${albums.metadata.page > 0}" class="pagination-link disabled">←</a>
 
-    <th:block th:if="${albums.metadata.page+1 < albums.metadata.totalSize}">
-        <a th:href="@{/albums(title=${filter.getTitle()}, page=${albums.metadata.totalSize})}">
-            Последняя
-        </a>
-    </th:block>
-    <th:block th:unless="${albums.metadata.page+1 < albums.metadata.totalSize}">
-        <a>
-            Последняя
-        </a>
-    </th:block>
-</div>
-<div class="foreachList">
-    <div th:each= "album : ${albums.content}">
-        <span th:text="${album.id}"></span>
-        <span th:text="${album.title}"></span>
-        <span th:text="${album.description}"></span>
-        <span th:text="'author: ' + ${#authentication.name}"></span>
-        <a th:href="@{/albums/{id}(id=${album.id})}">open album</a>
+            <span class="current-page" th:text="'Страница ' + (${albums.metadata.page + 1}) + ' из ' + ${albums.metadata.totalSize}"></span>
+
+            <a th:if="${albums.metadata.page + 1 < albums.metadata.totalSize}" th:href="@{/albums(title=${filter.title}, page=${albums.metadata.page + 1})}" class="pagination-link">→</a>
+            <a th:unless="${albums.metadata.page + 1 < albums.metadata.totalSize}" class="pagination-link disabled">→</a>
+
+            <a th:if="${albums.metadata.page + 1 < albums.metadata.totalSize}" th:href="@{/albums(title=${filter.title}, page=${albums.metadata.totalSize - 1})}" class="pagination-link">Последняя</a>
+            <a th:unless="${albums.metadata.page + 1 < albums.metadata.totalSize}" class="pagination-link disabled">Последняя</a>
+        </div>
     </div>
 </div>
-<a href="/albums/createAlbum">Create album</a>
-<br>
 
+<div class="player-bar">
+    <p>Здесь будет панель управления воспроизведением</p>
+</div>
 </body>
 </html>

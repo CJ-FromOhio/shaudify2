@@ -1,23 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Main Page</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Shaudify - Главная</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="Head">
-    <h1>MAIN</h1>
-    <h2 th:text="'user: ' + ${user.username}"></h2>
-    <div class="button-group">
-        <a href="/logout">logout</a>
-        <a th:href="@{/users/{id}(id=${user.id})}">user profile</a>
+<div class="container">
+    <div class="sidebar">
+        <div class="logo">
+            <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="logo-img">
+            <span class="logo-text">Shaudify</span>
+        </div>
+        <ul class="navigation">
+            <li><a href="/" class="active"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+            <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
+            <li><a href="/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a th:href="@{/albums}"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+            <li><a th:href="@{/songs}"><i class="fas fa-music"></i> Песни</a></li>
+            <li><a th:href="@{/users}"><i class="fas fa-users"></i> Пользователи</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-top">
+            <h2 class="user-greeting" th:text="'Привет, ' + ${user.username} + '!'"></h2>
+            <div class="button-group">
+                <a th:href="@{/users/{id}(id=${user.id})}" class="profile-button">Профиль</a>
+                <a href="/logout" class="logout-button">Выйти</a>
+            </div>
+        </div>
+
+        <div class="content-sections">
+            <section class="section">
+                <h3>Недавно прослушанные</h3>
+                <div class="cards-grid">
+                    <div class="card">
+                        <img th:src="@{/images/album_placeholder.png}" alt="Album Art">
+                        <h4>Название трека 1</h4>
+                        <p>Исполнитель</p>
+                    </div>
+                    <div class="card">
+                        <img th:src="@{/images/album_placeholder.png}" alt="Album Art">
+                        <h4>Название трека 2</h4>
+                        <p>Исполнитель</p>
+                    </div>
+                    <div class="card">
+                        <img th:src="@{/images/album_placeholder.png}" alt="Album Art">
+                        <h4>Название трека 3</h4>
+                        <p>Исполнитель</p>
+                    </div>
+                    <div class="card">
+                        <img th:src="@{/images/album_placeholder.png}" alt="Album Art">
+                        <h4>Название трека 4</h4>
+                        <p>Исполнитель</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>Рекомендовано для тебя</h3>
+                <div class="cards-grid">
+                    <div class="card">
+                        <img th:src="@{/images/playlist_placeholder.png}" alt="Playlist Art">
+                        <h4>Плейлист 1</h4>
+                        <p>Описание плейлиста</p>
+                    </div>
+                    <div class="card">
+                        <img th:src="@{/images/playlist_placeholder.png}" alt="Playlist Art">
+                        <h4>Плейлист 2</h4>
+                        <p>Описание плейлиста</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>Популярные альбомы</h3>
+                <div class="cards-grid">
+                    <div class="card">
+                        <img th:src="@{/images/album_placeholder.png}" alt="Album Art">
+                        <h4>Альбом A</h4>
+                        <p>Артист 1</p>
+                    </div>
+                    <div class="card">
+                        <img th:src="@{/images/album_placeholder.png}" alt="Album Art">
+                        <h4>Альбом B</h4>
+                        <p>Артист 2</p>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 </div>
-<a href="/songs">List songs</a>
-<br>
-<a href="/users">List users</a>
-<br>
-<a href="/albums">List albums</a>
+
+<div class="player-bar">
+    <p>Здесь будет панель управления воспроизведением</p>
+</div>
 </body>
 </html>

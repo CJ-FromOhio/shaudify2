@@ -1,16 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>403</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Ошибка: 500</title> <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
-<div class="Head">
-    <h1>Forbidden</h1>
-    <h2>403</h2>
-    <a href="/">Back to menu</a>
+<body class="login-body"> <div class="login-page-container">
+    <div class="login-brand">
+        <img th:src="@{/images/logo.png}" alt="Логотип Shaudify" class="login-logo-img">
+        <h1 class="login-brand-name">Shaudify</h1>
+    </div>
+
+    <div class="login-form-box">
+        <h2 class="login-box-title" style="color: #ff4d4d; margin-bottom: 15px;">Упс! Что-то пошло не так...</h2>
+        <h1 class="error-code" style="color: #fff; font-size: 3em; margin-bottom: 20px;" th:text="${status} ?: '403'">403</h1>
+        <p class="error-message-text" style="color: #b3b3b3; font-size: 1.1em; margin-bottom: 30px;" th:text="${error} ?: 'Внутренняя ошибка сервера'">Внутренняя ошибка сервера</p>
+
+        <div class="login-divider"></div>
+
+        <a href="/" class="login-register-button">
+            <i class="fas fa-home"></i> Перейти на главную
+        </a>
+    </div>
 </div>
-<br>
 </body>
 </html>

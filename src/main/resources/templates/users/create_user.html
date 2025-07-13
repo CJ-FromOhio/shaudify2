@@ -1,32 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
-
+    <title>Shaudify - Регистрация</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
 </head>
-<body>
-<div class="Head">
-    <h1>Create User</h1>
-</div>
-<div class="fields">
-    <form th:action="@{/users/createUser}" th:object="${createUserFormDto}" method="post" enctype="multipart/form-data">
-        <p>username <input type="text" th:field="*{createUserDto.username}"></p>
-        <p>email <input type="text" th:field="*{createUserDto.email}"></p>
-        <p>firstname <input type="text" th:field="*{createUserDto.firstName}"></p>
-        <p>lastName <input type="text" th:field="*{createUserDto.lastName}"></p>
-        <p>password <input type="password" th:field="*{createUserDto.password}"></p>
-        <p>passwordConfirm <input type="password" th:field="*{createUserDto.passwordConfirm}"></p>
-        <p>avatar <input type="file" th:field="*{imageFile}"></p>
-            <div class="foreachList">
-                <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
-                    <span th:text="${error}"></span>
-                </div>
+<body class="login-body">
+<div class="login-page-container">
+    <div class="login-form-box">
+        <h2 class="login-box-title">Создайте аккаунт Shaudify</h2>
+
+        <form th:action="@{/users/createUser}" th:object="${createUserFormDto}" method="post" enctype="multipart/form-data" class="login-main-form">
+            <div class="form-group">
+                <label for="username">Имя пользователя</label>
+                <input type="text" id="username" th:field="*{createUserDto.username}" placeholder="Придумайте имя пользователя" required>
             </div>
-        <input type="submit" value="Create">
-        <a href="/">menu</a>
-    </form>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{createUserDto.email}" placeholder="Ваш email адрес" required>
+            </div>
+            <div class="form-group">
+                <label for="firstName">Имя</label>
+                <input type="text" id="firstName" th:field="*{createUserDto.firstName}" placeholder="Ваше имя">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Фамилия</label>
+                <input type="text" id="lastName" th:field="*{createUserDto.lastName}" placeholder="Ваша фамилия">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" th:field="*{createUserDto.password}" placeholder="Придумайте пароль" required>
+            </div>
+            <div class="form-group">
+                <label for="passwordConfirm">Повторите пароль</label>
+                <input type="password" id="passwordConfirm" th:field="*{createUserDto.passwordConfirm}" placeholder="Повторите ваш пароль" required>
+            </div>
+            <div class="form-group">
+                <label for="avatar">Аватар</label>
+                <input type="file" id="avatar" th:field="*{imageFile}" class="custom-file-input">
+            </div>
+
+            <button type="submit" class="login-submit-button">Зарегистрироваться</button>
+        </form>
+
+        <div class="login-messages">
+            <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+                <p class="error-message" th:text="${error}"></p>
+            </div>
+        </div>
+
+        <div class="login-divider"></div>
+
+        <p class="login-no-account-text">Уже есть аккаунт?</p>
+        <a th:href="@{/login}" class="login-register-button">Войти в Shaudify</a>
+    </div>
 </div>
 </body>
 </html>

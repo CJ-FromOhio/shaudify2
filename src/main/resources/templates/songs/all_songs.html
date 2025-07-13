@@ -1,88 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Shaudify - Песни</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="Head">
-    <h1>All Songs</h1>
-    <a href="/">Back to menu</a>
-</div>
-<form action="/songs">
-    <label for="title">title:
-        <input type="text" id="title" name="title" th:value="${filter.getTitle()}">
-    </label>
-    <input type="submit" value="Search">
-</form>
-<div class="pagination">
+<div class="container">
+    <div class="sidebar">
+        <div class="logo">
+            <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="logo-img">
+            <span class="logo-text">Shaudify</span>
+        </div>
+        <ul class="navigation">
+            <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+            <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
+            <li><a href="/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a href="/albums"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+            <li><a href="/songs" class="active"><i class="fas fa-music"></i> Песни</a></li>
+            <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
+        </ul>
+    </div>
 
-    <th:block th:if="${songs.metadata.page+1 > 1}">
-        <a th:href="@{/songs(title=${filter.getTitle()}, page=0)}">
-            Первая
-        </a>
-    </th:block>
-    <th:block th:unless="${songs.metadata.page+1 > 1}">
-        <a>
-            Первая
-        </a>
-    </th:block>
+    <div class="main-content">
+        <div class="header-top">
+            <h1>Все песни</h1>
+            <div class="button-group">
+                <a th:href="@{/users/{id}(id=${user.id})}" class="profile-button" th:if="${user != null}">Профиль</a>
+                <a href="/logout" class="logout-button">Выйти</a>
+            </div>
+        </div>
 
+        <div class="search-and-create">
+            <form th:action="@{/songs}" method="get" class="search-form">
+                <label for="title">Название:</label>
+                <input type="text" id="title" name="title" th:value="${filter.title}" placeholder="Поиск по названию">
+                <button type="submit" class="search-button"><i class="fas fa-search"></i> Поиск</button>
+            </form>
+            <a th:href="@{/songs/createSong}" class="create-button"><i class="fas fa-plus-circle"></i> Добавить песню</a>
+        </div>
 
-    <th:block th:if="${songs.metadata.page+1 >= 1}">
-        <a th:href="@{/songs(title=${filter.getTitle()}, page=${songs.metadata.page - 1})}">
-            ←
-        </a>
-    </th:block>
-    <th:block th:unless="${songs.metadata.page+1 >= 1}">
-        <a>
-            ←
-        </a>
-    </th:block>
-
-    <span class="current-page" th:text="'Страница ' + ${songs.metadata.page+1} + ' из ' + ${songs.metadata.totalSize}"></span>
-
-    <th:block th:if="${songs.metadata.page+1 < songs.metadata.totalSize}">
-        <a th:href="@{/songs(title=${filter.getTitle()}, page=${songs.metadata.page + 1})}">
-            →
-        </a>
-    </th:block>
-    <th:block th:unless="${songs.metadata.page+1 < songs.metadata.totalSize}">
-        <a>
-            →
-        </a>
-    </th:block>
-
-    <th:block th:if="${songs.metadata.page+1 < songs.metadata.totalSize}">
-        <a th:href="@{/songs(title=${filter.getTitle()}, page=${songs.metadata.totalSize})}">
-            Последняя
-        </a>
-    </th:block>
-    <th:block th:unless="${songs.metadata.page+1 < songs.metadata.totalSize}">
-        <a>
-            Последняя
-        </a>
-    </th:block>
-</div>
-<div class="foreachList">
-    <div th:each= "song : ${songs.content}">
-        <span th:text="${song.id}"></span>
-        <span th:text="${song.title}"></span>
-        <span th:text="${song.description}"></span>
-        <a th:href="@{/songs/{id}(id=${song.id})}">open profile</a>
-        <a th:href="@{/albums/add/{songId}(songId=${song.id})}">add to album</a>
-<!--        <a th:href="@{/like/{id}/like(id=${song.id})}">like song</a>-->
-        <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
-            <input type="submit" value="Like">
-            <div class="foreachList">
-                <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
-                    <span th:text="${error}"></span>
+        <div class="list-section">
+            <div class="song-list">
+                <div class="song-item-header">
+                    <span>ID</span>
+                    <span>Название</span>
+                    <span>Описание</span>
+                    <span>Действия</span>
+                </div>
+                <div th:each="songItem : ${songs.content}" class="song-item">
+                    <span th:text="${songItem.id}"></span>
+                    <span th:text="${songItem.title}"></span>
+                    <span th:text="${songItem.description}"></span>
+                    <div class="song-actions">
+                        <a th:href="@{/songs/{id}(id=${songItem.id})}" class="action-link"><i class="fas fa-info-circle"></i> Детали</a>
+                        <a th:href="@{/albums/add/{songId}(songId=${songItem.id})}" class="action-link"><i class="fas fa-compact-disc"></i> В альбом</a>
+                        <form th:action="@{/songs/{id}/like(id=${songItem.id})}" method="post" class="like-form">
+                            <button type="submit" class="like-button"><i class="fas fa-heart"></i> Лайк</button>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${songs.content.isEmpty()}" class="no-results">
+                    <span>Песни не найдены.</span>
                 </div>
             </div>
-        </form>
+            <div class="error-messages" th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+                <span th:text="${error}"></span>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <a th:if="${songs.metadata.page > 0}" th:href="@{/songs(title=${filter.title}, page=0)}" class="pagination-link">Первая</a>
+            <a th:unless="${songs.metadata.page > 0}" class="pagination-link disabled">Первая</a>
+
+            <a th:if="${songs.metadata.page > 0}" th:href="@{/songs(title=${filter.title}, page=${songs.metadata.page - 1})}" class="pagination-link">←</a>
+            <a th:unless="${songs.metadata.page > 0}" class="pagination-link disabled">←</a>
+
+            <span class="current-page" th:text="'Страница ' + (${songs.metadata.page + 1}) + ' из ' + ${songs.metadata.totalSize}"></span>
+
+            <a th:if="${songs.metadata.page + 1 < songs.metadata.totalSize}" th:href="@{/songs(title=${filter.title}, page=${songs.metadata.page + 1})}" class="pagination-link">→</a>
+            <a th:unless="${songs.metadata.page + 1 < songs.metadata.totalSize}" class="pagination-link disabled">→</a>
+
+            <a th:if="${songs.metadata.page + 1 < songs.metadata.totalSize}" th:href="@{/songs(title=${filter.title}, page=${songs.metadata.totalSize - 1})}" class="pagination-link">Последняя</a>
+            <a th:unless="${songs.metadata.page + 1 < songs.metadata.totalSize}" class="pagination-link disabled">Последняя</a>
+        </div>
     </div>
 </div>
-<a href="/songs/createSong">Create song</a>
+
+<div class="player-bar">
+    <p>Здесь будет панель управления воспроизведением</p>
+</div>
 </body>
 </html>
