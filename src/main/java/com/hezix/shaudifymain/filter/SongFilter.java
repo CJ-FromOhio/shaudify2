@@ -11,5 +11,5 @@ import org.checkerframework.checker.units.qual.N;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class SongFilter {
-    private String title;
+    private String title = "";
 }

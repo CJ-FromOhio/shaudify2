@@ -24,6 +24,55 @@
     </div>
     <input type="submit" value="Search">
 </form>
+<div class="pagination">
+
+    <th:block th:if="${albums.metadata.page+1 > 1}">
+        <a th:href="@{/albums(title=${filter.getTitle()}, page=0)}">
+            Первая
+        </a>
+    </th:block>
+    <th:block th:unless="${albums.metadata.page+1 > 1}">
+        <a>
+            Первая
+        </a>
+    </th:block>
+
+
+    <th:block th:if="${albums.metadata.page+1 >= 1}">
+        <a th:href="@{/albums(title=${filter.getTitle()}, page=${albums.metadata.page - 1})}">
+            ←
+        </a>
+    </th:block>
+    <th:block th:unless="${albums.metadata.page+1 >= 1}">
+        <a>
+            ←
+        </a>
+    </th:block>
+
+    <span class="current-page" th:text="'Страница ' + ${albums.metadata.page+1} + ' из ' + ${albums.metadata.totalSize}"></span>
+
+    <th:block th:if="${albums.metadata.page+1 < albums.metadata.totalSize}">
+        <a th:href="@{/albums(title=${filter.getTitle()}, page=${albums.metadata.page + 1})}">
+            →
+        </a>
+    </th:block>
+    <th:block th:unless="${albums.metadata.page+1 < albums.metadata.totalSize}">
+        <a>
+            →
+        </a>
+    </th:block>
+
+    <th:block th:if="${albums.metadata.page+1 < albums.metadata.totalSize}">
+        <a th:href="@{/albums(title=${filter.getTitle()}, page=${albums.metadata.totalSize})}">
+            Последняя
+        </a>
+    </th:block>
+    <th:block th:unless="${albums.metadata.page+1 < albums.metadata.totalSize}">
+        <a>
+            Последняя
+        </a>
+    </th:block>
+</div>
 <div class="foreachList">
     <div th:each= "album : ${albums.content}">
         <span th:text="${album.id}"></span>

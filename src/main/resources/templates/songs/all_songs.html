@@ -14,16 +14,57 @@
     <label for="title">title:
         <input type="text" id="title" name="title" th:value="${filter.getTitle()}">
     </label>
-    <div>
-        <label for="page">Page:
-            <input type="number" id="page" name="page" th:value="${songs.metadata.page}">
-        </label>
-        <label for="size">Size:
-            <input type="number" id="size" name="size" th:value="${songs.metadata.size}">
-        </label>
-    </div>
     <input type="submit" value="Search">
 </form>
+<div class="pagination">
+
+    <th:block th:if="${songs.metadata.page+1 > 1}">
+        <a th:href="@{/songs(title=${filter.getTitle()}, page=0)}">
+            Первая
+        </a>
+    </th:block>
+    <th:block th:unless="${songs.metadata.page+1 > 1}">
+        <a>
+            Первая
+        </a>
+    </th:block>
+
+
+    <th:block th:if="${songs.metadata.page+1 >= 1}">
+        <a th:href="@{/songs(title=${filter.getTitle()}, page=${songs.metadata.page - 1})}">
+            ←
+        </a>
+    </th:block>
+    <th:block th:unless="${songs.metadata.page+1 >= 1}">
+        <a>
+            ←
+        </a>
+    </th:block>
+
+    <span class="current-page" th:text="'Страница ' + ${songs.metadata.page+1} + ' из ' + ${songs.metadata.totalSize}"></span>
+
+    <th:block th:if="${songs.metadata.page+1 < songs.metadata.totalSize}">
+        <a th:href="@{/songs(title=${filter.getTitle()}, page=${songs.metadata.page + 1})}">
+            →
+        </a>
+    </th:block>
+    <th:block th:unless="${songs.metadata.page+1 < songs.metadata.totalSize}">
+        <a>
+            →
+        </a>
+    </th:block>
+
+    <th:block th:if="${songs.metadata.page+1 < songs.metadata.totalSize}">
+        <a th:href="@{/songs(title=${filter.getTitle()}, page=${songs.metadata.totalSize})}">
+            Последняя
+        </a>
+    </th:block>
+    <th:block th:unless="${songs.metadata.page+1 < songs.metadata.totalSize}">
+        <a>
+            Последняя
+        </a>
+    </th:block>
+</div>
 <div class="foreachList">
     <div th:each= "song : ${songs.content}">
         <span th:text="${song.id}"></span>

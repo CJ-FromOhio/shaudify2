@@ -12,7 +12,7 @@ public class PageResponse<T> {
     Metadata metadata;
 
     public static <T> PageResponse<T> of(Page<T> page){
-      var metadata = new Metadata(page.getNumber(), page.getSize(), page.getTotalElements());
+      var metadata = new Metadata(page.getNumber(), page.getSize(), page.getTotalPages(),page.getTotalElements());
       return new PageResponse<>(page.getContent(), metadata);
     };
 
@@ -20,6 +20,7 @@ public class PageResponse<T> {
     public static class Metadata {
         int page;
         int size;
+        int totalSize;
         long totalElements;
     }
 }

@@ -11,5 +11,5 @@ import org.checkerframework.checker.units.qual.A;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class AlbumFilter {
-    private String title;
+    private String title = "";
 }

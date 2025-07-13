@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class UserFilter {
-    private String firstName;
-    private String lastName;
+    private String firstName = "";
+    private String lastName = "";
 }

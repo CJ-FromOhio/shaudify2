@@ -18,16 +18,58 @@
     <label for="lastName">Lastname:
         <input type="text" id="lastName" name="lastName" th:value="${filter.getLastName()}">
     </label>
-    <div>
-        <label for="page">Page:
-            <input type="number" id="page" name="page" th:value="${users.metadata.page}">
-        </label>
-        <label for="size">Size:
-            <input type="number" id="size" name="size" th:value="${users.metadata.size}">
-        </label>
-    </div>
     <input type="submit" value="Search">
 </form>
+
+<div class="pagination">
+
+    <th:block th:if="${users.metadata.page + 1 > 1}">
+        <a th:href="@{/users(firstName=${filter.getFirstName()}, lastName=${filter.getLastName()}, page=0)}">
+            Первая
+        </a>
+    </th:block>
+    <th:block th:unless="${users.metadata.page + 1 > 1}">
+        <a>
+            Первая
+        </a>
+    </th:block>
+
+
+    <th:block th:if="${users.metadata.page + 1 >= 1}">
+        <a th:href="@{/users(firstName=${filter.getFirstName()}, lastName=${filter.getLastName()}, page=${users.metadata.page - 1})}">
+            ←
+        </a>
+    </th:block>
+    <th:block th:unless="${users.metadata.page + 1 >= 1}">
+        <a>
+            ←
+        </a>
+    </th:block>
+
+    <span class="current-page" th:text="'Страница ' + ${users.metadata.page+1} + ' из ' + ${users.metadata.totalSize}"></span>
+
+    <th:block th:if="${users.metadata.page+1 < users.metadata.totalSize}">
+        <a th:href="@{/users(firstName=${filter.getFirstName()}, lastName=${filter.getLastName()}, page=${users.metadata.page + 1})}">
+            →
+        </a>
+    </th:block>
+    <th:block th:unless="${users.metadata.page+1 < users.metadata.totalSize}">
+        <a>
+            →
+        </a>
+    </th:block>
+
+    <th:block th:if="${users.metadata.page+1 < users.metadata.totalSize}">
+        <a th:href="@{/users(firstName=${filter.getFirstName()}, lastName=${filter.getLastName()}, page=${users.metadata.totalSize})}">
+            Последняя
+        </a>
+    </th:block>
+    <th:block th:unless="${users.metadata.page+1 < users.metadata.totalSize}">
+        <a>
+            Последняя
+        </a>
+    </th:block>
+</div>
 <div class="foreachList">
     <div th:each="user : ${users.content}">
         <span th:text="${user.username}"></span>
