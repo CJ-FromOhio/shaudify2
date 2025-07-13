@@ -20,7 +20,8 @@ public class MinioImageService {
         }catch(Exception e){
             throw new FileUploadException("Image upload failed" + e.getMessage());
         }
-        if(image.isEmpty() || image.getOriginalFilename() == null){
+        String originalFilename = image.getOriginalFilename();
+        if(image.isEmpty() || originalFilename == null){
             throw new FileUploadException("image upload failed. image must have name");
         }
         String fileName = minioService.generateFileName(image);
@@ -34,5 +35,4 @@ public class MinioImageService {
         minioService.saveImage(inputStream, fileName, image.getSize());
         return fileName;
     }
-
 }

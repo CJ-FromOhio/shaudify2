@@ -21,7 +21,7 @@ public class FilterSongRepositoryImpl implements FilterSongRepository {
     @Override
     public List<Song> findAllByFilter(SongFilter songFilter) {
         var predicate = QPredicates.builder()
-                .add(songFilter.title(), song.title::containsIgnoreCase)
+                .add(songFilter.getTitle(), song.title::containsIgnoreCase)
                 .build();
 
         return new JPAQuery<Song>(em)

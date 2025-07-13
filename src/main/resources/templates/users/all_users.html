@@ -13,10 +13,10 @@
 </div>
 <form action="/users">
     <label for="firstName">Firstname:
-        <input type="text" id="firstName" name="firstName" th:value="${filter.firstName}">
+        <input type="text" id="firstName" name="firstName" th:value="${filter.getFirstName()}">
     </label>
     <label for="lastName">Lastname:
-        <input type="text" id="lastName" name="lastName" th:value="${filter.lastName}">
+        <input type="text" id="lastName" name="lastName" th:value="${filter.getLastName()}">
     </label>
     <div>
         <label for="page">Page:

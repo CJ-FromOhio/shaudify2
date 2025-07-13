@@ -23,7 +23,7 @@ public class FilterAlbumRepositoryImpl implements FilterAlbumRepository {
     @Override
     public List<Album> findAllByFilter(AlbumFilter albumFilter) {
         var predicate = QPredicates.builder()
-                .add(albumFilter.title(), album.title::containsIgnoreCase)
+                .add(albumFilter.getTitle(), album.title::containsIgnoreCase)
                 .build();
         return new JPAQuery<Album>(em)
                 .from(album)

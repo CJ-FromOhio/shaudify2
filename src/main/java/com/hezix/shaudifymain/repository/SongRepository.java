@@ -13,4 +13,5 @@ import java.util.List;
 public interface SongRepository extends JpaRepository<Song, Long>,
         QuerydslPredicateExecutor<Song> {
     List<Song> findSongsByCreatorId(Long creatorId);
+
 }
