@@ -1,9 +1,9 @@
 package com.hezix.shaudifymain.controller.rest;
 
-import com.hezix.shaudifymain.annotations.CustomRestControllerAdviceAnnotation;
+import com.hezix.shaudifymain.util.annotations.CustomRestControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
-import com.hezix.shaudifymain.service.SongService;
+import com.hezix.shaudifymain.service.song.SongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

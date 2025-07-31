@@ -6,30 +6,31 @@ import com.hezix.shaudifymain.entity.song.Song;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
 
-@EqualsAndHashCode(exclude = {"createdSong","likedSongs"})
+@EqualsAndHashCode(exclude = {"createdSongs","likedSongs"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"createdSong","likedSong","albums"})
+@JsonIgnoreProperties({"createdSongs","likedSongs","albums"})
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column()
     private String username;
-
+    @Column()
     private String password;
-
+    @Column()
     private String email;
-
+    @Column()
     private String firstName;
-
+    @Column
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -39,7 +40,7 @@ public class User{
             fetch = FetchType.LAZY,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Builder.Default
-    private List<Song> createdSong = new ArrayList<>();
+    private List<Song> createdSongs = new ArrayList<>();
 
     @Builder.Default
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaudify - Регистрация</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+</head>
+<body class="login-body">
+<div class="login-page-container">
+    <div class="login-form-box">
+        <h2 class="login-box-title">Создайте аккаунт Shaudify</h2>
+
+        <form th:action="@{/users/complete_profile}" th:object="${createUserFormDto}" method="post" enctype="multipart/form-data" class="login-main-form">
+            <div class="form-group">
+                <label for="username">Имя пользователя</label>
+                <input type="text" id="username" th:field="*{createUserDto.username}" placeholder="Придумайте имя пользователя" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{createUserDto.email}" placeholder="Ваш email адрес" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="firstName">Имя</label>
+                <input type="text" id="firstName" th:field="*{createUserDto.firstName}" placeholder="Ваше имя">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Фамилия</label>
+                <input type="text" id="lastName" th:field="*{createUserDto.lastName}" placeholder="Ваша фамилия">
+            </div>
+            <div class="form-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" th:field="*{createUserDto.password}" placeholder="Придумайте пароль" required>
+            </div>
+            <div class="form-group">
+                <label for="passwordConfirm">Повторите пароль</label>
+                <input type="password" id="passwordConfirm" th:field="*{createUserDto.passwordConfirm}" placeholder="Повторите ваш пароль" required>
+            </div>
+            <div class="form-group">
+                <label for="avatar">Аватар</label>
+                <input type="file" id="avatar" th:field="*{imageFile}" class="custom-file-input">
+            </div>
+
+            <button type="submit" class="login-submit-button">Зарегестрироваться</button>
+        </form>
+
+        <div class="login-messages">
+            <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}">
+                <p class="error-message" th:text="${error}"></p>
+            </div>
+        </div>
+
+        <div class="login-divider"></div>
+    </div>
+</div>
+</body>
+</html>

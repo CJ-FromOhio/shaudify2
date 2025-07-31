@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateUserFormDto {
-    private CreateUserDto createUserDto;
+    @Builder.Default
+    private CreateUserDto createUserDto = new CreateUserDto();
     private MultipartFile imageFile;
 }

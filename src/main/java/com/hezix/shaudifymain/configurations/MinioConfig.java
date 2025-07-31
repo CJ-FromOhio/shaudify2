@@ -1,6 +1,6 @@
 package com.hezix.shaudifymain.configurations;
 
-import com.hezix.shaudifymain.props.MinioProperties;
+import com.hezix.shaudifymain.util.props.MinioProperties;
 import io.minio.MinioClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +18,6 @@ public class MinioConfig {
                 .endpoint(minioProperties.getUrl())
                 .credentials(minioProperties.getAccessKey(),
                         minioProperties.getSecretKey())
-
                 .build();
     }
 }

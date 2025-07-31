@@ -1,6 +1,5 @@
 package com.hezix.shaudifymain.entity.song;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.user.User;
@@ -8,8 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @EqualsAndHashCode()
 @Data
@@ -26,6 +23,7 @@ public class Song {
     private String title;
 
     private String description;
+
     @Enumerated(EnumType.STRING)
     private Genre genre;
 

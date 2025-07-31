@@ -1,14 +1,13 @@
 package com.hezix.shaudifymain.controller.web;
 
-import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
+import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.song.form.CreateSongFormDto;
 
 import com.hezix.shaudifymain.entity.web.PageResponse;
-import com.hezix.shaudifymain.filter.SongFilter;
-import com.hezix.shaudifymain.service.AlbumService;
-import com.hezix.shaudifymain.service.MinioImageService;
-import com.hezix.shaudifymain.service.SongService;
+import com.hezix.shaudifymain.util.filter.SongFilter;
+import com.hezix.shaudifymain.service.album.AlbumService;
+import com.hezix.shaudifymain.service.song.SongService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package com.hezix.shaudifymain.repository.impl;
 
 import com.hezix.shaudifymain.entity.song.Song;
-import com.hezix.shaudifymain.filter.QPredicates;
-import com.hezix.shaudifymain.filter.SongFilter;
+import com.hezix.shaudifymain.util.filter.QPredicates;
+import com.hezix.shaudifymain.util.filter.SongFilter;
 import com.hezix.shaudifymain.repository.FilterSongRepository;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;

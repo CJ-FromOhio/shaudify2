@@ -1,9 +1,7 @@
 package com.hezix.shaudifymain.repository;
 
 import com.hezix.shaudifymain.entity.song.Song;
-import com.hezix.shaudifymain.entity.user.User;
-import com.hezix.shaudifymain.filter.SongFilter;
-import com.hezix.shaudifymain.filter.UserFilter;
+import com.hezix.shaudifymain.util.filter.SongFilter;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

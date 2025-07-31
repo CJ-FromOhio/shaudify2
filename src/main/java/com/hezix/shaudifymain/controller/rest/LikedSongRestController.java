@@ -1,9 +1,8 @@
 package com.hezix.shaudifymain.controller.rest;
 
-import com.hezix.shaudifymain.annotations.CustomRestControllerAdviceAnnotation;
-import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.util.annotations.CustomRestControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
-import com.hezix.shaudifymain.service.LikedSongService;
+import com.hezix.shaudifymain.service.song.LikedSongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

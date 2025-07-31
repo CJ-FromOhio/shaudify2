@@ -1,16 +1,15 @@
 package com.hezix.shaudifymain.controller.web;
 
 
-import com.hezix.shaudifymain.annotations.CustomControllerAdviceAnnotation;
-import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
+import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
 import com.hezix.shaudifymain.entity.album.form.CreateAlbumFormDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.entity.web.PageResponse;
-import com.hezix.shaudifymain.filter.AlbumFilter;
-import com.hezix.shaudifymain.service.AlbumService;
-import com.hezix.shaudifymain.service.SongService;
-import com.hezix.shaudifymain.service.UserService;
+import com.hezix.shaudifymain.util.filter.AlbumFilter;
+import com.hezix.shaudifymain.service.album.AlbumService;
+import com.hezix.shaudifymain.service.song.SongService;
+import com.hezix.shaudifymain.service.user.UserService;
 import com.hezix.shaudifymain.util.BindingResultParser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Controller

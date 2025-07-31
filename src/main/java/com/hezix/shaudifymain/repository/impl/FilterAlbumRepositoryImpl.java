@@ -1,11 +1,9 @@
 package com.hezix.shaudifymain.repository.impl;
 
 import com.hezix.shaudifymain.entity.album.Album;
-import com.hezix.shaudifymain.entity.album.QAlbum;
-import com.hezix.shaudifymain.filter.AlbumFilter;
-import com.hezix.shaudifymain.filter.QPredicates;
+import com.hezix.shaudifymain.util.filter.AlbumFilter;
+import com.hezix.shaudifymain.util.filter.QPredicates;
 import com.hezix.shaudifymain.repository.FilterAlbumRepository;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CreateUserDto {
+    private Long id;
     @Size(min = 4, max = 32, message = "поле username должно быть от 4 до 32 символов")
     @NotBlank(message = "поле username не должно быть пустым")
     private String username;

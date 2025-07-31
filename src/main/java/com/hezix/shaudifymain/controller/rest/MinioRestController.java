@@ -1,13 +1,11 @@
 package com.hezix.shaudifymain.controller.rest;
 
-import com.hezix.shaudifymain.props.MinioProperties;
+import com.hezix.shaudifymain.util.props.MinioProperties;
 import io.minio.GetObjectArgs;
-import io.minio.GetObjectResponse;
 import io.minio.MinioClient;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import okhttp3.internal.http2.Header;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
