@@ -12,6 +12,14 @@ services:
       - "9000:9000"
     volumes:
       - minio_volume:/minio
+  redis:
+    image: redis:8.0-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_volume:/redis
   database:
     restart: always
     container_name: postgres_17
@@ -33,6 +41,7 @@ services:
     depends_on:
       - database
       - minio
+      - redis
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -41,5 +50,7 @@ volumes:
   pg_volume:
     driver: local
   minio_volume:
+    driver: local
+  redis_volume:
     driver: local
 
