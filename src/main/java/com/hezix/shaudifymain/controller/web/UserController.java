@@ -66,11 +66,9 @@ public class UserController {
     @GetMapping("/complete_profile")
     public String completeProfile(@AuthenticationPrincipal OidcUser oidcUser, Model model) {
         var createUserFormDto = new CreateUserFormDto();
-        var userReadDto = userService.findUserByEmail(oidcUser.getEmail());
         var userCreateDto = createUserFormDto.getCreateUserDto();
 
-        userCreateDto.setId(userReadDto.getId());
-        userCreateDto.setEmail(userReadDto.getEmail());
+        userCreateDto.setEmail(oidcUser.getEmail());
 
         if(oidcUser.getGivenName() != null) {
             userCreateDto.setFirstName(oidcUser.getGivenName());
@@ -93,7 +91,7 @@ public class UserController {
         var createUserDto = createUserFormDto.getCreateUserDto();
         var imageFile = createUserFormDto.getImageFile();
 
-        User updated = userService.update(createUserDto);
+        var updated = userService.save(createUserDto);
         userService.uploadImage(updated.getId(), imageFile);
         return "redirect:/users/" + updated.getId();
     }

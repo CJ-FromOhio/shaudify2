@@ -23,13 +23,13 @@ public class MainController {
         String username;
         if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
+            model.addAttribute("user", userService.findUserByUsername(username));
         } else if (principal instanceof OidcUser) {
             username = ((OidcUser) principal).getEmail();
+            model.addAttribute("user", userService.findUserByEmail(username));
         } else {
             throw new IllegalStateException("Неподдерживаемый тип аутентификации");
         }
-
-        model.addAttribute("user", userService.findUserByUsername(username));
         return "main";
     }
 

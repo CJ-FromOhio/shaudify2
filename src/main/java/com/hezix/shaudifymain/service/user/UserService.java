@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.hezix.shaudifymain.entity.user.QUser.user;
 
@@ -77,6 +78,14 @@ public class UserService {
     public ReadUserDto findUserByEmail(String email) {
         return userReadMapper.toDto(userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found")));
+    }
+    @Cacheable(
+            value = "users_optional:email",
+            key = "#email"
+    )
+    @Transactional(readOnly = true)
+    public Optional<User> findUserOptionalByEmail(String email) {
+        return  userRepository.findByEmail(email);
     }
 
     @Transactional
