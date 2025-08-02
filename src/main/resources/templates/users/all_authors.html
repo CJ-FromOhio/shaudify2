@@ -23,33 +23,29 @@
             <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
             <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
             <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
-            <li><a href="/users/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a href="/users/artists" class="active"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
             <li><a href="/albums"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
             <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
-            <li><a href="/users" class="active"><i class="fas fa-users"></i> Пользователи</a></li>
+            <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
         </ul>
     </div>
 
     <div class="main-content">
         <div class="header-top">
-            <h1>Все пользователи</h1>
+            <h1>Все артисты</h1>
             <div class="button-group">
-                <a th:href="@{/users/{id}(id=${user.id})}" class="profile-button" th:if="${user != null}">Профиль</a>
                 <a href="/logout" class="logout-button">Выйти</a>
             </div>
         </div>
 
         <div class="search-and-create">
-            <form th:action="@{/users}" method="get" class="search-form">
-                <label for="firstName">Имя:</label>
-                <input type="text" id="firstName" name="firstName" th:value="${filter.firstName}" placeholder="Поиск по имени">
-
-                <label for="lastName">Фамилия:</label>
-                <input type="text" id="lastName" name="lastName" th:value="${filter.lastName}" placeholder="Поиск по фамилии">
+            <form th:action="@{/users/artists}" method="get" class="search-form">
+                <label for="userName">Имя:</label>
+                <input type="text" id="userName" name="userName" th:value="${filter.username}" placeholder="Поиск по имени пользователя">
 
                 <button type="submit" class="search-button"><i class="fas fa-search"></i> Поиск</button>
             </form>
-<!--            <a th:href="@{/users/createUser}" class="create-button"><i class="fas fa-user-plus"></i> Создать пользователя</a>-->
+            <!--            <a th:href="@{/users/createUser}" class="create-button"><i class="fas fa-user-plus"></i> Создать пользователя</a>-->
         </div>
 
         <div class="list-section">
@@ -77,18 +73,18 @@
         </div>
 
         <div class="pagination">
-            <a th:if="${users.metadata.page > 0}" th:href="@{/users(firstName=${filter.firstName}, lastName=${filter.lastName}, page=0)}" class="pagination-link">Первая</a>
+            <a th:if="${users.metadata.page > 0}" th:href="@{/users(userName=${filter.username}, page=0)}" class="pagination-link">Первая</a>
             <a th:unless="${users.metadata.page > 0}" class="pagination-link disabled">Первая</a>
 
-            <a th:if="${users.metadata.page > 0}" th:href="@{/users(firstName=${filter.firstName}, lastName=${filter.lastName}, page=${users.metadata.page - 1})}" class="pagination-link">←</a>
+            <a th:if="${users.metadata.page > 0}" th:href="@{/users(userName=${filter.username}, page=${users.metadata.page - 1})}" class="pagination-link">←</a>
             <a th:unless="${users.metadata.page > 0}" class="pagination-link disabled">←</a>
 
             <span class="current-page" th:text="'Страница ' + (${users.metadata.page + 1}) + ' из ' + ${users.metadata.totalSize}"></span>
 
-            <a th:if="${users.metadata.page + 1 < users.metadata.totalSize}" th:href="@{/users(firstName=${filter.firstName}, lastName=${filter.lastName}, page=${users.metadata.page + 1})}" class="pagination-link">→</a>
+            <a th:if="${users.metadata.page + 1 < users.metadata.totalSize}" th:href="@{/users(userName=${filter.username}, page=${users.metadata.page + 1})}" class="pagination-link">→</a>
             <a th:unless="${users.metadata.page + 1 < users.metadata.totalSize}" class="pagination-link disabled">→</a>
 
-            <a th:if="${users.metadata.page + 1 < users.metadata.totalSize}" th:href="@{/users(firstName=${filter.firstName}, lastName=${filter.lastName}, page=${users.metadata.totalSize - 1})}" class="pagination-link">Последняя</a>
+            <a th:if="${users.metadata.page + 1 < users.metadata.totalSize}" th:href="@{/users(userName=${filter.username}, page=${users.metadata.totalSize - 1})}" class="pagination-link">Последняя</a>
             <a th:unless="${users.metadata.page + 1 < users.metadata.totalSize}" class="pagination-link disabled">Последняя</a>
         </div>
     </div>

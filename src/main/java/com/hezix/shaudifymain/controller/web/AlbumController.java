@@ -1,11 +1,9 @@
 package com.hezix.shaudifymain.controller.web;
 
 
-import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
 import com.hezix.shaudifymain.entity.album.form.CreateAlbumFormDto;
-import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.entity.web.PageResponse;
 import com.hezix.shaudifymain.util.filter.AlbumFilter;
 import com.hezix.shaudifymain.service.album.AlbumService;
@@ -18,8 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -81,7 +77,7 @@ public class AlbumController {
     public String addSongToAlbum(@PathVariable Long songId,
                                  Model model,
                                  @AuthenticationPrincipal Object principal) {
-        model.addAttribute("albums", albumService.findAlbumsByAuthorId(principal));
+        model.addAttribute("albums", albumService.findAlbumsByAuthor(principal));
         model.addAttribute("song", songService.findSongById(songId));
         return "albums/add_song_to_album";
     }

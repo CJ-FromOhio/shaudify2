@@ -23,7 +23,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -103,7 +102,7 @@ public class AlbumService {
         return albumReadMapper.toDto(album);
     }
     @Transactional(readOnly = true)
-    public List<ReadAlbumDto> findAlbumsByAuthorId(Object principal) {
+    public List<ReadAlbumDto> findAlbumsByAuthor(Object principal) {
         User user = authPrincipalChecker.check(principal);
         return albumReadMapper.toDtoList(albumRepository.findAlbumsByAuthorId(user.getId()));
     }

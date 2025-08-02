@@ -15,10 +15,10 @@ public class CustomControllerAdvice {
         return "error/204";
     }
 
-    @ExceptionHandler(PasswordAndPasswordConfirmationNotEquals.class)
-    public String PasswordAndPasswordConfirmationExceptionHandler(PasswordAndPasswordConfirmationNotEquals ex) {
-        return "error/400";
-    }
+//    @ExceptionHandler(PasswordAndPasswordConfirmationNotEquals.class)
+//    public String PasswordAndPasswordConfirmationExceptionHandler(PasswordAndPasswordConfirmationNotEquals ex) {
+//        return "error/400";
+//    }
 
     @ExceptionHandler(OwnershipMismatchException.class)
     public String OwnershipMismatchExceptionExceptionHandler(OwnershipMismatchException ex) {

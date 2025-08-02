@@ -1,9 +1,11 @@
 package com.hezix.shaudifymain.service.user;
 
+import com.hezix.shaudifymain.entity.user.Role;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.service.minio.MinioImageService;
+import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.util.exception.PasswordAndPasswordConfirmationNotEquals;
 import com.hezix.shaudifymain.util.filter.QPredicates;
@@ -76,6 +78,20 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found")));
     }
     @Cacheable(
+            value = "users:authors",
+            key = "#userFilter.hashCode() + '_' + #pageable.pageNumber + '_' + #pageable.pageSize"
+    )
+    @Transactional(readOnly = true)
+    public Page<ReadUserDto> findAllAuthors(UserFilter userFilter, Pageable pageable) {
+        Predicate predicate = QPredicates.builder()
+                .add(userFilter.getUsername(), user.username::containsIgnoreCase)
+                .add(Role.AUTHOR, user.role::eq)
+                .build();
+
+        return userRepository.findAll(predicate, pageable)
+                .map(userReadMapper::toDto);
+    }
+    @Cacheable(
             value = "users:email",
             key = "#email"
     )
@@ -93,7 +109,28 @@ public class UserService {
     public Optional<User> findUserOptionalByEmail(String email) {
         return  userRepository.findByEmail(email);
     }
-
+    @CacheEvict(
+            value = "users:artists",
+            allEntries = true
+    )
+    @Transactional()
+    public User makeUserAuthor(Long id) {
+        User user = findUserEntityById(id);
+        user.setRole(Role.AUTHOR);
+        return userRepository.save(user);
+    }
+    @Transactional()
+    public User makeUserUser(Long id) {
+        User user = findUserEntityById(id);
+        user.setRole(Role.USER);
+        return userRepository.save(user);
+    }
+    @Transactional()
+    public User makeUserAdmin(Long id) {
+        User user = findUserEntityById(id);
+        user.setRole(Role.ADMIN);
+        return userRepository.save(user);
+    }
     @Transactional
     public User update(User user) {
         return userRepository.save(user);
