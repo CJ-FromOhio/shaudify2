@@ -13,10 +13,7 @@
 <body>
 <div class="container">
     <div class="sidebar">
-        <div class="logo">
-            <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="logo-img">
-            <span class="logo-text">Shaudify</span>
-        </div>
+        <div th:replace="~{fragments/_logo :: logo}"></div>
         <ul class="navigation">
             <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
             <li><a href="/users/me" class="active"><i class="fas fa-user"></i> мой профиль</a></li>
@@ -47,7 +44,7 @@
             <div class="user-info-header">
                 <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${user.getImage()})}" alt="Аватар пользователя" class="user-avatar">
                 <div class="user-details-overview">
-                    <span class="user-role">Пользователь</span>
+                    <span class="user-role" th:text="${user.role.name()}"></span>
                     <h2 class="user-profile-name" th:text="${user.username}"></h2>
                     <p class="user-profile-email" th:text="${user.email}"></p>
                 </div>
@@ -97,7 +94,7 @@
             <div th:if="${!user.getLikedSongs().isEmpty()}" class="profile-liked-songs-section">
                 <h3>Понравившиеся песни</h3>
                 <div class="cards-grid">
-                    <div th:each="likedSong : ${songs}" class="card">
+                    <div th:each="likedSong : ${user.getLikedSongs()}" class="card">
                         <img th:src="@{/images/song_placeholder.png}" alt="Song Cover">
                         <h4 th:text="${likedSong.title}"></h4>
                         <a th:href="@{/songs/{id}(id=${likedSong.id})}" class="action-link">Открыть песню</a>

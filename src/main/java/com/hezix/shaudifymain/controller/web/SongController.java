@@ -1,5 +1,8 @@
 package com.hezix.shaudifymain.controller.web;
 
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.service.user.UserService;
+import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.song.form.CreateSongFormDto;
@@ -28,8 +31,10 @@ import org.springframework.web.multipart.MultipartFile;
 @CustomControllerAdviceAnnotation
 public class SongController {
     private final SongService songService;
+    private final UserService userService;
     private final AlbumService albumService;
     private final BindingResultParser bindingResultParser;
+    private final AuthPrincipalChecker authPrincipalChecker;
 
     @GetMapping()
     public String songs(Model model, SongFilter songFilter, Pageable pageable) {
@@ -62,13 +67,16 @@ public class SongController {
         return "redirect:/songs/" + id;
     }
     @GetMapping("/{id}")
-    public String song(@PathVariable Long id, Model model) {
+    public String song(@PathVariable Long id, Model model, @AuthenticationPrincipal Object principal) {
+        User user = authPrincipalChecker.check(principal);
+        boolean isLiked = userService.isSongLikedByUser(id, user.getId());
         ReadSongDto song = songService.findSongById(id);
         model.addAttribute("song", song);
+        model.addAttribute("isLiked", isLiked);
         if (song.getAlbumId() != null) {
             model.addAttribute("song_album", albumService.findAlbumById(song.getAlbumId()));
         } else {
-            model.addAttribute("song_album", null); // или можно показать "Без альбома"
+            model.addAttribute("song_album", null);
         }
         return "songs/song_by_id";
     }

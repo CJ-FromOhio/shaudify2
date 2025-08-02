@@ -291,3 +291,14 @@
     font-size: 1.1em;
     white-space: nowrap;
 }
+.like-button .action-button i.fas.fa-heart {
+    color: #1db954; /* Зеленый цвет для лайкнутого сердечка */
+}
+
+.like-button .action-button i.far.fa-heart {
+    color: #b3b3b3; /* Серый цвет для нелайкнутого сердечка */
+}
+
+.like-button .action-button:hover i.far.fa-heart {
+    color: #fff; /* Белый цвет при наведении на нелайкнутое сердечко */
+}

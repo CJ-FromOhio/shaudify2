@@ -14,10 +14,7 @@
 <body>
 <div class="container">
     <div class="sidebar">
-        <div class="logo">
-            <img th:src="@{/images/logo.png}" alt="Shaudify Logo" class="logo-img">
-            <span class="logo-text">Spotify Clone</span>
-        </div>
+        <div th:replace="~{fragments/_logo :: logo}"></div>
         <ul class="navigation">
             <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
             <li><a href="/users/me"><i class="fas fa-user"></i> мой профиль</a></li>

@@ -2,10 +2,7 @@ package com.hezix.shaudifymain.entity.song.dto;
 
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.context.annotation.Lazy;
 
 import java.io.Serializable;
@@ -14,6 +11,7 @@ import java.util.List;
 
 @Data
 @Builder
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReadSongDto implements Serializable {

@@ -13,10 +13,7 @@
 <body>
 <div class="container">
     <div class="sidebar">
-        <div class="logo">
-            <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="logo-img">
-            <span class="logo-text">Shaudify</span>
-        </div>
+        <div th:replace="~{fragments/_logo :: logo}"></div>
         <ul class="navigation">
             <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
             <li><a href="/users/me"><i class="fas fa-user"></i> мой профиль</a></li>
@@ -65,11 +62,21 @@
             </audio>
 
             <div class="song-actions">
-                <form th:action="@{/songs/{id}/like(id=${song.id})}" method="post" class="like-form">
-                    <button type="submit" class="like-button">
-                        <i class="fas fa-heart"></i> Нравится
-                    </button>
-                </form>
+                <div class="like-button">
+                    <form th:if="${isLiked}" th:action="@{/songs/{id}/dislike(id=${song.id})}" method="post">
+                        <button type="submit" class="action-button liked">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                    </form>
+                    <form th:unless="${isLiked}" th:action="@{/songs/{id}/like(id=${song.id})}" method="post">
+                        <button type="submit" class="action-button">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </form>
+                </div>
+                <a href="#" class="action-button">
+                    <i class="fas fa-plus"></i>
+                </a>
             </div>
         </div>
 

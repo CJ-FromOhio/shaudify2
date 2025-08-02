@@ -7,6 +7,7 @@ import com.hezix.shaudifymain.service.user.UserService;
 import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.mapper.song.SongReadMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -23,7 +24,10 @@ public class LikedSongService {
     private final SongService songService;
     private final SongReadMapper songReadMapper;
     private final AuthPrincipalChecker authPrincipalChecker;
-
+    @CacheEvict(
+            value = "users:likedSong",
+            allEntries = true
+    )
     @Transactional()
     public ReadSongDto like(Long songId, Object principal) {
         User user = authPrincipalChecker.check(principal);
@@ -39,7 +43,10 @@ public class LikedSongService {
     public List<ReadSongDto> findLikedSongByUserId(Long userById) {
         return userService.findUserById(userById).getLikedSongs().stream().toList();
     }
-
+    @CacheEvict(
+            value = "users:likedSong",
+            allEntries = true
+    )
     @Transactional()
     public ReadSongDto unlike(Long songId, Object principal) {
         User user = authPrincipalChecker.check(principal);

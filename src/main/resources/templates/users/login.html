@@ -11,10 +11,7 @@
 </head>
 <body class="login-body">
 <div class="login-page-container">
-    <div class="login-brand">
-        <img th:src="@{/images/shaudify_logo.png}" alt="Shaudify Logo" class="login-logo-img">
-        <h1 class="login-brand-name">Shaudify</h1>
-    </div>
+    <div th:replace="~{fragments/_logo :: logo}"></div>
 
     <div class="login-form-box">
         <h2 class="login-box-title">Войдите в Shaudify</h2>

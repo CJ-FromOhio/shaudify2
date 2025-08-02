@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.service.user;
 
+import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.Role;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.CreateUserDto;
@@ -108,6 +109,13 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> findUserOptionalByEmail(String email) {
         return  userRepository.findByEmail(email);
+    }
+    @Transactional(readOnly = true)
+    public boolean isSongLikedByUser(Long songId, Long userId) {
+        ReadUserDto user = findUserById(userId);
+        ReadSongDto songDtoToCheck = new ReadSongDto();
+        songDtoToCheck.setId(songId);
+        return user.getLikedSongs().contains(songDtoToCheck);
     }
     @CacheEvict(
             value = "users:artists",

@@ -23,8 +23,8 @@ public class LikedSongController {
         likedSongService.like(id,principal);
         return "redirect:/songs/" + id;
     }
-    @PostMapping("{id}/unlike")
-    public String unlike(@PathVariable Long id,
+    @PostMapping("{id}/dislike")
+    public String dislike(@PathVariable Long id,
                        @AuthenticationPrincipal Object principal) {
         likedSongService.unlike(id,principal);
         return "redirect:/songs/" + id;
