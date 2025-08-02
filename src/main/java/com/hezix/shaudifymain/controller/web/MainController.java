@@ -1,5 +1,7 @@
 package com.hezix.shaudifymain.controller.web;
 
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,20 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @CustomControllerAdviceAnnotation
 @RequiredArgsConstructor
 public class MainController {
-    private final UserService userService;
+    private final AuthPrincipalChecker authPrincipalChecker;
 
     @GetMapping("/")
     public String main(@AuthenticationPrincipal Object principal, Model model) {
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-            model.addAttribute("user", userService.findUserByUsername(username));
-        } else if (principal instanceof OidcUser) {
-            username = ((OidcUser) principal).getEmail();
-            model.addAttribute("user", userService.findUserByEmail(username));
-        } else {
-            throw new IllegalStateException("Неподдерживаемый тип аутентификации");
-        }
+        User user = authPrincipalChecker.check(principal);
+        model.addAttribute("user", user);
         return "main";
     }
 

@@ -32,7 +32,7 @@
     <div class="header-top">
       <h1>Альбом</h1>
       <div class="button-group">
-        <a th:href="@{/users/{id}(id=${#authentication.principal.id})}" class="profile-button">
+        <a th:href="@{/users/{id}(id=${user.getId()})}" class="profile-button">
           <i class="fas fa-user-circle"></i> Профиль
         </a>
         <form th:action="@{/logout}" method="post">
@@ -50,7 +50,7 @@
         <h1 class="entity-title" th:text="${album.title}">Название альбома</h1>
         <p class="entity-description" th:text="${album.description}">Описание альбома</p>
         <div class="entity-meta">
-          <p>Автор: <a th:href="@{/users/{id}(id=${album.author_id})}" class="meta-link" th:text="${album.author.username}">Имя Автора</a></p>
+          <p>Автор: <a th:href="@{/users/{id}(id=${album.author_id})}" class="meta-link" th:text="${user.username}">Имя Автора</a></p>
         </div>
       </div>
     </div>
@@ -89,5 +89,5 @@
     </div>
   </div>
 </div>
-<div class="player-bar">
-  <p>Па
+</body>
+</html>

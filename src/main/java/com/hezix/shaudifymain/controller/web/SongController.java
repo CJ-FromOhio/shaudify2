@@ -48,7 +48,7 @@ public class SongController {
     public String createSong(@Valid @ModelAttribute CreateSongFormDto createSongFormDto,
                              BindingResult bindingResult,
                              Model model,
-                             @AuthenticationPrincipal UserDetails userDetails) {
+                             @AuthenticationPrincipal Object principal) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "songs/create_song";
@@ -56,7 +56,7 @@ public class SongController {
         var createSongDto = createSongFormDto.getCreateSongDto();
         var songFile = createSongFormDto.getSongFile();
         var imageFile = createSongFormDto.getImageFile();
-        Long id = songService.save(createSongDto, userDetails).getId();
+        Long id = songService.save(createSongDto, principal).getId();
         songService.uploadImage(id, imageFile);
         songService.uploadSong(id, songFile);
         return "redirect:/songs/" + id;

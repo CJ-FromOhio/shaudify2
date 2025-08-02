@@ -1,6 +1,7 @@
 package com.hezix.shaudifymain.controller.web;
 
 
+import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
 import com.hezix.shaudifymain.entity.album.form.CreateAlbumFormDto;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +35,8 @@ public class AlbumController {
     private final SongService songService;
     private final UserService userService;
     private final BindingResultParser bindingResultParser;
+//    private final AuthPrincipalChecker authPrincipalChecker;
+
 
     @GetMapping()
     public String findAllAlbums(Model model, AlbumFilter albumFilter, Pageable pageable) {
@@ -53,29 +57,31 @@ public class AlbumController {
     public String saveAlbum(@Valid @ModelAttribute CreateAlbumFormDto createAlbumFormDto,
                              BindingResult bindingResult,
                              Model model,
-                             @AuthenticationPrincipal UserDetails userDetails) {
+                             @AuthenticationPrincipal Object principal) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResultParser.parseToString(bindingResult));
             return "albums/create_album";
         }
         var createAlbumDto = createAlbumFormDto.getCreateAlbumDto();
         var imageFile = createAlbumFormDto.getImageFile();
-        Long id = albumService.save(createAlbumDto, userDetails).getId();
+        Long id = albumService.save(createAlbumDto, principal).getId();
         albumService.uploadImage(id, imageFile);
         return "redirect:/albums/" + id;
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
-        model.addAttribute("album", albumService.findAlbumById(id));
+    public String findById(@PathVariable Long id,
+                           Model model) {
+        ReadAlbumDto album = albumService.findAlbumById(id);
+        model.addAttribute("user", userService.findUserById(album.getAuthor_id()));
+        model.addAttribute("album", album);
         return "albums/album_by_id";
     }
     @GetMapping("/add/{songId}")
     public String addSongToAlbum(@PathVariable Long songId,
                                  Model model,
-                                 @AuthenticationPrincipal UserDetails userDetails) {
-        ReadUserDto user = userService.findUserByUsername(userDetails.getUsername());
-        model.addAttribute("albums", albumService.findAlbumsByAuthorId(user.getId()));
+                                 @AuthenticationPrincipal Object principal) {
+        model.addAttribute("albums", albumService.findAlbumsByAuthorId(principal));
         model.addAttribute("song", songService.findSongById(songId));
         return "albums/add_song_to_album";
     }

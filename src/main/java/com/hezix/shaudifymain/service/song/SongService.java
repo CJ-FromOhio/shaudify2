@@ -4,9 +4,12 @@ package com.hezix.shaudifymain.service.song;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.service.minio.MinioImageService;
 import com.hezix.shaudifymain.service.minio.MinioSongService;
 import com.hezix.shaudifymain.service.user.UserService;
+import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.util.filter.QPredicates;
 import com.hezix.shaudifymain.util.filter.SongFilter;
@@ -21,6 +24,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,21 +39,22 @@ import static com.hezix.shaudifymain.entity.song.QSong.song;
 @RequiredArgsConstructor
 public class SongService {
     private final SongRepository songRepository;
-    private final UserService userService;
     private final SongCreateMapper songCreateMapper;
     private final SongReadMapper songReadMapper;
     private final MinioImageService minioImageService;
-
+    private final AuthPrincipalChecker authPrincipalChecker;
     private final MinioSongService minioSongService;
 
     @Caching(evict = {
             @CacheEvict(value = "songs:all", allEntries = true),
+            @CacheEvict(value = "songs:id", allEntries = true),
+            @CacheEvict(value = "songs:likedSong:id", allEntries = true),
     })
     @Transactional()
-    public ReadSongDto save(CreateSongDto createSongDto, UserDetails userDetails) {
+    public ReadSongDto save(CreateSongDto createSongDto, Object principal) {
         Song song = songCreateMapper.toEntity(createSongDto);
         song.setCreatedAt(Instant.now());
-        var user = userService.findUserEntityByUsername(userDetails.getUsername());
+        User user = authPrincipalChecker.check(principal);
         user.getCreatedSongs().add(song);
         song.setCreator(user);
         songRepository.save(song);
@@ -76,7 +81,7 @@ public class SongService {
             key = "#readLikedSongDtoList.hashCode()"
     )
     @Transactional(readOnly = true)
-    public List<ReadSongDto> findSonsIdsByLikedSongList(Set<Long> readLikedSongDtoList) {
+    public List<ReadSongDto> findSongsIdsByLikedSongList(Set<Long> readLikedSongDtoList) {
         return readLikedSongDtoList.stream()
                 .map(this::findSongById)
                 .toList();

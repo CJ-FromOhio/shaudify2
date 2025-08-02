@@ -39,7 +39,12 @@ public class UserService {
     private final UserReadMapper userReadMapper;
     private final BCryptPasswordEncoder bcryptPasswordEncoder;
     private final MinioImageService minioImageService;
-
+    @Caching(evict = {
+            @CacheEvict(value = "users:all", allEntries = true),
+            @CacheEvict(value = "users:id", allEntries = true),
+            @CacheEvict(value = "users:username", allEntries = true),
+            @CacheEvict(value = "users:email", allEntries = true),
+    })
     @Transactional()
     public ReadUserDto save(CreateUserDto createUserDto) {
         if (!createUserDto.getPassword().equals(createUserDto.getPasswordConfirm())) {
@@ -79,10 +84,11 @@ public class UserService {
         return userReadMapper.toDto(userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found")));
     }
-    @Cacheable(
-            value = "users_optional:email",
-            key = "#email"
-    )
+    @Transactional(readOnly = true)
+    public User findUserEntityByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found"));
+    }
     @Transactional(readOnly = true)
     public Optional<User> findUserOptionalByEmail(String email) {
         return  userRepository.findByEmail(email);
@@ -150,6 +156,8 @@ public class UserService {
     @Caching(evict = {
             @CacheEvict(value = "users:username", key="#user.username"),
             @CacheEvict(value = "users:id", key="#user.id"),
+            @CacheEvict(value = "users:all", allEntries = true),
+            @CacheEvict(value = "users:email", key = "#user.email")
     })
     public ReadUserDto deleteUser(ReadUserDto user) {
         userRepository.delete(userReadMapper.toEntity(user));

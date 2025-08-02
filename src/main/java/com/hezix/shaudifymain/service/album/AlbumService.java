@@ -8,6 +8,7 @@ import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.service.minio.MinioImageService;
 import com.hezix.shaudifymain.service.song.SongService;
 import com.hezix.shaudifymain.service.user.UserService;
+import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.util.exception.OwnershipMismatchException;
 import com.hezix.shaudifymain.util.filter.AlbumFilter;
@@ -17,7 +18,9 @@ import com.hezix.shaudifymain.util.mapper.album.AlbumReadMapper;
 import com.hezix.shaudifymain.repository.AlbumRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,6 +43,7 @@ public class AlbumService {
     private final SongService songService;
     private final AlbumCreateMapper albumCreateMapper;
     private final MinioImageService minioImageService;
+    private final AuthPrincipalChecker authPrincipalChecker;
     @Cacheable(
             value = "album:id",
             key = "#id"
@@ -72,10 +76,14 @@ public class AlbumService {
         return albumRepository.findAll(predicate, pageable)
                 .map(albumReadMapper::toDto);
     }
+    @Caching(evict = {
+            @CacheEvict(value = "album:all", allEntries = true),
+            @CacheEvict(value = "album:id", allEntries = true),
+    })
     @Transactional()
-    public ReadAlbumDto save(CreateAlbumDto createAlbumDto, UserDetails userDetails) {
+    public ReadAlbumDto save(CreateAlbumDto createAlbumDto, Object principal) {
         Album album = albumCreateMapper.toEntity(createAlbumDto);
-        User user = userService.findUserEntityByUsername(userDetails.getUsername());
+        User user = authPrincipalChecker.check(principal);
         album.setAuthor(user);
         album.setCreatedAt(Instant.now());
         user.getAlbums().add(album);
@@ -95,8 +103,9 @@ public class AlbumService {
         return albumReadMapper.toDto(album);
     }
     @Transactional(readOnly = true)
-    public List<ReadAlbumDto> findAlbumsByAuthorId(Long authorId) {
-        return albumReadMapper.toDtoList(albumRepository.findAlbumsByAuthorId(authorId));
+    public List<ReadAlbumDto> findAlbumsByAuthorId(Object principal) {
+        User user = authPrincipalChecker.check(principal);
+        return albumReadMapper.toDtoList(albumRepository.findAlbumsByAuthorId(user.getId()));
     }
     @Transactional()
     public ReadAlbumDto uploadImage(Long id, MultipartFile files) {
