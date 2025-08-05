@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
 
-@EqualsAndHashCode(exclude = {"createdSongs","likedSongs"})
+@EqualsAndHashCode(exclude = {"createdSongs","likedSongs","albums","playlists","likedPlaylists"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -48,7 +48,7 @@ public class LikedSongService {
             allEntries = true
     )
     @Transactional()
-    public ReadSongDto unlike(Long songId, Object principal) {
+    public ReadSongDto dislike(Long songId, Object principal) {
         User user = authPrincipalChecker.check(principal);
         Song song = songService.findSongEntityById(songId);
         user.getLikedSongs().remove(song);

@@ -2,19 +2,18 @@ package com.hezix.shaudifymain.entity.playlist.dto;
 
 import com.hezix.shaudifymain.entity.playlist.PLAYLIST_TYPE;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
 @Data
 @Builder
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadPlaylistDto {
+public class ReadPlaylistDto implements Serializable {
     private Long id;
 
     private String title;
@@ -24,6 +23,7 @@ public class ReadPlaylistDto {
     private Long author_id;
 
     private String image;
+    private Boolean isLiked;
 
     private List<ReadSongDto> songs;
 

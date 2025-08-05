@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shaudify - Плэйлисты</title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div th:replace="~{fragments/_logo :: logo}"></div>
+        <ul class="navigation">
+            <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="/users/me"><i class="fas fa-user"></i> мой профиль</a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+            <li><a href="/playlists" class="active"><i class="fas fa-list"></i> Плейлисты</a></li>
+            <li><a href="/users/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a href="/albums"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+            <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
+            <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-top">
+            <h1>Все песни</h1>
+        </div>
+
+        <div class="search-and-create">
+            <form th:action="@{/playlists}" method="get" class="search-form">
+                <label for="title">Название:</label>
+                <input type="text" id="title" name="title" th:value="${filter.title}" placeholder="Поиск по названию">
+                <button type="submit" class="search-button"><i class="fas fa-search"></i> Поиск</button>
+            </form>
+            <a th:href="@{/playlists/create}" class="create-button"><i class="fas fa-plus-circle"></i> Добавить Плэйлист</a>
+        </div>
+
+        <div class="list-section">
+            <div class="song-list">
+                <div class="song-item-header">
+                    <span>ID</span>
+                    <span>Название</span>
+                    <span>Действия</span>
+                </div>
+                <div th:each="playlistItem : ${playlists.content}" class="song-item">
+                    <span th:text="${playlistItem.id}"></span>
+                    <span th:text="${playlistItem.title}"></span>
+                    <div class="song-actions">
+                        <a th:href="@{/playlists/{id}(id=${playlistItem.id})}" class="action-link"><i class="fas fa-info-circle"></i> Детали</a>
+                        <a th:href="@{/playlists/add/{songId}(songId=${playlistItem.id})}" class="action-link"><i class="fas fa-compact-disc"></i> В альбом</a>
+                    </div>
+                </div>
+                <div th:if="${playlists.content.isEmpty()}" class="no-results">
+                    <span>Песни не найдены.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <a th:if="${playlists.metadata.page > 0}" th:href="@{/playlists(title=${filter.title}, page=0)}" class="pagination-link">Первая</a>
+            <a th:unless="${playlists.metadata.page > 0}" class="pagination-link disabled">Первая</a>
+
+            <a th:if="${playlists.metadata.page > 0}" th:href="@{/playlists(title=${filter.title}, page=${playlists.metadata.page - 1})}" class="pagination-link">←</a>
+            <a th:unless="${playlists.metadata.page > 0}" class="pagination-link disabled">←</a>
+
+            <span class="current-page" th:text="'Страница ' + (${playlists.metadata.page + 1}) + ' из ' + ${playlists.metadata.totalSize}"></span>
+
+            <a th:if="${playlists.metadata.page + 1 < playlists.metadata.totalSize}" th:href="@{/playlists(title=${filter.title}, page=${playlists.metadata.page + 1})}" class="pagination-link">→</a>
+            <a th:unless="${playlists.metadata.page + 1 < playlists.metadata.totalSize}" class="pagination-link disabled">→</a>
+
+            <a th:if="${playlists.metadata.page + 1 < playlists.metadata.totalSize}" th:href="@{/playlists(title=${filter.title}, page=${playlists.metadata.totalSize - 1})}" class="pagination-link">Последняя</a>
+            <a th:unless="${playlists.metadata.page + 1 < playlists.metadata.totalSize}" class="pagination-link disabled">Последняя</a>
+        </div>
+    </div>
+</div>
+
+<div class="player-bar">
+    <p>Здесь будет панель управления воспроизведением</p>
+</div>
+</body>
+</html>

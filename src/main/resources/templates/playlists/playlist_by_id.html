@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${playlist.title}"></title>
+    <link rel="stylesheet" th:href="@{/css/_base.css}">
+    <link rel="stylesheet" th:href="@{/css/_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/_components.css}">
+    <link rel="stylesheet" th:href="@{/css/_pages.css}">
+    <link rel="stylesheet" th:href="@{/css/_responsive.css}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div th:replace="~{fragments/_logo :: logo}"></div>
+        <ul class="navigation">
+            <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="/users/me"><i class="fas fa-user"></i> мой профиль</a></li>
+            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+            <li><a href="/playlists" class="active"><i class="fas fa-list"></i> Плейлисты</a></li>
+            <li><a href="/users/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+            <li><a href="/albums"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+            <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
+            <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-top">
+            <h1>Альбом</h1>
+            <div class="button-group">
+                <a th:href="@{/users/{id}(id=${playlist.getAuthor_id()})}" class="profile-button">
+                    <i class="fas fa-user-circle"></i> Профиль
+                </a>
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-button">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="entity-profile-header">
+            <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${playlist.image})}" alt="Обложка альбома" class="entity-cover-image">
+            <div class="entity-details">
+                <span class="entity-type">Альбом</span>
+                <h1 class="entity-title" th:text="${playlist.title}">Название альбома</h1>
+                <div class="entity-meta">
+                    <p>Автор: <a th:href="@{/users/{id}(id=${playlist.author_id})}" class="meta-link" >Профиль Автора</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="entity-content-section">
+            <h3>Песни в альбоме</h3>
+            <div class="song-list">
+                <div class="song-item-header" th:if="${!playlist.getSongs().isEmpty()}">
+                    <span>#</span>
+                    <span>Название</span>
+                    <span>Описание</span>
+                    <span>Действия</span>
+                </div>
+                <div th:if="${!playlist.getSongs().isEmpty()}" th:each="song, iterStat : ${playlist.getSongs()}">
+                    <div class="song-item">
+                        <span th:text="${iterStat.index + 1}"></span>
+                        <span th:text="${song.title}">Song title</span>
+                        <span th:text="${song.description}">Song description</span>
+                        <div>
+                            <a th:href="@{/songs/{id}(id=${song.getId()})}" class="action-link">
+                                <i class="fas fa-play"></i> Открыть
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${playlist.getSongs().isEmpty()}" class="no-items-message">
+                    <h2>В этом альбоме пока нет песен.</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="/albums" class="button-secondary">
+                <i class="fas fa-arrow-left"></i> Вернуться к списку альбомов
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

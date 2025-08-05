@@ -60,9 +60,18 @@
                     <div class="song-actions">
                         <a th:href="@{/songs/{id}(id=${songItem.id})}" class="action-link"><i class="fas fa-info-circle"></i> Детали</a>
                         <a th:href="@{/albums/add/{songId}(songId=${songItem.id})}" class="action-link"><i class="fas fa-compact-disc"></i> В альбом</a>
-                        <form th:action="@{/songs/{id}/like(id=${songItem.id})}" method="post" class="like-form">
-                            <button type="submit" class="like-button"><i class="fas fa-heart"></i> Лайк</button>
-                        </form>
+                        <div class="like-button">
+                            <form th:if="${isLiked}" th:action="@{/songs/{id}/dislike(id=${songItem.id})}" method="post">
+                                <button type="submit" class="action-button liked">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </form>
+                            <form th:unless="${isLiked}" th:action="@{/songs/{id}/like(id=${songItem.id})}" method="post">
+                                <button type="submit" class="action-button">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div th:if="${songs.content.isEmpty()}" class="no-results">

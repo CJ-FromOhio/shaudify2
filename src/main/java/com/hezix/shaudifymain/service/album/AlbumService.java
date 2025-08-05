@@ -38,7 +38,7 @@ import static com.hezix.shaudifymain.entity.album.QAlbum.album;
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumReadMapper albumReadMapper;
-    private final UserService userService;
+
     private final SongService songService;
     private final AlbumCreateMapper albumCreateMapper;
     private final MinioImageService minioImageService;
@@ -49,9 +49,7 @@ public class AlbumService {
     )
     @Transactional(readOnly = true)
     public ReadAlbumDto findAlbumById(Long id) {
-        return albumReadMapper.toDto(albumRepository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Album not found by id: " + id)));
+        return albumReadMapper.toDto(findAlbumEntityById(id));
     }
     @Transactional(readOnly = true)
     public Album findAlbumEntityById(Long id) {

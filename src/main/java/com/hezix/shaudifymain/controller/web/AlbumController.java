@@ -1,6 +1,7 @@
 package com.hezix.shaudifymain.controller.web;
 
 
+import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
 import com.hezix.shaudifymain.entity.album.form.CreateAlbumFormDto;
@@ -31,7 +32,7 @@ public class AlbumController {
     private final SongService songService;
     private final UserService userService;
     private final BindingResultParser bindingResultParser;
-//    private final AuthPrincipalChecker authPrincipalChecker;
+    private final AuthPrincipalChecker authPrincipalChecker;
 
 
     @GetMapping()

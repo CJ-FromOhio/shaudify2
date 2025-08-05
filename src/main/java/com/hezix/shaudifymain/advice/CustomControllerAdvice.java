@@ -5,14 +5,16 @@ import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.util.exception.FileUploadException;
 import com.hezix.shaudifymain.util.exception.OwnershipMismatchException;
 import com.hezix.shaudifymain.util.exception.PasswordAndPasswordConfirmationNotEquals;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice(annotations = CustomControllerAdviceAnnotation.class)
 public class CustomControllerAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
-    public String EntityNotFoundExceptionHandler(EntityNotFoundException ex) {
-        return "error/204";
+    public String EntityNotFoundExceptionHandler(EntityNotFoundException ex, Model model) {
+        model.addAttribute("error", ex.getMessage());
+        return "error/404";
     }
 
 //    @ExceptionHandler(PasswordAndPasswordConfirmationNotEquals.class)

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlaylistRepository extends JpaRepository<Playlist, Long>,
-        QuerydslPredicateExecutor<Album> {
+        QuerydslPredicateExecutor<Playlist> {
 }
