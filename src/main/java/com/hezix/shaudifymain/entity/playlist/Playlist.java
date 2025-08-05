@@ -31,9 +31,12 @@ public class Playlist {
     @JoinColumn(name = "author")
     private User author;
 
-    @OneToMany(mappedBy = "album",
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "playlist_songs",
+            joinColumns = @JoinColumn(name = "playlist_id"),
+            inverseJoinColumns = @JoinColumn(name = "song_id")
+    )
     @JsonBackReference
     private List<Song> songs;
     @Enumerated(EnumType.STRING)
