@@ -2,6 +2,8 @@ package com.hezix.shaudifymain.entity.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
+import com.hezix.shaudifymain.entity.playlist.Playlist;
+import com.hezix.shaudifymain.entity.playlist.dto.ReadPlaylistDto;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.Role;
@@ -42,6 +44,12 @@ public class ReadUserDto implements Serializable {
     @JsonManagedReference
     @Builder.Default
     private List<ReadAlbumDto> albums = new ArrayList<>();
+    @JsonManagedReference
+    @Builder.Default
+    private List<ReadPlaylistDto> playlists = new ArrayList<>();
+    @JsonManagedReference
+    @Builder.Default
+    private Set<ReadPlaylistDto> likedPlaylists = new HashSet<>();
 
     private String image;
 

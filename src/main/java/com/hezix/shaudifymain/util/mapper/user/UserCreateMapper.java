@@ -20,7 +20,6 @@ public class UserCreateMapper implements Mappable<User, CreateUserDto> {
                 .firstName(createUserDto.getFirstName())
                 .lastName(createUserDto.getLastName())
                 .role(Role.USER)
-                .createdAt(Instant.now())
                 .build();
     }
 
@@ -33,7 +32,6 @@ public class UserCreateMapper implements Mappable<User, CreateUserDto> {
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-
                 .build();
     }
 

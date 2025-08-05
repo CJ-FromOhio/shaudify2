@@ -42,6 +42,7 @@ public class AlbumReadMapper implements Mappable<Album, ReadAlbumDto> {
                 .image(album.getImage())
                 .build();
     }
+    @Override
     public List<ReadAlbumDto> toDtoList(List<Album> albums) {
         return Optional.ofNullable(albums)
                 .orElse(Collections.emptyList())
@@ -49,7 +50,7 @@ public class AlbumReadMapper implements Mappable<Album, ReadAlbumDto> {
                 .map(this::toDto)
                 .toList();
     }
-
+    @Override
     public List<Album> toEntityList(List<ReadAlbumDto> readAlbumDtos) {
         return Optional.ofNullable(readAlbumDtos)
                 .orElse(Collections.emptyList())

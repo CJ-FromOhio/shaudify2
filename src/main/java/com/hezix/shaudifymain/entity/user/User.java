@@ -2,6 +2,7 @@ package com.hezix.shaudifymain.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hezix.shaudifymain.entity.album.Album;
+import com.hezix.shaudifymain.entity.playlist.Playlist;
 import com.hezix.shaudifymain.entity.song.Song;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,7 +18,7 @@ import java.util.*;
 @Builder
 @Entity
 @Table(name = "users")
-@JsonIgnoreProperties({"createdSongs","likedSongs","albums"})
+@JsonIgnoreProperties({"createdSongs","likedSongs","albums","playlists"})
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +57,20 @@ public class User{
             fetch = FetchType.LAZY,
             cascade = {CascadeType.MERGE})
     private List<Album> albums = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "author",
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.MERGE})
+    private List<Playlist> playlists = new ArrayList<>();
+    @Builder.Default
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "liked_playlists",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "playlist_id")
+    )
+    private Set<Playlist> likedPlaylists = new HashSet<>();
     @Column()
     private String image;
 

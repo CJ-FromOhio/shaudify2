@@ -26,11 +26,11 @@ public class AlbumCreateMapper implements Mappable<Album, CreateAlbumDto> {
                 .description(album.getDescription())
                 .build();
     }
-
+    @Override
     public List<CreateAlbumDto> toDtoList(List<Album> t) {
         return List.of();
     }
-
+    @Override
     public List<Album> toEntityList(List<CreateAlbumDto> f) {
         return List.of();
     }

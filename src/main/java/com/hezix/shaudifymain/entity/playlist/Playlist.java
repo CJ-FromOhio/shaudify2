@@ -1,8 +1,7 @@
-package com.hezix.shaudifymain.entity.album;
+package com.hezix.shaudifymain.entity.playlist;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.hezix.shaudifymain.entity.playlist.PLAYLIST_TYPE;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.user.User;
 import jakarta.persistence.*;
@@ -14,24 +13,22 @@ import lombok.NoArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
-@Table(name = "albums")
-public class Album {
+@Table(name = "playlists")
+public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
 
-    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author")
     private User author;
 
     @OneToMany(mappedBy = "album",
@@ -40,10 +37,10 @@ public class Album {
     @JsonBackReference
     private List<Song> songs;
     @Enumerated(EnumType.STRING)
-    private ALBUM_TYPE type;
+    private PLAYLIST_TYPE type;
     @Column()
     private String image;
 
     @Column(nullable = false)
-    private Instant createdAt;
+    private Instant created_at;
 }

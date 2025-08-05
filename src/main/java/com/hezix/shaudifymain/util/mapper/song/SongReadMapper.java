@@ -49,7 +49,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .song(song.getSongFile())
                 .build();
     }
-
+    @Override
     public List<ReadSongDto> toDtoList(List<Song> songs) {
         return Optional.ofNullable(songs)
                 .orElse(Collections.emptyList())
@@ -57,6 +57,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .map(this::toDto)
                 .toList();
     }
+
     public Set<ReadSongDto> toDtoSet(Set<Song> songs) {
         return Optional.ofNullable(songs)
                 .orElse(Collections.emptySet())
@@ -64,6 +65,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .map(this::toDto)
                 .collect(Collectors.toSet());
     }
+    @Override
     public List<Song> toEntityList(List<ReadSongDto> dtoSongs) {
         return Optional.ofNullable(dtoSongs)
                 .orElse(Collections.emptyList())

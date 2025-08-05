@@ -1,12 +1,12 @@
-package com.hezix.shaudifymain.entity.album.dto;
+package com.hezix.shaudifymain.entity.playlist.dto;
 
+import com.hezix.shaudifymain.entity.playlist.PLAYLIST_TYPE;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 
@@ -14,12 +14,12 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReadAlbumDto implements Serializable {
+public class ReadPlaylistDto {
     private Long id;
 
     private String title;
 
-    private String description;
+    private PLAYLIST_TYPE type;
 
     private Long author_id;
 

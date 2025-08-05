@@ -1,4 +1,4 @@
-package com.hezix.shaudifymain.service;
+package com.hezix.shaudifymain.service.security;
 
 import com.hezix.shaudifymain.service.user.UserService;
 import lombok.RequiredArgsConstructor;

@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.util.mapper.Mappable;
 import com.hezix.shaudifymain.util.mapper.album.AlbumReadMapper;
+import com.hezix.shaudifymain.util.mapper.playlist.PlaylistReadMapper;
 import com.hezix.shaudifymain.util.mapper.song.SongReadMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserReadMapper implements Mappable<User, ReadUserDto> {
     private final SongReadMapper songReadMapper;
-
+    private final PlaylistReadMapper playlistReadMapper;
     private final AlbumReadMapper albumReadMapper;
     @Override
     public User toEntity(ReadUserDto readUserDto) {
@@ -30,6 +31,8 @@ public class UserReadMapper implements Mappable<User, ReadUserDto> {
                 .createdSongs(songReadMapper.toEntityList(readUserDto.getCreatedSongs()))
                 .likedSongs(songReadMapper.toEntitySet(readUserDto.getLikedSongs()))
                 .albums(albumReadMapper.toEntityList(readUserDto.getAlbums()))
+                .likedPlaylists(playlistReadMapper.toEntitySet(readUserDto.getLikedPlaylists()))
+                .playlists(playlistReadMapper.toEntityList(readUserDto.getPlaylists()))
                 .createdAt(readUserDto.getCreatedAt())
                 .image(readUserDto.getImage())
                 .build();
@@ -47,6 +50,8 @@ public class UserReadMapper implements Mappable<User, ReadUserDto> {
                 .createdSongs(songReadMapper.toDtoList(user.getCreatedSongs()))
                 .likedSongs(songReadMapper.toDtoSet(user.getLikedSongs()))
                 .albums(albumReadMapper.toDtoList(user.getAlbums()))
+                .likedPlaylists(playlistReadMapper.toDtoSet(user.getLikedPlaylists()))
+                .playlists(playlistReadMapper.toDtoList(user.getPlaylists()))
                 .createdAt(user.getCreatedAt())
                 .image(user.getImage())
                 .build();
