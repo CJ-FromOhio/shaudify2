@@ -12,67 +12,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-<div class="container">
-    <div class="sidebar">
-        <div th:replace="~{fragments/_logo :: logo}"></div>
-        <ul class="navigation">
-            <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
-            <li><a href="/users/me"><i class="fas fa-user"></i> мой профиль</a></li>
-            <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
-            <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
-            <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
-            <li><a href="/users/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
-            <li><a href="/albums" class="active"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
-            <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
-            <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
-        </ul>
-    </div>
+    <div class="container">
+        <div class="sidebar">
+            <div th:replace="~{fragments/_logo :: logo}"></div>
+            <ul class="navigation">
+                <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="/users/me"><i class="fas fa-user"></i> мой профиль</a></li>
+                <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
+                <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
+                <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
+                <li><a href="/users/artists"><i class="fas fa-microphone-alt"></i> Исполнители</a></li>
+                <li><a href="/albums" class="active"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
+                <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
+                <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
+            </ul>
+        </div>
 
-    <div class="main-content">
-        <div class="header-top">
-            <h1>Добавить песню в альбом</h1>
-            <div class="button-group">
-                <a th:href="@{/users/{id}(id=${#authentication.principal.id})}" class="profile-button">
-                    <i class="fas fa-user-circle"></i> Профиль
+        <div class="main-content">
+            <div class="header-top">
+                <h1>Добавить песню в альбом</h1>
+                <div class="button-group">
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="logout-button">
+                            <i class="fas fa-sign-out-alt"></i> Выйти
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="list-section">
+                <h3>Выберите альбом для песни "<span th:text="${song.title}"></span>"</h3>
+                <div th:if="${!albums.isEmpty()}" class="cards-grid"> <div th:each="album : ${albums}" class="card"> <a th:href="@{/albums/{id}(id=${album.getId()})}">
+                            <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${album.getImage()})}" alt="Обложка альбома" class="card-image">
+                        </a>
+                        <h4 th:text="${album.title}"></h4>
+                        <p th:text="${album.description}"></p>
+                        <form th:action="@{/albums/add/{songId}/{albumId}(songId=${song.id}, albumId=${album.id})}" method="post">
+                            <button type="submit" class="add-to-album-button">
+                                <i class="fas fa-plus"></i> Добавить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div th:if="${albums.isEmpty()}" class="no-items-message">
+                    <p>Нет доступных альбомов для добавления этой песни.</p>
+                </div>
+            </div>
+
+            <div class="profile-actions">
+                <a th:href="@{/songs/{id}(id=${song.id})}" class="button-secondary">
+                    <i class="fas fa-arrow-left"></i> Вернуться к песне
                 </a>
-                <form th:action="@{/logout}" method="post">
-                    <button type="submit" class="logout-button">
-                        <i class="fas fa-sign-out-alt"></i> Выйти
-                    </button>
-                </form>
+                <a href="/" class="button-secondary">
+                    <i class="fas fa-home"></i> На главную
+                </a>
             </div>
-        </div>
-
-        <div class="list-section">
-            <h3>Выберите альбом для песни "<span th:text="${song.title}"></span>"</h3>
-            <div th:if="${!albums.isEmpty()}" class="album-grid"> <div th:each="album : ${albums}" class="album-card"> <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${album.image})}" alt="Обложка альбома" class="card-image">
-                <h4 th:text="${album.title}"></h4>
-                <p th:text="${album.description}"></p>
-                <form th:action="@{/albums/add/{songId}(songId=${song.id})}" method="post">
-                    <input type="hidden" name="albumId" th:value="${album.id}" />
-                    <button type="submit" class="add-to-album-button">
-                        <i class="fas fa-plus"></i> Добавить
-                    </button>
-                </form>
-            </div>
-            </div>
-            <div th:if="${albums.isEmpty()}" class="no-items-message">
-                <p>Нет доступных альбомов для добавления этой песни.</p>
-            </div>
-        </div>
-
-        <div class="profile-actions">
-            <a th:href="@{/songs/{id}(id=${song.id})}" class="button-secondary">
-                <i class="fas fa-arrow-left"></i> Вернуться к песне
-            </a>
-            <a href="/" class="button-secondary">
-                <i class="fas fa-home"></i> На главную
-            </a>
         </div>
     </div>
-</div>
-<div class="player-bar">
-    <p>Панель управления плеером (скоро здесь появится настоящий плеер!)</p>
-</div>
+    <div class="player-bar">
+        <p>Панель управления плеером (скоро здесь появится настоящий плеер!)</p>
+    </div>
 </body>
 </html>

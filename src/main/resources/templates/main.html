@@ -24,6 +24,10 @@
             <li><a th:href="@{/albums}"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
             <li><a th:href="@{/songs}"><i class="fas fa-music"></i> Песни</a></li>
             <li><a th:href="@{/users}"><i class="fas fa-users"></i> Пользователи</a></li>
+            <div th:if="${user.role.name() == 'AUTHOR'}">
+                <li><a href="/songs/createSong"><i class="fas fa-user-edit"></i> создать песню</a></li>
+                <li><a href="/albums/createAlbum"><i class="fas fa-user-edit"></i> создать альбом</a></li>
+            </div>
         </ul>
     </div>
 

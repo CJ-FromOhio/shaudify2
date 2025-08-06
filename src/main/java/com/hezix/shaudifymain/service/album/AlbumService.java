@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.album.dto.CreateAlbumDto;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
 import com.hezix.shaudifymain.entity.song.Song;
+import com.hezix.shaudifymain.entity.user.Role;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.service.minio.MinioImageService;
 import com.hezix.shaudifymain.service.song.SongService;
@@ -88,7 +89,9 @@ public class AlbumService {
         return albumReadMapper.toDto(album);
     }
     @Transactional()
-    public ReadAlbumDto addSongToAlbum(Long songId, Long albumId) {
+    public ReadAlbumDto addSongToAlbum(Long songId, Long albumId, Object principal) {
+        User user = authPrincipalChecker.check(principal);
+//        if (user.getRole().equals(Role.AUTHOR)) {}
         Album album = findAlbumEntityById(albumId);
         Song song = songService.findSongEntityById(songId);
         if (album.getAuthor() != song.getCreator()){

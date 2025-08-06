@@ -1,6 +1,8 @@
 package com.hezix.shaudifymain.controller.web;
 
 
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
@@ -11,9 +13,11 @@ import com.hezix.shaudifymain.service.album.AlbumService;
 import com.hezix.shaudifymain.service.song.SongService;
 import com.hezix.shaudifymain.service.user.UserService;
 import com.hezix.shaudifymain.util.BindingResultParser;
+import com.hezix.shaudifymain.util.mapper.user.UserReadMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +35,7 @@ public class AlbumController {
     private final AlbumService albumService;
     private final SongService songService;
     private final UserService userService;
+    private final UserReadMapper userReadMapper;
     private final BindingResultParser bindingResultParser;
     private final AuthPrincipalChecker authPrincipalChecker;
 
@@ -78,15 +83,17 @@ public class AlbumController {
     public String addSongToAlbum(@PathVariable Long songId,
                                  Model model,
                                  @AuthenticationPrincipal Object principal) {
-        model.addAttribute("albums", albumService.findAlbumsByAuthor(principal));
+        ReadUserDto user = userReadMapper.toDto(authPrincipalChecker.check(principal));
         model.addAttribute("song", songService.findSongById(songId));
+        model.addAttribute("albums", user.getAlbums());
         return "albums/add_song_to_album";
     }
-    @PostMapping("/add/{songId}")
-    public String addSongToAlbum(@RequestParam Long albumId,
-                                 @PathVariable Long songId,
-                                 Model model) {
-        albumService.addSongToAlbum(songId, albumId);
+    @CacheEvict(value = "album:id", key = "#albumId")
+    @PostMapping("/add/{songId}/{albumId}")
+    public String addSongToAlbum(@PathVariable Long songId,
+                                 @PathVariable Long albumId,
+                                 @AuthenticationPrincipal Object principal) {
+        albumService.addSongToAlbum(songId, albumId, principal);
         return "redirect:/albums/" + albumId;
     }
 }

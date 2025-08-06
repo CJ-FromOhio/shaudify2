@@ -117,22 +117,29 @@ public class UserService {
         songDtoToCheck.setId(songId);
         return user.getLikedSongs().contains(songDtoToCheck);
     }
-    @CacheEvict(
-            value = "users:artists",
-            allEntries = true
-    )
+    @Caching(evict = {
+            @CacheEvict(value = "users:authors", allEntries = true),
+            @CacheEvict(value = "users:id", key = "#id"),
+    })
     @Transactional()
     public User makeUserAuthor(Long id) {
         User user = findUserEntityById(id);
         user.setRole(Role.AUTHOR);
         return userRepository.save(user);
     }
+    @Caching(evict = {
+            @CacheEvict(value = "users:authors", allEntries = true),
+            @CacheEvict(value = "users:id", key = "#id"),
+    })
     @Transactional()
     public User makeUserUser(Long id) {
         User user = findUserEntityById(id);
         user.setRole(Role.USER);
         return userRepository.save(user);
     }
+    @Caching(evict = {
+            @CacheEvict(value = "users:id", key = "#id")
+    })
     @Transactional()
     public User makeUserAdmin(Long id) {
         User user = findUserEntityById(id);

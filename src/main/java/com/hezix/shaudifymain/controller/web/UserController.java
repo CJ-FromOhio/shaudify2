@@ -128,11 +128,15 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String user(@PathVariable Long id, Model model) {
+    public String user(@PathVariable Long id, Model model,
+                       @AuthenticationPrincipal Object principal) {
+        ReadUserDto user = userReadMapper.toDto(authPrincipalChecker.check(principal));
+        if( user.getId() == id) {
+            model.addAttribute("user", user);
+            return "redirect:/users/me";
+        }
         ReadUserDto userById = userService.findUserById(id);
-        List<ReadSongDto> likedSongList = likedSongService.findLikedSongByUserId(userById.getId());
         model.addAttribute("user", userById);
-        model.addAttribute("songs", likedSongList);
         return "users/user_by_id";
     }
 }

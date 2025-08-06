@@ -24,6 +24,10 @@
             <li><a href="/albums"><i class="fas fa-compact-disc"></i> Альбомы</a></li>
             <li><a href="/songs"><i class="fas fa-music"></i> Песни</a></li>
             <li><a href="/users"><i class="fas fa-users"></i> Пользователи</a></li>
+            <div th:if="${user.role.name() == 'AUTHOR'}">
+                <li><a href="/songs/createSong"><i class="fas fa-user-edit"></i> создать песню</a></li>
+                <li><a href="/albums/createAlbum"><i class="fas fa-user-edit"></i> создать альбом</a></li>
+            </div>
         </ul>
     </div>
 
@@ -66,11 +70,28 @@
                         <img th:src="@{/api/v1/minio/images/{imageUrl}(imageUrl = ${song.getImage()})}" alt="Song Cover">
                         <h4 th:text="${song.title}"></h4>
                         <a th:href="@{/songs/{id}(id=${song.id})}" class="action-link">Открыть песню</a>
+                        <a th:href="@{/albums//{id}(id=${song.id})}" class="action-link">добавить в альбом</a>
                     </div>
                 </div>
             </div>
             <div th:if="${user.getCreatedSongs().isEmpty()}" class="no-results-message">
                 <p>Пользователь не создал ни одной песни.</p>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div th:if="${!user.getLikedSongs().isEmpty()}" class="profile-liked-songs-section">
+                <h3>Понравившиеся песни</h3>
+                <div class="cards-grid">
+                    <div th:each="likedSong : ${user.getLikedSongs()}" class="card">
+                        <img th:src="@{/api/v1/minio/images/{imageUrl}(imageUrl = ${likedSong.getImage()})}" alt="Song Cover">
+                        <h4 th:text="${likedSong.title}"></h4>
+                        <a th:href="@{/songs/{id}(id=${likedSong.id})}" class="action-link">Открыть песни</a>
+                    </div>
+                </div>
+            </div>
+            <div th:if="${user.getLikedSongs().isEmpty()}" class="no-results-message">
+                <p>Пользователю не понравилась ни одна песня.</p>
             </div>
 
             <div class="section-divider"></div>
@@ -92,12 +113,12 @@
             <div class="section-divider"></div>
 
             <div th:if="${!user.getPlaylists().isEmpty()}" class="profile-albums-section">
-                <h3>Созданные альбомы</h3>
+                <h3>Созданные плэйлисты</h3>
                 <div class="cards-grid">
                     <div th:each="playlist : ${user.getPlaylists()}" class="card">
                         <img th:src="@{/api/v1/minio/images/{imageUrl}(imageUrl = ${playlist.getImage()})}" alt="Album Cover">
                         <h4 th:text="${playlist.title}"></h4>
-                        <a th:href="@{/albums/{id}(id=${playlist.id})}" class="action-link">Открыть плэйлист</a>
+                        <a th:href="@{/playlists/{id}(id=${playlist.id})}" class="action-link">Открыть плэйлист</a>
                     </div>
                 </div>
             </div>
@@ -105,21 +126,6 @@
                 <p>Пользователь не создал ни одного плэйлиста.</p>
             </div>
 
-            <div class="section-divider"></div>
-
-            <div th:if="${!user.getLikedSongs().isEmpty()}" class="profile-liked-songs-section">
-                <h3>Понравившиеся песни</h3>
-                <div class="cards-grid">
-                    <div th:each="likedSong : ${user.getLikedSongs()}" class="card">
-                        <img th:src="@{/api/v1/minio/images/{imageUrl}(imageUrl = ${likedSong.getImage()})}" alt="Song Cover">
-                        <h4 th:text="${likedSong.title}"></h4>
-                        <a th:href="@{/playlists/{id}(id=${likedSong.id})}" class="action-link">Открыть песни</a>
-                    </div>
-                </div>
-            </div>
-            <div th:if="${user.getLikedSongs().isEmpty()}" class="no-results-message">
-                <p>Пользователю не понравилась ни одна песня.</p>
-            </div>
 
             <div class="section-divider"></div>
 
@@ -129,7 +135,7 @@
                     <div th:each="likedPlaylist : ${user.getLikedPlaylists()}" class="card">
                         <img th:src="@{/api/v1/minio/images/{imageUrl}(imageUrl = ${likedPlaylist.getImage()})}" alt="Song Cover">
                         <h4 th:text="${likedPlaylist.title}"></h4>
-                        <a th:href="@{/songs/{id}(id=${likedPlaylist.id})}" class="action-link">Открыть плэйлист</a>
+                        <a th:href="@{/playlists/{id}(id=${likedPlaylist.id})}" class="action-link">Открыть плэйлист</a>
                     </div>
                 </div>
             </div>
