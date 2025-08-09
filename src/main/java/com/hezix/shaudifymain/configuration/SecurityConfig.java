@@ -1,4 +1,4 @@
-package com.hezix.shaudifymain.configurations;
+package com.hezix.shaudifymain.configuration;
 
 import com.hezix.shaudifymain.service.security.CustomOidcUserService;
 import lombok.RequiredArgsConstructor;

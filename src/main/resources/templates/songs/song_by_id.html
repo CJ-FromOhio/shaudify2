@@ -16,7 +16,7 @@
         <div th:replace="~{fragments/_logo :: logo}"></div>
         <ul class="navigation">
             <li><a href="/"><i class="fas fa-home"></i> Главная</a></li>
-            <li><a href="/users/me"><i class="fas fa-user"></i> мой профиль</a></li>
+            <li><a href="/users/me"><i class="fas fa-circle-user"></i> мой профиль</a></li>
             <li><a href="/search"><i class="fas fa-search"></i> Поиск</a></li>
             <li><a href="/library"><i class="fas fa-book"></i> Ваша библиотека</a></li>
             <li><a href="/playlists"><i class="fas fa-list"></i> Плейлисты</a></li>
@@ -74,8 +74,8 @@
                         </button>
                     </form>
                 </div>
-                <a href="#" class="action-button">
-                    <i class="fas fa-plus"></i>
+                <a th:href="@{/songs/random}" class="action-button">
+                    <i class="fa fa-random"></i>
                 </a>
             </div>
         </div>

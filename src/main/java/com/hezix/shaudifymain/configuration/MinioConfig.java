@@ -1,4 +1,4 @@
-package com.hezix.shaudifymain.configurations;
+package com.hezix.shaudifymain.configuration;
 
 import com.hezix.shaudifymain.util.props.MinioProperties;
 import io.minio.MinioClient;

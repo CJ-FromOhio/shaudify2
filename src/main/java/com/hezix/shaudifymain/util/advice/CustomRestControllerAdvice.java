@@ -1,4 +1,4 @@
-package com.hezix.shaudifymain.advice;
+package com.hezix.shaudifymain.util.advice;
 
 import com.hezix.shaudifymain.util.annotations.CustomRestControllerAdviceAnnotation;
 import com.hezix.shaudifymain.entity.web.CustomResponse;

@@ -80,6 +80,12 @@ public class SongController {
         }
         return "songs/song_by_id";
     }
+    @GetMapping("/random")
+    public String randomSong(Model model) {
+        ReadSongDto song = songService.getRandomSong();
+        model.addAttribute("song", song);
+        return "redirect:/songs/" + song.getId();
+    }
     @PostMapping("/{id}/image")
     private void uploadSongImage(@PathVariable Long id,
                                  @Validated @ModelAttribute MultipartFile file) {

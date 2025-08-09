@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import static com.hezix.shaudifymain.entity.song.QSong.song;
@@ -44,6 +45,7 @@ public class SongService {
     private final MinioImageService minioImageService;
     private final AuthPrincipalChecker authPrincipalChecker;
     private final MinioSongService minioSongService;
+    private final Random random;
 
     @Caching(evict = {
             @CacheEvict(value = "songs:all", allEntries = true),
@@ -60,7 +62,16 @@ public class SongService {
         songRepository.save(song);
         return songReadMapper.toDto(song);
     }
-
+    @Transactional(readOnly = true)
+    public ReadSongDto getRandomSong() {
+        List<Song> songs = songRepository.findAll();
+        if (songs.isEmpty()) {
+            throw new EntityNotFoundException("No songs found in the database");
+        }
+        int randomIndex = random.nextInt(songs.size());
+        return songReadMapper.toDto(songs.get(randomIndex));
+    }
+    @Transactional(readOnly = true)
     public List<ReadSongDto> findSongsByCreatorId(Long creatorId) {
         return songReadMapper.toDtoList(songRepository
                 .findSongsByCreatorId(creatorId));

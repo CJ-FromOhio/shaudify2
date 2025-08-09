@@ -1,4 +1,4 @@
-package com.hezix.shaudifymain.configurations;
+package com.hezix.shaudifymain.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
