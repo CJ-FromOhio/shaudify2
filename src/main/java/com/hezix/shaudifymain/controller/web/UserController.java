@@ -35,7 +35,7 @@ public class UserController {
     private final UserService userService;
     private final UserReadMapper userReadMapper;
     private final BindingResultParser bindingResultParser;
-    private final LikedSongService likedSongService;
+
     private final AuthPrincipalChecker authPrincipalChecker;
 
     @GetMapping()

@@ -28,6 +28,5 @@ public class AuthPrincipalChecker {
         } else {
             throw new IllegalStateException("Неподдерживаемый тип аутентификации");
         }
-
     }
 }

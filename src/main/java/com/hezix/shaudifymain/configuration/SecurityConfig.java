@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.service.security.CustomOidcUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -19,10 +20,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                                 .requestMatchers("/css/**",
                                         "/users/createUser",
-                                        "/users/createUserByGoogle",
-                                        "/api/**").permitAll()
+                                        "/users/createUserByGoogle").permitAll()
                                 .requestMatchers("/**").authenticated()
                         )
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(login -> login
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true)

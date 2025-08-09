@@ -88,7 +88,7 @@ public class AlbumController {
         model.addAttribute("albums", user.getAlbums());
         return "albums/add_song_to_album";
     }
-    @CacheEvict(value = "album:id", key = "#albumId")
+
     @PostMapping("/add/{songId}/{albumId}")
     public String addSongToAlbum(@PathVariable Long songId,
                                  @PathVariable Long albumId,

@@ -11,8 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,13 +27,12 @@ import java.util.List;
 public class SongRestController {
     private final SongService songService;
 
-    @PostMapping("/{id}")
+    @PostMapping("/create")
     @Operation(
             summary = "добавление песни",
             description = "в параметрах передаем идентификатор пользователя который создает песню, и саму песню"
     )
-    public ResponseEntity<ReadSongDto> createSong(@PathVariable("id") Long userId,
-                                                  @Valid @RequestBody CreateSongDto createSongDto,
+    public ResponseEntity<ReadSongDto> createSong(@Valid @RequestBody CreateSongDto createSongDto,
                                                   BindingResult bindingResult,
                                                   @AuthenticationPrincipal UserDetails userDetails) {
         if (bindingResult.hasErrors()) {
@@ -59,5 +61,15 @@ public class SongRestController {
     )
     public ResponseEntity<ReadSongDto> deleteById(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(songService.deleteSongById(id));
+    }
+    @GetMapping("/random")
+    public ResponseEntity<ReadSongDto> randomSong() {
+        return ResponseEntity.ok().body(songService.getRandomSong());
+    }
+    @PostMapping("/{id}/image")
+    private ResponseEntity<ReadSongDto> uploadImage(@PathVariable Long id,
+                                 @Validated @ModelAttribute MultipartFile file) {
+        ReadSongDto readSongDto = songService.uploadImage(id, file);
+        return ResponseEntity.ok().body(readSongDto);
     }
 }

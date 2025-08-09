@@ -187,6 +187,7 @@ public class UserService {
         Predicate predicate = QPredicates.builder()
                 .add(userFilter.getFirstName(), user.firstName::containsIgnoreCase)
                 .add(userFilter.getLastName(), user.lastName::containsIgnoreCase)
+                .add(userFilter.getUsername(), user.username::containsIgnoreCase)
                 .build();
 
         return userRepository.findAll(predicate, pageable)

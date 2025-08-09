@@ -88,6 +88,7 @@ public class AlbumService {
         albumRepository.save(album);
         return albumReadMapper.toDto(album);
     }
+    @CacheEvict(value = "album:id", key = "#albumId")
     @Transactional()
     public ReadAlbumDto addSongToAlbum(Long songId, Long albumId, Object principal) {
         User user = authPrincipalChecker.check(principal);
