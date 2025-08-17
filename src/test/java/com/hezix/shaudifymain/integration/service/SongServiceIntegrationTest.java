@@ -8,6 +8,7 @@ import com.hezix.shaudifymain.service.song.SongService;
 import com.hezix.shaudifymain.service.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,3 +1,5 @@
+--liquibase formatted sql
+
 --changeset hezix:1
 create table if not exists users
 (
