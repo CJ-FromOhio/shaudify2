@@ -1,16 +1,9 @@
-db:
-  username: test
-  password: test
-
 spring:
   cache:
-    type: none
-  data:
-    redis:
-      enabled
+    type: redis
   datasource:
     username: test
     password: test
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop

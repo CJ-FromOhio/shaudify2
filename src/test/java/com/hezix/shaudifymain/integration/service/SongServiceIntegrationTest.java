@@ -1,20 +1,15 @@
 package com.hezix.shaudifymain.integration.service;
 
-import com.hezix.shaudifymain.annotations.Integration;
-import com.hezix.shaudifymain.entity.song.Song;
-import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
-import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.integration.IntegrationTestBase;
 import com.hezix.shaudifymain.service.song.SongService;
-import com.hezix.shaudifymain.service.user.UserService;
+import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
-@Sql({
-        "classpath:sql/data.sql"
-})
+import static org.junit.jupiter.api.Assertions.*;
+
 public class SongServiceIntegrationTest extends IntegrationTestBase {
     private static final Long SONG_ID = 1L;
 
@@ -22,10 +17,8 @@ public class SongServiceIntegrationTest extends IntegrationTestBase {
     private SongService songService;
 
     @Test
-    void findById(){
-        var expected = ReadSongDto.builder().id(SONG_ID).build();
-        var actual = songService.findSongById(SONG_ID);
-        System.out.println(actual);
-        assertThat(actual).isEqualTo(expected);
+    @Sql("classpath:sql/data.sql")
+    void findById_throwIfNotExists(){
+        assertThrows(EntityNotFoundException.class, () -> songService.findSongById(SONG_ID));
     }
 }

@@ -33,6 +33,7 @@ dependencies {
     implementation 'io.minio:minio:8.5.17'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation "org.testcontainers:postgresql:1.21.3"
+    testImplementation "com.redis:testcontainers-redis:2.2.2"
 
     runtimeOnly 'org.postgresql:postgresql'
 
