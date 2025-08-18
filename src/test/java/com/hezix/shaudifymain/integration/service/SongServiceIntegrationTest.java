@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.annotations.Integration;
 import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
+import com.hezix.shaudifymain.integration.IntegrationTestBase;
 import com.hezix.shaudifymain.service.song.SongService;
 import com.hezix.shaudifymain.service.user.UserService;
 import org.junit.jupiter.api.Test;
@@ -11,9 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-@Integration
-public class SongServiceIntegrationTest {
+@Sql({
+        "classpath:sql/data.sql"
+})
+public class SongServiceIntegrationTest extends IntegrationTestBase {
     private static final Long SONG_ID = 1L;
 
     @Autowired
@@ -22,6 +24,8 @@ public class SongServiceIntegrationTest {
     @Test
     void findById(){
         var expected = ReadSongDto.builder().id(SONG_ID).build();
-        assertThat(songService.findSongById(SONG_ID)).isEqualTo(expected);
+        var actual = songService.findSongById(SONG_ID);
+        System.out.println(actual);
+        assertThat(actual).isEqualTo(expected);
     }
 }
