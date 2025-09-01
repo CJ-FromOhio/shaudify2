@@ -20,7 +20,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                                 .requestMatchers("/css/**",
                                         "/users/createUser",
-                                        "/users/createUserByGoogle").permitAll()
+                                        "/users/createUserByGoogle",
+                                "/api/**").permitAll()
                                 .requestMatchers("/**").authenticated()
                         )
                 .httpBasic(Customizer.withDefaults())

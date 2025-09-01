@@ -1,6 +1,8 @@
 package com.hezix.shaudifymain.integration;
 
 import com.hezix.shaudifymain.annotations.Integration;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -17,5 +19,15 @@ public class IntegrationTestBase {
         registry.add("spring.data.redis.host", RedisSingletonContainer.get()::getHost);
         registry.add("spring.data.redis.port", () -> RedisSingletonContainer.get().getMappedPort(6379));
     }
+    @BeforeAll
+    static void beforeAll() {
+        PostgresSingletonContainer.get().start();
+        RedisSingletonContainer.get().start();
+    }
 
+    @AfterAll
+    static void afterAll() {
+        PostgresSingletonContainer.get().stop();
+        RedisSingletonContainer.get().stop();
+    }
 }

@@ -31,13 +31,12 @@ spring:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
             scope: profile, email, openid
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    enabled: true
 minio:
   songBucket: ${MINIO_SONG_BUCKET}
   imageBucket: ${MINIO_IMAGE_BUCKET}
   url: ${MINIO_URL}
   accessKey: ${MINIO_ACCESSKEY}
   secretKey: ${MINIO_SECRETKEY}
-
-#  liquibase:
-#    change-log: classpath:/db/changelog/db.changelog-master.yaml
-#    enabled: true

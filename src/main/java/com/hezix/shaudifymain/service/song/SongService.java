@@ -56,9 +56,11 @@ public class SongService {
     public ReadSongDto save(CreateSongDto createSongDto, Object principal) {
         Song song = songCreateMapper.toEntity(createSongDto);
         song.setCreatedAt(Instant.now());
-        User user = authPrincipalChecker.check(principal);
-        user.getCreatedSongs().add(song);
-        song.setCreator(user);
+        if(principal != null) {
+            User user = authPrincipalChecker.check(principal);
+            user.getCreatedSongs().add(song);
+            song.setCreator(user);
+        }
         songRepository.save(song);
         return songReadMapper.toDto(song);
     }

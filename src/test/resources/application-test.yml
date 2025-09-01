@@ -6,4 +6,10 @@ spring:
     password: test
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-test.yaml
+    enabled: true
+#    init:
+#      mode: always
+#      data-locations: classpath:/sql/data.sql

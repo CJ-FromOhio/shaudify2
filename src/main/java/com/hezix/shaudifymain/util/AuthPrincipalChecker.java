@@ -23,7 +23,10 @@ public class AuthPrincipalChecker {
             return user;
         } else if (principal instanceof OidcUser) {
             userinfo = ((OidcUser) principal).getEmail();
-            user =  userService.findUserEntityByEmail(userinfo);
+            user = userService.findUserEntityByEmail(userinfo);
+            return user;
+        } else if (principal == null) {
+            user = null;
             return user;
         } else {
             throw new IllegalStateException("Неподдерживаемый тип аутентификации");
