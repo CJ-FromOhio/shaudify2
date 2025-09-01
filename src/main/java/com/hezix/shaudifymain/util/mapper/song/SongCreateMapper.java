@@ -16,7 +16,6 @@ public class SongCreateMapper implements Mappable<Song, CreateSongDto> {
                 .id(createSongDto.getId())
                 .title(createSongDto.getTitle())
                 .description(createSongDto.getDescription())
-                .createdAt(Instant.now())
                 .build();
     }
 

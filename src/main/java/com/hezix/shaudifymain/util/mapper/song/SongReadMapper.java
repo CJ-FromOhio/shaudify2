@@ -43,7 +43,7 @@ public class SongReadMapper implements Mappable<Song, ReadSongDto> {
                 .title(song.getTitle())
                 .description(song.getDescription())
                 .createdAt(song.getCreatedAt())
-                .creatorId(song.getCreator().getId())
+                .creatorId(song.getCreator() != null ? song.getCreator().getId() : null)
                 .albumId(song.getAlbum() != null ? song.getAlbum().getId() : null)
                 .image(song.getImage())
                 .song(song.getSongFile())
