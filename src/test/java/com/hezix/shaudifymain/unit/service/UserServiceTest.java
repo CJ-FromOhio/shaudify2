@@ -31,8 +31,6 @@ public class UserServiceTest {
     void findUserByIdTest(){
        given(userRepository.findById(USER_ID))
                .willReturn(Optional.of(User.builder().id(USER_ID).build()));
-//        when(userRepository.findById(USER_ID))
-//                .thenReturn(Optional.of(User.builder().id(USER_ID).build()));
         var expected = User.builder().id(USER_ID).build();
         assertThat(userService.findUserEntityById(USER_ID)).isEqualTo(expected);
     }

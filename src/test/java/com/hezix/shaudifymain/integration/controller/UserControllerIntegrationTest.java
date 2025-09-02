@@ -17,6 +17,8 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.junit.jupiter.Container;
 
 import java.io.IOException;
 import java.net.URI;
@@ -33,25 +35,19 @@ public class UserControllerIntegrationTest {
     @LocalServerPort
     private Integer port;
 
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17-alpine");
-
-    @BeforeAll
-    static void beforeAll() {
-        postgres.start();
-    }
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
+    @Container
+    private static PostgreSQLContainer<?> POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:17-alpine")
+            .waitingFor(Wait.forListeningPort())
+            .waitingFor(Wait.forLogMessage(".*database system is ready.*", 1));
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", POSTGRES_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.username", POSTGRES_CONTAINER::getUsername);
+        registry.add("spring.datasource.password", POSTGRES_CONTAINER::getPassword);
     }
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
-    @DynamicPropertySource
-    static void dynamicProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgres::getJdbcUrl);
-        registry.add("spring.datasource.username", postgres::getUsername);
-        registry.add("spring.datasource.password", postgres::getPassword);
-    }
     @BeforeEach
     void setUp() {
         RestAssured.baseURI = "http://localhost:" + port;
