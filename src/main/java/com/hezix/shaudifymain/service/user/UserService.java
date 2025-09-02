@@ -55,6 +55,7 @@ public class UserService {
         }
         createUserDto.setPassword(bcryptPasswordEncoder.encode(createUserDto.getPassword()));
         User user = userCreateMapper.toEntity(createUserDto);
+        user.setRole(Role.USER);
         user.setCreatedAt(Instant.now());
         User created_user = userRepository.save(user);
         return userReadMapper.toDto(created_user);

@@ -19,7 +19,6 @@ public class UserCreateMapper implements Mappable<User, CreateUserDto> {
                 .email(createUserDto.getEmail())
                 .firstName(createUserDto.getFirstName())
                 .lastName(createUserDto.getLastName())
-                .role(Role.USER)
                 .build();
     }
 

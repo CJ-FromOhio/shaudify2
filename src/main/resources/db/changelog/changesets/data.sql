@@ -49,7 +49,7 @@ VALUES (1, '2025-03-01 00:00:00+00', 'taylor', 'Tim McGraw', 'POP', 1, 1),
        (13, '2025-03-13 00:00:00+00', 'kendrick', 'DNA.', 'POP', 4, 8),
        (14, '2025-03-14 00:00:00+00', 'taylor', 'All Too Well (10 Minute)', 'POP', 1, NULL),
        (15, '2025-03-15 00:00:00+00', 'weeknd', 'Moth to a Flame', 'POP', 2, NULL);
-ALTER SEQUENCE songs_id_seq RESTART WITH 16;
+
 -- Тестовые плейлисты (публичные и приватные)
 INSERT INTO playlists (id, created_at, image, title, type, author)
 VALUES

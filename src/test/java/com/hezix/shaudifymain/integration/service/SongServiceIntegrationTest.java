@@ -1,29 +1,17 @@
 package com.hezix.shaudifymain.integration.service;
 
 import com.hezix.shaudifymain.annotations.Integration;
-import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
-import com.hezix.shaudifymain.entity.user.User;
-import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
-import com.hezix.shaudifymain.integration.IntegrationTestBase;
-import com.hezix.shaudifymain.integration.RedisSingletonContainer;
-import com.hezix.shaudifymain.repository.SongRepository;
 import com.hezix.shaudifymain.service.song.SongService;
-import com.hezix.shaudifymain.service.user.UserService;
 import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.util.filter.SongFilter;
-import com.redis.testcontainers.RedisContainer;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
@@ -36,10 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Integration
 @Testcontainers
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class SongServiceIntegrationTest {
     private static final Long SONG_ID = 1L;
     private static final Long CREATOR_ID = 1L;
-    private static final Long SONG_NON_EXISTENT_ID = 17L;
+    private static final Long SONG_NON_EXISTENT_ID = 9999L;
     private static final String TITLE_FOR_FILTER = "";
     @Autowired
     private SongService songService;
@@ -102,10 +91,5 @@ public class SongServiceIntegrationTest {
                 .build(), null);
         var actual = songService.findSongById(16L);
         assertThat(actual).isEqualTo(expected);
-    }
-    @Nested
-    @Tag("fileUploading")
-    class SongFileUploading{
-
     }
 }
