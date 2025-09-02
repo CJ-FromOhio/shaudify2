@@ -39,6 +39,7 @@ public class AlbumReadMapper implements Mappable<Album, ReadAlbumDto> {
                 .description(album.getDescription())
                 .author_id(album.getAuthor().getId())
                 .songs(songReadMapper.toDtoList(album.getSongs()))
+                .album_type(album.getType())
                 .image(album.getImage())
                 .build();
     }

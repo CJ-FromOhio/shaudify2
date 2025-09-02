@@ -32,6 +32,15 @@
                 <input type="file" id="imageFile" th:field="*{imageFile}">
             </div>
 
+            <div class="form-group">
+                <div th:each="typeVal : ${types}">
+                    <label>
+                        <input type="radio" th:field="*{createAlbumDto.albumType}" th:value="${typeVal}"/>
+                        <span th:text="${typeVal.getDisplayName()}"></span>
+                    </label>
+                </div>
+            </div>
+
             <div class="login-messages">
                 <div th:if="${!errors.isEmpty()}" th:each="error : ${errors}" class="error-message">
                     <span th:text="${error}"></span>

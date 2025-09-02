@@ -2,6 +2,7 @@ package com.hezix.shaudifymain.controller.web;
 
 import com.hezix.shaudifymain.entity.album.dto.ReadAlbumDto;
 import com.hezix.shaudifymain.entity.album.form.CreateAlbumFormDto;
+import com.hezix.shaudifymain.entity.playlist.PLAYLIST_TYPE;
 import com.hezix.shaudifymain.entity.playlist.dto.CreatePlaylistDto;
 import com.hezix.shaudifymain.entity.playlist.dto.ReadPlaylistDto;
 import com.hezix.shaudifymain.entity.playlist.form.CreatePlaylistFormDto;
@@ -56,6 +57,7 @@ public class PlaylistController {
     @GetMapping("/create")
     public String createPlaylist(Model model) {
         model.addAttribute("createPlaylistFormDto", new CreatePlaylistFormDto());
+        model.addAttribute("types", PLAYLIST_TYPE.values());
         return "playlists/create_playlist";
     }
 

@@ -16,6 +16,7 @@ public class PlaylistCreateMapper implements Mappable<Playlist, CreatePlaylistDt
     public Playlist toEntity(CreatePlaylistDto createPlaylistDto) {
         return Playlist.builder()
                 .title(createPlaylistDto.getTitle())
+                .type(createPlaylistDto.getPlaylist_type())
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.entity.album.dto;
 
+import com.hezix.shaudifymain.entity.album.ALBUM_TYPE;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,8 @@ public class ReadAlbumDto implements Serializable {
     private String description;
 
     private Long author_id;
+
+    private ALBUM_TYPE album_type;
 
     private String image;
 

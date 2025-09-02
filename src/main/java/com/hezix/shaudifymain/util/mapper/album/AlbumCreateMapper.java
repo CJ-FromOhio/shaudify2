@@ -15,6 +15,7 @@ public class AlbumCreateMapper implements Mappable<Album, CreateAlbumDto> {
                 .id(createAlbumDto.getId())
                 .title(createAlbumDto.getTitle())
                 .description(createAlbumDto.getDescription())
+                .type(createAlbumDto.getAlbumType())
                 .build();
     }
 

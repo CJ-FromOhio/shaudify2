@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.entity.playlist.form;
 
+import com.hezix.shaudifymain.entity.playlist.PLAYLIST_TYPE;
 import com.hezix.shaudifymain.entity.playlist.dto.CreatePlaylistDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

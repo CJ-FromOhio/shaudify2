@@ -53,7 +53,6 @@
                     <span th:text="${playlistItem.title}"></span>
                     <div class="song-actions">
                         <a th:href="@{/playlists/{id}(id=${playlistItem.id})}" class="action-link"><i class="fas fa-info-circle"></i> Детали</a>
-                        <a th:href="@{/playlists/add/{songId}(songId=${playlistItem.id})}" class="action-link"><i class="fas fa-compact-disc"></i> В альбом</a>
                     </div>
                 </div>
                 <div th:if="${playlists.content.isEmpty()}" class="no-results">

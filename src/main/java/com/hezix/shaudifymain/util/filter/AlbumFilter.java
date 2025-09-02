@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.util.filter;
 
+import com.hezix.shaudifymain.entity.album.ALBUM_TYPE;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,4 +13,5 @@ import org.checkerframework.checker.units.qual.A;
 @EqualsAndHashCode
 public class AlbumFilter {
     private String title = "";
+    private ALBUM_TYPE albumType;
 }

@@ -46,7 +46,6 @@ public class PlaylistService {
 
         playlist.setAuthor(user);
         playlist.setCreated_at(Instant.now());
-        playlist.setType(PLAYLIST_TYPE.PUBLIC);
         user.getPlaylists().add(playlist);
 
         playlistRepository.save(playlist);
@@ -57,6 +56,7 @@ public class PlaylistService {
     public Page<ReadPlaylistDto> findAllByFilter(PlaylistFilter playlistFilter, Pageable pageable) {
         var predicate = QPredicates.builder()
                 .add(playlistFilter.getTitle(), playlist.title::containsIgnoreCase)
+                .add(PLAYLIST_TYPE.PUBLIC, playlist.type::eq)
                 .build();
         Page<ReadPlaylistDto> playlists = playlistRepository.findAll(predicate, pageable)
                 .map(playlistReadMapper::toDto);

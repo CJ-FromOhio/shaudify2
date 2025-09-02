@@ -70,6 +70,7 @@ public class AlbumService {
     public Page<ReadAlbumDto> findAllByFilter(AlbumFilter albumFilter, Pageable pageable) {
         var predicate = QPredicates.builder()
                     .add(albumFilter.getTitle(), album.title::containsIgnoreCase)
+
                     .build();
         return albumRepository.findAll(predicate, pageable)
                 .map(albumReadMapper::toDto);
@@ -82,9 +83,11 @@ public class AlbumService {
     public ReadAlbumDto save(CreateAlbumDto createAlbumDto, Object principal) {
         Album album = albumCreateMapper.toEntity(createAlbumDto);
         User user = authPrincipalChecker.check(principal);
+
         album.setAuthor(user);
         album.setCreatedAt(Instant.now());
         user.getAlbums().add(album);
+
         albumRepository.save(album);
         return albumReadMapper.toDto(album);
     }

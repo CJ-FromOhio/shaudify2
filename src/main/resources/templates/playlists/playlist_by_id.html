@@ -46,7 +46,7 @@
         <div class="entity-profile-header">
             <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${playlist.image})}" alt="Обложка альбома" class="entity-cover-image">
             <div class="entity-details">
-                <span class="entity-type">Альбом</span>
+                <span class="entity-type" th:text="${playlist.type}">тип</span>
                 <h1 class="entity-title" th:text="${playlist.title}">Название альбома</h1>
                 <div class="entity-meta">
                     <p>Автор: <a th:href="@{/users/{id}(id=${playlist.author_id})}" class="meta-link" >Профиль Автора</a></p>

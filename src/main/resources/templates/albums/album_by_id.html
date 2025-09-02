@@ -46,7 +46,7 @@
     <div class="entity-profile-header">
       <img th:src="@{/api/v1/minio/images/{fileName}(fileName=${album.image})}" alt="Обложка альбома" class="entity-cover-image">
       <div class="entity-details">
-        <span class="entity-type">Альбом</span>
+        <span class="entity-type" th:text="${album.getAlbum_type().getDisplayName()}"></span>
         <h1 class="entity-title" th:text="${album.title}">Название альбома</h1>
         <p class="entity-description" th:text="${album.description}">Описание альбома</p>
         <div class="entity-meta">
