@@ -1,8 +1,15 @@
 package com.hezix.shaudifymain.integration.service;
 
+import com.hezix.shaudifymain.BaseIntegrationTest;
 import com.hezix.shaudifymain.annotations.Integration;
+import com.hezix.shaudifymain.entity.song.Genre;
+import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
+import com.hezix.shaudifymain.entity.user.Role;
+import com.hezix.shaudifymain.entity.user.User;
+import com.hezix.shaudifymain.repository.SongRepository;
+import com.hezix.shaudifymain.repository.UserRepository;
 import com.hezix.shaudifymain.service.song.SongService;
 import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.util.filter.SongFilter;
@@ -10,86 +17,102 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Integration
 @Testcontainers
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class SongServiceIntegrationTest {
-    private static final Long SONG_ID = 1L;
-    private static final Long CREATOR_ID = 1L;
-    private static final Long SONG_NON_EXISTENT_ID = 9999L;
-    private static final String TITLE_FOR_FILTER = "";
+public class SongServiceIntegrationTest extends BaseIntegrationTest {
+
     @Autowired
     private SongService songService;
+    @Autowired
+    private SongRepository songRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    @Container
-    private static PostgreSQLContainer<?> POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:17-alpine")
-            .waitingFor(Wait.forListeningPort())
-            .waitingFor(Wait.forLogMessage(".*database system is ready.*", 1));
+    private Long savedCreatorId;
 
-    @DynamicPropertySource
-    static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRES_CONTAINER::getJdbcUrl);
-        registry.add("spring.datasource.username", POSTGRES_CONTAINER::getUsername);
-        registry.add("spring.datasource.password", POSTGRES_CONTAINER::getPassword);
+
+    @BeforeEach
+    void setUp(){
+        songRepository.deleteAll();
+        userRepository.deleteAll();
+
+        String shortId = UUID.randomUUID().toString().substring(0, 8);
+        var user = userRepository.save(User.builder()
+                .username("username_" + shortId)
+                .email("test_email" + UUID.randomUUID() + "@gmail.com")
+                .role(Role.AUTHOR)
+                .createdAt(Instant.now())
+                .build());
+        this.savedCreatorId = user.getId();
     }
     @Test
     void findById_throwIfNotExists(){
         assertThrows(EntityNotFoundException.class,
-                () -> songService.findSongById(SONG_NON_EXISTENT_ID));
+                () -> songService.findSongById(-1L));
     }
     @Test
     void findById(){
-        var expected = ReadSongDto.builder().id(SONG_ID).build();
-        var actual = songService.findSongById(SONG_ID);
-        assertThat(actual).isEqualTo(expected);
+        var song = songRepository.save(Song.builder()
+                        .title("Song1")
+                        .creator(userRepository.getReferenceById(savedCreatorId))
+                        .createdAt(Instant.now())
+                .build());
+        var actual = songService.findSongById(song.getId());
+
+        assertThat(actual.getId()).isEqualTo(song.getId());
+        assertThat(actual.getTitle()).isEqualTo("Song1");
     }
     @Test
-    @Order(1)
     void findAll(){
-        int expected = 15;
+        var author = userRepository.getReferenceById(savedCreatorId);
+        songRepository.save(Song.builder().title("Song1").creator(author).build());
+        songRepository.save(Song.builder().title("Song2").creator(author).build());
         var actual = songService.findAllSongs();
-        assertThat(actual).hasSize(expected);
+        assertThat(actual).hasSizeGreaterThanOrEqualTo(2);
     }
     @Test
-    @Order(2)
     void findAll_byFilter(){
-        int expected = 15;
-        Pageable pageable = PageRequest.of(0, 15);
-        var actual = songService.findAllSongsByFilter(new SongFilter(TITLE_FOR_FILTER), pageable);
-        assertThat(actual).hasSize(expected);
+        String shortId = UUID.randomUUID().toString().substring(0, 8);
+        String uniqueTitle = "FilterMe_" + shortId;
+        songRepository.save(Song.builder().title(uniqueTitle).build());
+
+        Pageable pageable = PageRequest.of(0, 10);
+        var actual = songService.findAllSongsByFilter(new SongFilter(uniqueTitle), pageable);
+
+        assertThat(actual).hasSize(1);
+        assertThat(actual.getContent().get(0).getTitle()).isEqualTo(uniqueTitle);
     }
     @Test
     void findSongs_ByCreatorId(){
-        List<ReadSongDto> expected = List.of(
-                ReadSongDto.builder().id(1L).build(),
-                ReadSongDto.builder().id(2L).build(),
-                ReadSongDto.builder().id(3L).build(),
-                ReadSongDto.builder().id(4L).build(),
-                ReadSongDto.builder().id(14L).build()
-        );
-        List<ReadSongDto> actual = songService.findSongsByCreatorId(CREATOR_ID);
-        assertThat(actual).isEqualTo(expected);
+        var author = userRepository.getReferenceById(savedCreatorId);
+        songRepository.save(Song.builder().title("AuthorSong1").creator(author).build());
+        songRepository.save(Song.builder().title("AuthorSong2").creator(author).build());
+
+        List<ReadSongDto> actual = songService.findSongsByCreatorId(author.getId());
+
+        assertThat(actual).hasSize(2);
+        assertThat(actual).extracting(ReadSongDto::getTitle)
+                .containsExactlyInAnyOrder("AuthorSong1", "AuthorSong2");
     }
-    @Order(3)
     @Test
     void song_saving(){
-        var expected = songService.save(CreateSongDto.builder()
-                .title("test")
-                .description("testsong")
-                .build(), null);
-        var actual = songService.findSongById(16L);
-        assertThat(actual).isEqualTo(expected);
+        var dto = CreateSongDto.builder()
+                .title("SaveTestSong")
+                .description("Description Song 1")
+                .genre(Genre.POP)
+                .build();
+        var saved = songService.save(dto, null);
+        var actual = songService.findSongById(saved.getId());
+        assertThat(actual.getTitle()).isEqualTo("SaveTestSong");
+        assertThat(actual.getId()).isNotNull();
     }
 }

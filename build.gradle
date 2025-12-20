@@ -52,7 +52,7 @@ dependencies {
     annotationProcessor 'jakarta.annotation:jakarta.annotation-api:2.1.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testImplementation "org.testcontainers:testcontainers:1.21.3"
+    testImplementation 'org.testcontainers:testcontainers:2.0.3'
     testImplementation "org.testcontainers:junit-jupiter:1.21.3"
 }
 
