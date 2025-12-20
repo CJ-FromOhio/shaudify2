@@ -19,8 +19,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
                                 .requestMatchers("/css/**",
-                                        "/users/createUser",
-                                        "/users/createUserByGoogle",
+                                "/users/createUser",
+                                "/users/createUserByGoogle",
                                 "/api/**").permitAll()
                                 .requestMatchers("/**").authenticated()
                         )
