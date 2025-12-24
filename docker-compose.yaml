@@ -6,24 +6,31 @@ services:
       - MINIO_ROOT_USER=${MINIO_ACCESSKEY}
       - MINIO_ROOT_PASSWORD=${MINIO_SECRETKEY}
     command:
-      server /minio --console-address :9090
+      server /data --console-address :9001
+    networks:
+      - app-network
     ports:
-      - "9090:9090"
+      - "9001:9001"
       - "9000:9000"
     volumes:
-      - minio_volume:/minio
+      - minio_volume:/data
   redis:
     image: redis:8.0-alpine
     container_name: redis
     restart: always
+    networks:
+      - app-network
     ports:
       - "6379:6379"
+    command: redis-server --appendonly yes
     volumes:
-      - redis_volume:/redis
+      - redis_volume:/data
   database:
     restart: always
     container_name: postgres_17
     image: postgres:17-alpine
+    networks:
+      - app-network
     environment:
       POSTGRES_DB: shaudify
       POSTGRES_USER: ${DB_USERNAME}
@@ -32,12 +39,16 @@ services:
       - pg_volume:/var/lib/postgresql/data
     ports:
       - "5433:5432"
+
   app:
     restart: always
     container_name: app
     build: .
     ports:
       - "8080:8080"
+    networks:
+      - app-network
+      - monitoring
     depends_on:
       - database
       - minio
@@ -45,7 +56,7 @@ services:
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_URL: jdbc:postgresql://database:5432/shaudify
+      DB_URL: ${DB_URL}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       MINIO_IMAGE_BUCKET: ${MINIO_IMAGE_BUCKET}
@@ -56,7 +67,45 @@ services:
       REDIS_USER: ${REDIS_USER}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - monitoring
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+    volumes:
+    - prom_volume:/prometheus
+    - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    networks:
+      - monitoring
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_volume:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+networks:
+  monitoring:
+    driver: bridge
+  app-network:
+    driver: bridge
+
 volumes:
+  prom_volume:
+    driver: local
+  grafana_volume:
+    driver: local
   pg_volume:
     driver: local
   minio_volume:
