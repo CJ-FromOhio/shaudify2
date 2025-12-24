@@ -40,3 +40,20 @@ minio:
   url: ${MINIO_URL}
   accessKey: ${MINIO_ACCESSKEY}
   secretKey: ${MINIO_SECRETKEY}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'prometheus, health'
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+
+
+
