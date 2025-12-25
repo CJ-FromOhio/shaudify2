@@ -1,7 +1,7 @@
 FROM gradle:jdk21-jammy AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN ./gradlew build -x test --no-daemon
+RUN gradle build -x test --no-daemon
 
 FROM amazoncorretto:21-alpine-jdk
 RUN mkdir /app
