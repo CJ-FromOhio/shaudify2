@@ -95,6 +95,21 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+
+  vm:
+    image: victoriametrics/victoria-metrics:v1.132.0
+    container_name: vm
+    networks:
+      - monitoring
+    ports:
+      - 8428:8428
+    volumes:
+      - ./config/victoriametrics/promscrape.yml:/etc/vm/promscrape.yml
+      - vm_volume:/victoria-metrics-data
+    command:
+      - -promscrape.config=/etc/vm/promscrape.yml
+
+
 networks:
   monitoring:
     driver: bridge
@@ -102,6 +117,8 @@ networks:
     driver: bridge
 
 volumes:
+  vm_volume:
+    driver: local
   prom_volume:
     driver: local
   grafana_volume:
