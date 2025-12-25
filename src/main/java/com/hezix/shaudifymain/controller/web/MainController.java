@@ -4,6 +4,7 @@ import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.annotations.CustomControllerAdviceAnnotation;
 import com.hezix.shaudifymain.service.user.UserService;
+import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,11 @@ public class MainController {
     private final MeterRegistry meterRegistry;
 
     @GetMapping("/")
+    @Timed(value = "Main_Controller_Count",
+            description = "количество обращений на главную страницу")
     public String main(@AuthenticationPrincipal Object principal, Model model) {
         User user = authPrincipalChecker.check(principal);
         model.addAttribute("user", user);
-        this.meterRegistry.counter("mainController_count", List.of())
-                .increment();
         this.meterRegistry.counter("mainController_count_by_username", List.of(Tag.of("username", user.getUsername())))
                 .increment();
         return "main";

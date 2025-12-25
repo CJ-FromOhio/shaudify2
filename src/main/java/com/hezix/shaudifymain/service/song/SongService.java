@@ -5,10 +5,8 @@ import com.hezix.shaudifymain.entity.song.Song;
 import com.hezix.shaudifymain.entity.song.dto.CreateSongDto;
 import com.hezix.shaudifymain.entity.song.dto.ReadSongDto;
 import com.hezix.shaudifymain.entity.user.User;
-import com.hezix.shaudifymain.entity.user.dto.ReadUserDto;
 import com.hezix.shaudifymain.service.minio.MinioImageService;
 import com.hezix.shaudifymain.service.minio.MinioSongService;
-import com.hezix.shaudifymain.service.user.UserService;
 import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.exception.EntityNotFoundException;
 import com.hezix.shaudifymain.util.filter.QPredicates;
@@ -17,6 +15,9 @@ import com.hezix.shaudifymain.util.mapper.song.SongCreateMapper;
 import com.hezix.shaudifymain.util.mapper.song.SongReadMapper;
 
 import com.hezix.shaudifymain.repository.SongRepository;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -45,6 +46,7 @@ public class SongService {
     private final MinioImageService minioImageService;
     private final AuthPrincipalChecker authPrincipalChecker;
     private final MinioSongService minioSongService;
+    private final MeterRegistry meterRegistry;
     private final Random random;
 
     @Caching(evict = {
@@ -159,5 +161,11 @@ public class SongService {
         return songReadMapper.toDto(song);
     }
 
+    @PostConstruct
+    public void initMetrics(){
+        Gauge.builder("songs_count",songRepository, (r) -> r.count())
+                .description("Количество всех песен")
+                .register(meterRegistry);
+    }
 
 }

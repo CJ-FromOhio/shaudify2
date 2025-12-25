@@ -19,19 +19,4 @@ public class MetricConfig {
     public TimedAspect timedAspect(MeterRegistry registry) {
         return new TimedAspect(registry);
     }
-    @Bean
-    MeterBinder meterBinder(UserService userService) {
-        return registry -> {
-            Counter.builder("mainController_count")
-                    .description("количество обращений на главную страницу")
-                    .register(registry);
-            Counter.builder("mainController_count_by_username")
-                    .description("количество обращений по username")
-                    .tag("username","none")
-                    .register(registry);
-            Gauge.builder("users_count", userService, (service) -> (double) service.countAllUsers())
-                    .description("Количество аккаунтов")
-                    .register(registry);
-        };
-    }
 }

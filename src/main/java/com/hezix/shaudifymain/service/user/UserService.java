@@ -15,6 +15,10 @@ import com.hezix.shaudifymain.util.mapper.user.UserCreateMapper;
 import com.hezix.shaudifymain.util.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -42,6 +46,9 @@ public class UserService {
     private final UserReadMapper userReadMapper;
     private final BCryptPasswordEncoder bcryptPasswordEncoder;
     private final MinioImageService minioImageService;
+    private final MeterRegistry meterRegistry;
+
+
     @Caching(evict = {
             @CacheEvict(value = "users:all", allEntries = true),
             @CacheEvict(value = "users:id", allEntries = true),
@@ -234,5 +241,12 @@ public class UserService {
         user.setImage(fileName);
         userRepository.save(user);
         return userReadMapper.toDto(user);
+    }
+
+    @PostConstruct
+    public void initMetrics() {
+        Gauge.builder("users_count", userRepository, (r) -> (double) r.count())
+                .description("Количество всех юзеров")
+                .register(meterRegistry);
     }
 }
