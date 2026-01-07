@@ -27,8 +27,9 @@ public class MainController {
     private final MeterRegistry meterRegistry;
 
     @GetMapping("/")
-    @Timed(value = "Main_Controller_Count",
-            description = "количество обращений на главную страницу")
+    @Timed(value = "http.requests.main",
+            description = "Запросы на главную страницу",
+            extraTags = {"page", "home", "module", "ui"})
     public String main(@AuthenticationPrincipal Object principal, Model model) {
         User user = authPrincipalChecker.check(principal);
         model.addAttribute("user", user);
