@@ -6,6 +6,7 @@ import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.service.user.UserService;
 import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.mapper.song.SongReadMapper;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -28,6 +29,8 @@ public class LikedSongService {
             value = "users:likedSong",
             allEntries = true
     )
+    @Timed(value = "service.song.like",
+            description = "like timer")
     @Transactional()
     public ReadSongDto like(Long songId, Object principal) {
         User user = authPrincipalChecker.check(principal);
@@ -47,6 +50,8 @@ public class LikedSongService {
             value = "users:likedSong",
             allEntries = true
     )
+    @Timed(value = "service.song.dislike",
+            description = "dislike timer")
     @Transactional()
     public ReadSongDto dislike(Long songId, Object principal) {
         User user = authPrincipalChecker.check(principal);
