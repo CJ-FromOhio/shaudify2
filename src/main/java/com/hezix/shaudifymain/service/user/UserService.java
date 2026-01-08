@@ -103,8 +103,9 @@ public class UserService {
             value = "users:authors",
             key = "#userFilter.hashCode() + '_' + #pageable.pageNumber + '_' + #pageable.pageSize"
     )
-    @Timed(value = "service.user.findAllAuthors",
-            description = "поиск всех Author")
+    @Timed(value = "service.user.findAll",
+            description = "поиск всех Author",
+            extraTags = {"method","authors"})
     @Transactional(readOnly = true)
     public Page<ReadUserDto> findAllAuthors(UserFilter userFilter, Pageable pageable) {
         Predicate predicate = QPredicates.builder()
