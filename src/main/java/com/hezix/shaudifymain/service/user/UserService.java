@@ -277,11 +277,6 @@ public class UserService {
     }
 
     @Transactional()
-    public Long countAllUsers() {
-        return userRepository.count();
-    }
-
-    @Transactional()
     @Caching(evict = {
             @CacheEvict(value = "users:username", key = "#user.username"),
             @CacheEvict(value = "users:id", key = "#user.id"),

@@ -7,6 +7,7 @@ import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.service.user.UserService;
 import com.hezix.shaudifymain.util.AuthPrincipalChecker;
 import com.hezix.shaudifymain.util.mapper.playlist.PlaylistReadMapper;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,10 +26,13 @@ public class LikedPlaylistService {
     private final PlaylistService playlistService;
     private final PlaylistReadMapper playlistReadMapper;
     private final AuthPrincipalChecker authPrincipalChecker;
+
     @CacheEvict(
             value = "users:LikedPlaylist",
             allEntries = true
     )
+    @Timed(value = "service.playlist.like",
+            description = "like timer")
     @Transactional()
     public ReadPlaylistDto like(Long playlistId, Object principal) {
         User user = authPrincipalChecker.check(principal);
@@ -42,10 +46,13 @@ public class LikedPlaylistService {
     public Set<Long> findLikedPlaylistIdsByUser(Long userById) {
         return userService.findUserById(userById).getLikedPlaylists().stream().map(playlist -> playlist.getId()).collect(Collectors.toSet());
     }
+
     @CacheEvict(
             value = "users:LikedPlaylist",
             allEntries = true
     )
+    @Timed(value = "service.song.dislike",
+            description = "dislike timer")
     @Transactional()
     public ReadPlaylistDto dislike(Long playlistId, Object principal) {
         User user = authPrincipalChecker.check(principal);
