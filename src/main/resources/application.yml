@@ -54,6 +54,11 @@ management:
     distribution:
       percentiles-histogram:
         "[http.server.requests]": true
+    data:
+      repository:
+        autotime:
+          enabled: true
+
 
 
 

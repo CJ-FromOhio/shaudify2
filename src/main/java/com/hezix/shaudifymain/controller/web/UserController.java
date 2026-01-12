@@ -131,7 +131,7 @@ public class UserController {
     public String user(@PathVariable Long id, Model model,
                        @AuthenticationPrincipal Object principal) {
         ReadUserDto user = userReadMapper.toDto(authPrincipalChecker.check(principal));
-        if( user.getId() == id) {
+        if(user.getId().equals(id)) {
             model.addAttribute("user", user);
             return "redirect:/users/me";
         }

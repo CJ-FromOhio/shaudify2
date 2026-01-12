@@ -64,6 +64,7 @@ public class UserService {
     public ReadUserDto save(CreateUserDto createUserDto) {
         if (!createUserDto.getPassword().equals(createUserDto.getPasswordConfirm())) {
             throw new PasswordAndPasswordConfirmationNotEquals("Password and password confirmation not equals");
+
         }
         createUserDto.setPassword(bcryptPasswordEncoder.encode(createUserDto.getPassword()));
         User user = userCreateMapper.toEntity(createUserDto);

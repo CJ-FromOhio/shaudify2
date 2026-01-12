@@ -10,13 +10,17 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+
 import com.querydsl.core.types.Predicate;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>,
-         QuerydslPredicateExecutor<User> {
-    @Timed(value = "user.repository.findByUsername")
+        QuerydslPredicateExecutor<User> {
+    @Timed(value = "repository.user.findByUsername",
+            description = "find user by Username")
     Optional<User> findByUsername(String username);
-    @Timed(value = "user.repository.findByEmail")
+
+    @Timed(value = "repository.user.findByEmail",
+            description = "find user by email")
     Optional<User> findByEmail(String email);
 }
