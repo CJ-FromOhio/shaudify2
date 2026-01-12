@@ -15,12 +15,18 @@ import com.hezix.shaudifymain.util.mapper.user.UserCreateMapper;
 import com.hezix.shaudifymain.util.mapper.user.UserReadMapper;
 import com.hezix.shaudifymain.repository.UserRepository;
 import com.querydsl.core.types.Predicate;
+import io.micrometer.core.annotation.Timed;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
+
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,16 +48,23 @@ public class UserService {
     private final UserReadMapper userReadMapper;
     private final BCryptPasswordEncoder bcryptPasswordEncoder;
     private final MinioImageService minioImageService;
+    private final MeterRegistry meterRegistry;
+
+
     @Caching(evict = {
             @CacheEvict(value = "users:all", allEntries = true),
             @CacheEvict(value = "users:id", allEntries = true),
             @CacheEvict(value = "users:username", allEntries = true),
             @CacheEvict(value = "users:email", allEntries = true),
     })
+    @Timed(value = "service.user.save",
+            description = "создание пользователя",
+            histogram = true)
     @Transactional()
     public ReadUserDto save(CreateUserDto createUserDto) {
         if (!createUserDto.getPassword().equals(createUserDto.getPasswordConfirm())) {
             throw new PasswordAndPasswordConfirmationNotEquals("Password and password confirmation not equals");
+
         }
         createUserDto.setPassword(bcryptPasswordEncoder.encode(createUserDto.getPassword()));
         User user = userCreateMapper.toEntity(createUserDto);
@@ -60,10 +73,14 @@ public class UserService {
         User created_user = userRepository.save(user);
         return userReadMapper.toDto(created_user);
     }
+
     @Cacheable(
             value = "users:id",
             key = "#id"
     )
+    @Timed(value = "service.user.findById",
+            description = "поиск по id",
+            extraTags = {"method","dto"})
     @Transactional(readOnly = true)
     public ReadUserDto findUserById(Long id) {
         return userReadMapper.toDto(userRepository.findById(id)
@@ -74,15 +91,22 @@ public class UserService {
             value = "users:username",
             key = "#username"
     )
+    @Timed(value = "service.user.findByUsername",
+            description = "поиск по Username",
+            extraTags = {"method","dto"})
     @Transactional(readOnly = true)
     public ReadUserDto findUserByUsername(String username) {
         return userReadMapper.toDto(userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User with username " + username + " not found")));
     }
+
     @Cacheable(
             value = "users:authors",
             key = "#userFilter.hashCode() + '_' + #pageable.pageNumber + '_' + #pageable.pageSize"
     )
+    @Timed(value = "service.user.findAll",
+            description = "поиск всех Author",
+            extraTags = {"method","authors"})
     @Transactional(readOnly = true)
     public Page<ReadUserDto> findAllAuthors(UserFilter userFilter, Pageable pageable) {
         Predicate predicate = QPredicates.builder()
@@ -93,31 +117,47 @@ public class UserService {
         return userRepository.findAll(predicate, pageable)
                 .map(userReadMapper::toDto);
     }
+
     @Cacheable(
             value = "users:email",
             key = "#email"
     )
+    @Timed(value = "service.user.findByEmail",
+            description = "поиск по Email",
+            extraTags = {"method","dto"})
     @Transactional(readOnly = true)
     public ReadUserDto findUserByEmail(String email) {
         return userReadMapper.toDto(userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found")));
     }
+
     @Transactional(readOnly = true)
+    @Timed(value = "service.user.findByEmail",
+            description = "поиск по Email",
+            extraTags = {"method","entity"})
     public User findUserEntityByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User with email " + email + " not found"));
     }
+
     @Transactional(readOnly = true)
+    @Timed(value = "service.user.findByEmail",
+            description = "поиск по Email",
+            extraTags = {"method","optional"})
     public Optional<User> findUserOptionalByEmail(String email) {
-        return  userRepository.findByEmail(email);
+        return userRepository.findByEmail(email);
     }
+
     @Transactional(readOnly = true)
+    @Timed(value = "service.user.songLikedByUser",
+            description = "song liked by user time")
     public boolean isSongLikedByUser(Long songId, Long userId) {
         ReadUserDto user = findUserById(userId);
         ReadSongDto songDtoToCheck = new ReadSongDto();
         songDtoToCheck.setId(songId);
         return user.getLikedSongs().contains(songDtoToCheck);
     }
+
     @Caching(evict = {
             @CacheEvict(value = "users:authors", allEntries = true),
             @CacheEvict(value = "users:id", key = "#id"),
@@ -128,6 +168,7 @@ public class UserService {
         user.setRole(Role.AUTHOR);
         return userRepository.save(user);
     }
+
     @Caching(evict = {
             @CacheEvict(value = "users:authors", allEntries = true),
             @CacheEvict(value = "users:id", key = "#id"),
@@ -138,6 +179,7 @@ public class UserService {
         user.setRole(Role.USER);
         return userRepository.save(user);
     }
+
     @Caching(evict = {
             @CacheEvict(value = "users:id", key = "#id")
     })
@@ -147,21 +189,37 @@ public class UserService {
         user.setRole(Role.ADMIN);
         return userRepository.save(user);
     }
+
+    @Timed(value = "service.user.update",
+            description = "update пользователя",
+            extraTags = {"method","entity"},
+            histogram = true)
     @Transactional
     public User update(User user) {
         return userRepository.save(user);
     }
+
+    @Timed(value = "service.user.update",
+            description = "update пользователя",
+            extraTags = {"method","dto"},
+            histogram = true)
     @Transactional
     public User update(CreateUserDto createUserDto) {
         return userRepository.save(userCreateMapper.toEntity(createUserDto));
     }
 
+    @Timed(value = "service.user.findByUsername",
+            description = "поиск по Username",
+            extraTags = {"method","entity"})
     @Transactional(readOnly = true)
     public User findUserEntityByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User Entity with username " + username + " not found"));
     }
 
+    @Timed(value = "service.user.findByUsername",
+            description = "поиск по Username",
+            extraTags = {"method","details"})
     @Transactional(readOnly = true)
     public UserDetails findUserDetailsByUsername(String username) {
         return userRepository.findByUsername(username)
@@ -173,6 +231,9 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("UserDetails with username " + username + " not found"));
     }
 
+    @Timed(value = "service.user.findById",
+            description = "поиск по id",
+            extraTags = {"method","entity"})
     @Transactional(readOnly = true)
     public User findUserEntityById(Long id) {
         return userRepository.findById(id)
@@ -183,6 +244,9 @@ public class UserService {
             value = "users:all",
             key = "#userFilter.hashCode() + '_' + #pageable.pageNumber + '_' + #pageable.pageSize"
     )
+    @Timed(value = "service.user.findAll",
+            description = "поиск all",
+            extraTags = {"method","filter"})
     @Transactional(readOnly = true)
     public Page<ReadUserDto> findAllUsersByFilter(UserFilter userFilter, Pageable pageable) {
         Predicate predicate = QPredicates.builder()
@@ -195,29 +259,41 @@ public class UserService {
                 .map(userReadMapper::toDto);
     }
 
+    @Timed(value = "service.user.findAll",
+            description = "поиск all",
+            extraTags = {"method","withoutFilter"})
     @Transactional(readOnly = true)
     public List<ReadUserDto> findAllUsers() {
         return userReadMapper.toDtoList(userRepository.findAll());
     }
 
+    @Timed(value = "service.user.delete",
+            description = "удаление",
+            extraTags = {"method","id"})
     @Transactional()
     public ReadUserDto deleteUserById(Long id) {
         var user = findUserById(id);
         userRepository.delete(userReadMapper.toEntity(user));
         return user;
     }
+
     @Transactional()
     @Caching(evict = {
-            @CacheEvict(value = "users:username", key="#user.username"),
-            @CacheEvict(value = "users:id", key="#user.id"),
+            @CacheEvict(value = "users:username", key = "#user.username"),
+            @CacheEvict(value = "users:id", key = "#user.id"),
             @CacheEvict(value = "users:all", allEntries = true),
             @CacheEvict(value = "users:email", key = "#user.email")
     })
+    @Timed(value = "service.user.delete",
+            description = "удаление",
+            extraTags = {"method","dto"})
     public ReadUserDto deleteUser(ReadUserDto user) {
         userRepository.delete(userReadMapper.toEntity(user));
         return user;
     }
 
+    @Timed(value = "service.user.uploadImage",
+            description = "загрузка image")
     @Transactional()
     public ReadUserDto uploadImage(Long id, MultipartFile files) {
         User user = findUserEntityById(id);
@@ -230,5 +306,12 @@ public class UserService {
         user.setImage(fileName);
         userRepository.save(user);
         return userReadMapper.toDto(user);
+    }
+
+    @PostConstruct
+    public void initMetrics() {
+        Gauge.builder("users_count", userRepository, (r) -> (double) r.count())
+                .description("Количество всех юзеров")
+                .register(meterRegistry);
     }
 }

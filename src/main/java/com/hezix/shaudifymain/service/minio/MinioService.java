@@ -2,10 +2,12 @@ package com.hezix.shaudifymain.service.minio;
 
 import com.hezix.shaudifymain.entity.web.FileType;
 import com.hezix.shaudifymain.util.props.MinioProperties;
+import io.micrometer.core.annotation.Timed;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
@@ -16,26 +18,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Getter
 public class MinioService {
     private final MinioProperties minioProperties;
     private final MinioClient minioClient;
 
-    @SneakyThrows
-    public void saveImage(InputStream inputStream, String fileName, long fileSize) {
-        minioClient.putObject(PutObjectArgs.builder()
-                .bucket(minioProperties.getImageBucket())
-                .object(fileName)
-                .stream(inputStream, fileSize, -1)
-                .build());
-    }
-    @SneakyThrows
-    public void saveSong(MultipartFile file, String fileName) {
-        minioClient.putObject(PutObjectArgs.builder()
-                .bucket(minioProperties.getSongBucket())
-                .object(fileName)
-                .stream(file.getInputStream(), file.getSize(), -1)
-                .build());
-    }
+
 
     public String generateFileName(MultipartFile file) {
         String extension = getExtension(file);

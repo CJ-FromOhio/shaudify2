@@ -1,5 +1,6 @@
 package com.hezix.shaudifymain.entity.song.dto;
 
+import com.hezix.shaudifymain.entity.song.Genre;
 import com.hezix.shaudifymain.entity.user.User;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
 
 @Data
 @Builder
@@ -21,4 +25,7 @@ public class CreateSongDto {
     private String title;
     @Size(max = 64, message = "поле description должно быть до 64 символов")
     private String description;
+    @CreationTimestamp
+    private Instant createdAt;
+    private Genre genre;
 }

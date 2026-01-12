@@ -5,6 +5,7 @@ import com.hezix.shaudifymain.entity.album.Album;
 import com.hezix.shaudifymain.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -43,5 +44,6 @@ public class Song {
     private String songFile;
 
     @Column(nullable = false)
+    @CreationTimestamp
     private Instant createdAt;
 }

@@ -16,6 +16,7 @@ public class SongCreateMapper implements Mappable<Song, CreateSongDto> {
                 .id(createSongDto.getId())
                 .title(createSongDto.getTitle())
                 .description(createSongDto.getDescription())
+                .genre(createSongDto.getGenre())
                 .build();
     }
 
@@ -25,6 +26,7 @@ public class SongCreateMapper implements Mappable<Song, CreateSongDto> {
                 .id(song.getId())
                 .title(song.getTitle())
                 .description(song.getDescription())
+                .genre(song.getGenre())
                 .build();
     }
 

@@ -12,7 +12,7 @@ create table if not exists users
     password   varchar(255),
     image       varchar(255),
     role       varchar(16),
-    username   varchar(32)
+    username   varchar(64) unique not null
 );
 --changeset hezix:2
 create table if not exists albums

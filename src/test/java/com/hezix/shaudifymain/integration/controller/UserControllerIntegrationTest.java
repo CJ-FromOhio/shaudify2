@@ -1,16 +1,13 @@
 package com.hezix.shaudifymain.integration.controller;
 
+import com.hezix.shaudifymain.BaseIntegrationTest;
 import com.hezix.shaudifymain.entity.user.User;
 import com.hezix.shaudifymain.repository.UserRepository;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -28,23 +25,12 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.BDDMockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class UserControllerIntegrationTest {
+public class UserControllerIntegrationTest extends BaseIntegrationTest {
     @LocalServerPort
     private Integer port;
 
-    @Container
-    private static PostgreSQLContainer<?> POSTGRES_CONTAINER = new PostgreSQLContainer<>("postgres:17-alpine")
-            .waitingFor(Wait.forListeningPort())
-            .waitingFor(Wait.forLogMessage(".*database system is ready.*", 1));
-    @DynamicPropertySource
-    static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", POSTGRES_CONTAINER::getJdbcUrl);
-        registry.add("spring.datasource.username", POSTGRES_CONTAINER::getUsername);
-        registry.add("spring.datasource.password", POSTGRES_CONTAINER::getPassword);
-    }
     @Autowired
     private UserRepository userRepository;
 

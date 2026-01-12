@@ -6,6 +6,7 @@ import com.hezix.shaudifymain.entity.playlist.Playlist;
 import com.hezix.shaudifymain.entity.song.Song;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -75,6 +76,7 @@ public class User{
     private String image;
 
     @Column()
+    @CreationTimestamp
     private Instant createdAt;
 
 }
